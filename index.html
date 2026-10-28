@@ -329,7 +329,7 @@ html[lang="en"] h1,html[lang="en"] h2{font-weight:500;letter-spacing:-.01em}
 html[lang="en"] .hero h1 .ln{white-space:normal}
 html[lang="en"] .hero h1 .ln:last-child{font-style:italic}
 html[lang="en"] .lang-btn{font-family:"IBM Plex Sans Arabic",sans-serif;font-size:17px}
-html[lang="en"] .card .latin,html[lang="en"] .dt .latin,html[lang="en"] .st-lat,html[lang="en"] .houses .trk b{display:none}
+html[lang="en"] .card .latin,html[lang="en"] .dt .latin,html[lang="en"] .st-lat{display:none}
 html[lang="en"] .card h3,html[lang="en"] .st-name,html[lang="en"] .dt h2{font-weight:500}
 html[dir="ltr"] .drawer{transform:translateX(105%)}
 html[dir="ltr"] .drawer.open{transform:none}
@@ -379,14 +379,26 @@ html[data-theme="dark"] .stage{box-shadow:0 0 0 1px #2A2926}
 @media (max-width:900px){.stage{max-width:520px;width:100%;margin-inline:auto;aspect-ratio:4/5.2}}
 @media (max-width:480px){.st-name{font-size:26px}.pill span{font-size:12.5px;padding:8px 12px}.st-nav{inset-inline-end:10px}.st-nav button{width:32px;height:32px}}
 @media (prefers-reduced-motion:reduce){.st-bottle,.pill span{animation:none}}
-/* the houses we carry */
-.houses{border-block:1px solid var(--line);overflow:hidden;padding:16px 0;direction:ltr}
-.houses .trk{display:flex;width:max-content;animation:hMove 32s linear infinite}
-.houses .trk span{display:flex;align-items:center;gap:12px;padding:0 28px;white-space:nowrap;font-size:14px;letter-spacing:.22em;color:var(--ink-soft)}
-.houses .trk b{font-family:var(--name);font-weight:400;font-size:22px;letter-spacing:0;color:var(--ink)}
-.houses .trk em{font-style:normal;color:var(--ink-soft);opacity:.6;letter-spacing:0}
+/* the houses we carry: two rows of pills drifting in opposite directions */
+section.houses{padding-block:56px 40px;overflow:hidden}
+.h-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:22px}
+.h-head b{font-family:var(--name);font-weight:400;font-size:26px}
+.hrow{direction:ltr;overflow:hidden;padding:7px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.hrow .trk{display:flex;gap:12px;width:max-content;animation:hMove 40s linear infinite}
+.hrow.r2 .trk{animation-direction:reverse;animation-duration:46s}
+.hrow:hover .trk{animation-play-state:paused}
+.hp{display:flex;align-items:center;gap:10px;padding:7px 20px 7px 7px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--sand) 60%,#fff);white-space:nowrap;margin-inline-end:12px}
+.hrow .trk{gap:0}
+.hp i{flex:none;width:38px;height:38px;border-radius:50%;background:var(--ink);color:var(--sand);display:flex;align-items:center;justify-content:center;font-style:normal;font-family:"Cormorant Garamond",Georgia,serif;font-size:19px;font-weight:600;overflow:hidden}
+.hp i img{width:100%;height:100%;object-fit:contain;background:#fff;padding:5px}
+.hp b{font-family:var(--name);font-weight:400;font-size:20px;line-height:1.2}
+.hp em{font-style:normal;font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:.16em;color:var(--ink-soft)}
+html[data-theme="dark"] .hp{background:#1E1D1B}
+html[lang="en"] .hp b,html[lang="en"] .h-head b{display:none}
+html[lang="en"] .hp em{color:var(--ink);font-size:13px}
 @keyframes hMove{to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){.houses .trk{animation:none}}
+@media (max-width:600px){.h-head{flex-direction:column;align-items:flex-start;gap:6px}.hp{padding:5px 16px 5px 5px}.hp i{width:32px;height:32px;font-size:16px}.hp b{font-size:17px}.hp em{font-size:11px}.h-head b{font-size:20px}section.houses{padding-block:40px 28px}}
+@media (prefers-reduced-motion:reduce){.hrow .trk{animation:none}.hrow{overflow-x:auto}}
 
 .card .ph{position:relative;cursor:pointer}
 .card h3{cursor:pointer}
@@ -542,7 +554,11 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
     </div>
   </div>
 
-  <div class="houses" aria-label="البراندات اللي بنوفرها"><div class="trk"><span><b>إبراق</b>IBRAQ<em>✦</em></span><span><b>عساف</b>ASSAF<em>✦</em></span><span><b>أفنان</b>AFNAN<em>✦</em></span><span><b>الرصاصي</b>RASASI<em>✦</em></span><span><b>إبراق</b>IBRAQ<em>✦</em></span><span><b>عساف</b>ASSAF<em>✦</em></span><span><b>أفنان</b>AFNAN<em>✦</em></span><span><b>الرصاصي</b>RASASI<em>✦</em></span><span><b>إبراق</b>IBRAQ<em>✦</em></span><span><b>عساف</b>ASSAF<em>✦</em></span><span><b>أفنان</b>AFNAN<em>✦</em></span><span><b>الرصاصي</b>RASASI<em>✦</em></span><span><b>إبراق</b>IBRAQ<em>✦</em></span><span><b>عساف</b>ASSAF<em>✦</em></span><span><b>أفنان</b>AFNAN<em>✦</em></span><span><b>الرصاصي</b>RASASI<em>✦</em></span></div></div>
+  <section class="houses" aria-label="البراندات اللي بنوفرها">
+    <div class="wrap h-head"><span class="eyebrow">THE HOUSES WE CARRY</span><b>البراندات اللي بنوفرها</b></div>
+    <div class="hrow r1"><div class="trk"><span class="hp"><i>A</i><b>عساف</b><em>ASSAF</em></span><span class="hp"><i>I</i><b>إبراق</b><em>IBRAQ</em></span><span class="hp"><i>A</i><b>أفنان</b><em>AFNAN</em></span><span class="hp"><i>G</i><b>قصة</b><em>GISSAH</em></span><span class="hp"><i>S</i><b>سيفورا</b><em>SEPHORA</em></span><span class="hp"><i>R</i><b>الرصاصي</b><em>RASASI</em></span><span class="hp"><i>O</i><b>أوسما</b><em>OSMA</em></span><span class="hp" aria-hidden="true"><i>A</i><b>عساف</b><em>ASSAF</em></span><span class="hp" aria-hidden="true"><i>I</i><b>إبراق</b><em>IBRAQ</em></span><span class="hp" aria-hidden="true"><i>A</i><b>أفنان</b><em>AFNAN</em></span><span class="hp" aria-hidden="true"><i>G</i><b>قصة</b><em>GISSAH</em></span><span class="hp" aria-hidden="true"><i>S</i><b>سيفورا</b><em>SEPHORA</em></span><span class="hp" aria-hidden="true"><i>R</i><b>الرصاصي</b><em>RASASI</em></span><span class="hp" aria-hidden="true"><i>O</i><b>أوسما</b><em>OSMA</em></span></div></div>
+    <div class="hrow r2"><div class="trk"><span class="hp"><i>D</i><b>دخون الإماراتية</b><em>DKHOON ALEMIRATIA</em></span><span class="hp"><i>R</i><b>ريف</b><em>REEF</em></span><span class="hp"><i>M</i><b>ماتش</b><em>MATCH</em></span><span class="hp"><i>A</i><b>العربية للعود</b><em>ARABIAN OUD</em></span><span class="hp"><i>A</i><b>عساف</b><em>ASSAF</em></span><span class="hp"><i>I</i><b>إبراق</b><em>IBRAQ</em></span><span class="hp"><i>A</i><b>أفنان</b><em>AFNAN</em></span><span class="hp" aria-hidden="true"><i>D</i><b>دخون الإماراتية</b><em>DKHOON ALEMIRATIA</em></span><span class="hp" aria-hidden="true"><i>R</i><b>ريف</b><em>REEF</em></span><span class="hp" aria-hidden="true"><i>M</i><b>ماتش</b><em>MATCH</em></span><span class="hp" aria-hidden="true"><i>A</i><b>العربية للعود</b><em>ARABIAN OUD</em></span><span class="hp" aria-hidden="true"><i>A</i><b>عساف</b><em>ASSAF</em></span><span class="hp" aria-hidden="true"><i>I</i><b>إبراق</b><em>IBRAQ</em></span><span class="hp" aria-hidden="true"><i>A</i><b>أفنان</b><em>AFNAN</em></span></div></div>
+  </section>
 
   <section class="offers" id="offers">
     <div class="wrap off-grid">
@@ -1158,7 +1174,7 @@ document.getElementById('copy-handle').addEventListener('click',function(){
     'الأثر اللي بيفضل في المكان بعد ما صاحبه يمشي. وده بالظبط اللي العطر الصح بيعمله.':'The trace that lingers in a room after someone has left. That is exactly what the right perfume does.',
     'عطور أصلية مختارة بعناية، رجالي وحريمي، توصلك لحد عندك. اختار عطرك وابعتلنا على انستجرام.':'Authentic perfumes, carefully selected for men and women, delivered to your door. Pick your scent and message us on Instagram.',
     'اطلب على انستجرام':'Order on Instagram','شوف التشكيلة':'View collection','التفاصيل':'Details','+ أضف للسلة':'+ Add to bag','ج.م':'EGP',
-    'إبراق':'Ibraq','عساف':'Assaf','أفنان':'Afnan','الرصاصي':'Rasasi',
+    'إبراق':'Ibraq','عساف':'Assaf','أفنان':'Afnan','الرصاصي':'Rasasi','البراندات اللي بنوفرها':'The houses we carry',
     'لفترة محدودة':'Limited time','عروض':'November','جمعة نوفمبر':'Friday offers','بدأت':'are on',
     'خصومات لحد 300 ج.م على 19 عطر من إبراق وعساف: مجموعة الدايموند، والمسك، وثرى وعمق وتوق، وأروجيت، وجريس إريك، وغيرهم. الخصم بيتحسب لوحده في السلة.':'Up to EGP 300 off 19 perfumes from Ibraq and Assaf: the Diamond collection, the musks, Thara, Omq and Tawq, Arrogate, Grace Eric and more. The discount is applied automatically in your bag.',
     'شوف كل العروض':'See all offers',
