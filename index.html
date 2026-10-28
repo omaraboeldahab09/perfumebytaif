@@ -264,6 +264,8 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
 .empty-cart b{font-family:var(--accent);font-weight:400;font-size:28px;color:var(--ink)}
 .fields{display:flex;flex-direction:column;gap:10px}
 .fields label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)}
+.fields select{font:inherit;font-size:16px;color:var(--ink);background:var(--sand-deep);border:1px solid transparent;border-radius:12px;padding:10px 12px;width:100%}
+.fields select:focus{outline:none;border-color:var(--ink)}
 .fields input,.fields textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--sand-deep);border:1px solid transparent;border-radius:12px;padding:10px 12px}
 .fields input:focus,.fields textarea:focus{outline:none;border-color:var(--ink)}
 .note{font-size:13px;color:var(--ink-soft);margin:0}
@@ -535,7 +537,8 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
     <div class="fields" id="fields">
       <label for="c-name">الاسم<input id="c-name" autocomplete="name"></label>
       <label for="c-phone">رقم الموبايل<input id="c-phone" inputmode="tel" autocomplete="tel" dir="ltr" style="text-align:right"></label>
-      <label for="c-addr">العنوان<textarea id="c-addr" rows="2" autocomplete="street-address"></textarea></label>
+      <label for="c-gov">المحافظة<select id="c-gov" autocomplete="address-level1"><option value="" disabled selected>اختار المحافظة</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>القليوبية</option><option>الدقهلية</option><option>الشرقية</option><option>الغربية</option><option>المنوفية</option><option>البحيرة</option><option>كفر الشيخ</option><option>دمياط</option><option>بورسعيد</option><option>الإسماعيلية</option><option>السويس</option><option>الفيوم</option><option>بني سويف</option><option>المنيا</option><option>أسيوط</option><option>سوهاج</option><option>قنا</option><option>الأقصر</option><option>أسوان</option><option>البحر الأحمر</option><option>الوادي الجديد</option><option>مطروح</option><option>شمال سيناء</option><option>جنوب سيناء</option></select></label>
+      <label for="c-addr">وصف العنوان<textarea id="c-addr" rows="3" autocomplete="street-address" placeholder="المنطقة، الشارع، رقم العمارة، الدور والشقة، وأقرب علامة مميزة"></textarea></label>
       <p class="note">مصاريف الشحن بنأكدها معاك في الرسالة.</p>
       <div class="paybox">
         <span class="lbl">طريقة الدفع</span>
@@ -581,8 +584,8 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
     Object.keys(cart).forEach(function(k){lines.push('• '+k+' × '+cart[k]+(PRICE[k]?' = '+money(PRICE[k]*cart[k]):' (السعر عند الطلب)'))});
     var S=sum();lines.push('');lines.push('الإجمالي: '+money(S.s)+' (من غير الشحن)');if(S.miss.length)lines.push('سعر '+S.miss.join(' و ')+' بنأكده في الرسالة');
     lines.push('طريقة الدفع: انستاباي');lines.push('');
-    var n=$('c-name').value.trim(),p=$('c-phone').value.trim(),a=$('c-addr').value.trim();
-    if(n)lines.push('الاسم: '+n); if(p)lines.push('الموبايل: '+p); if(a)lines.push('العنوان: '+a);
+    var n=$('c-name').value.trim(),p=$('c-phone').value.trim(),g=$('c-gov').value,a=$('c-addr').value.trim();
+    if(n)lines.push('الاسم: '+n); if(p)lines.push('الموبايل: '+p); if(g)lines.push('المحافظة: '+g); if(a)lines.push('العنوان: '+a);
     return lines.join('\n');
   }
   function render(){
@@ -617,7 +620,7 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
   $('cart-close').onclick=function(){openCart(false)};
   $('scrim').onclick=function(){openCart(false)};
   document.addEventListener('keydown',function(e){if(e.key==='Escape')openCart(false)});
-  ['c-name','c-phone','c-addr'].forEach(function(id){$(id).addEventListener('input',function(){$('preview').value=message()})});
+  ['c-name','c-phone','c-gov','c-addr'].forEach(function(id){$(id).addEventListener('input',function(){$('preview').value=message()})});
   $('send').addEventListener('click',function(){
     var m=message(),pv=$('preview');pv.value=m;
     var id=orderId();$('sent-id').textContent=id;$('sent').hidden=false;
