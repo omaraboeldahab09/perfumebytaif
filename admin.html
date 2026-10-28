@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>إدارة طيف</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+:root{--sand:#E7E4DD;--sand-deep:#DCD8CE;--ink:#0E0E0D;--ink-soft:#4A4843;--line:#BDB8AC;--ice:#7E93C9;--ok:#2F6B45;--warn:#8A5A12;--bad:#9B2C2C;--body:"IBM Plex Sans Arabic",Tahoma,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--sand);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+.wrap{max-width:860px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:8px 20px;border-bottom:1px solid var(--line);margin-bottom:24px}
+header h1{margin:0;font-size:22px;font-weight:600}
+header small{color:var(--ink-soft);display:block;font-size:13px;font-weight:400}
+button,input,select,textarea{font:inherit}
+.btn{background:var(--ink);color:var(--sand);border:0;border-radius:999px;padding:10px 20px;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.btn.sm{padding:5px 12px;font-size:13px;font-weight:500}
+.btn:disabled{opacity:.4;cursor:default}
+.card{background:var(--sand-deep);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)}
+input,select,textarea{font-size:16px;color:var(--ink);background:var(--sand);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.note{font-size:13px;color:var(--ink-soft);margin:0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.msg{border-radius:12px;padding:10px 14px;font-size:14px}
+.msg.ok{background:#DCE8DF;color:var(--ok)}
+.msg.err{background:#F1DCDC;color:var(--bad)}
+.msg.info{background:var(--sand-deep);color:var(--ink-soft)}
+.steps{margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.steps code{background:var(--sand);padding:1px 6px;border-radius:6px;direction:ltr;display:inline-block}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-block:20px}
+.stat{background:var(--sand-deep);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column}
+.stat b{font-size:24px;font-variant-numeric:tabular-nums;line-height:1.3}
+.stat span{font-size:12px;color:var(--ink-soft)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{background:transparent;border:1px solid var(--line);border-radius:999px;padding:4px 14px;font-size:13px;cursor:pointer;color:var(--ink)}
+.chip.on{background:var(--ink);color:var(--sand);border-color:var(--ink)}
+.list{display:flex;flex-direction:column;gap:10px}
+.order{background:var(--sand);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.order.received{border-inline-start:4px solid var(--warn)}
+.order.confirmed{border-inline-start:4px solid var(--ice)}
+.order.shipped{border-inline-start:4px solid var(--ink)}
+.order.delivered{border-inline-start:4px solid var(--ok);opacity:.8}
+.o-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.o-id{font-size:20px;font-weight:600;direction:ltr;letter-spacing:.05em}
+.o-date{font-size:12px;color:var(--ink-soft)}
+.pills{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pill{border:1px solid var(--line);background:transparent;border-radius:10px;padding:8px 4px;font-size:13px;cursor:pointer;color:var(--ink)}
+.pill.on{background:var(--ink);color:var(--sand);border-color:var(--ink);font-weight:600}
+.o-foot{display:flex;gap:8px;align-items:center}
+.o-foot input{flex:1;min-width:0;font-size:14px;padding:8px 10px}
+.del{background:none;border:0;color:var(--bad);font-size:13px;cursor:pointer;padding:6px}
+.empty{text-align:center;color:var(--ink-soft);padding:30px 0}
+.savebar{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--ink);color:var(--sand);border-radius:999px;padding:8px 8px 8px 18px;margin-top:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.savebar .btn{background:var(--sand);color:var(--ink)}
+.savebar span{font-size:14px;padding-inline-start:10px}
+@media (max-width:560px){.row{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.pills{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><h1>لوحة إدارة طيف</h1><small>تأكيد الطلبات وتحديث حالتها</small></div>
+    <button class="btn ghost sm" id="logout" type="button" hidden>تسجيل خروج</button>
+  </header>
+
+  <section id="login" class="card" hidden>
+    <h2 style="margin:0;font-size:20px">ادخل بالمفتاح السري</h2>
+    <p class="note">المفتاح بيتحفظ على الجهاز ده بس. أي حد يفتح الصفحة من غيره مش هيقدر يشوف أو يغيّر حاجة.</p>
+    <label for="token">مفتاح GitHub (بيبدأ بـ github_pat_)</label>
+    <input id="token" type="password" dir="ltr" autocomplete="off" spellcheck="false" placeholder="github_pat_...">
+    <button class="btn" id="login-btn" type="button">دخول</button>
+    <div id="login-msg"></div>
+    <details>
+      <summary class="note" style="cursor:pointer">إزاي أعمل المفتاح؟</summary>
+      <ol class="steps">
+        <li>افتح <code>github.com/settings/personal-access-tokens/new</code></li>
+        <li>في Token name اكتب <code>taif-admin</code>، وفي Expiration اختار <code>1 year</code>.</li>
+        <li>في Repository access اختار <code>Only select repositories</code> ثم <code>perfumebytaif</code>.</li>
+        <li>في Permissions افتح Repository permissions، وخلي <code>Contents</code> على <code>Read and write</code>.</li>
+        <li>دوس <code>Generate token</code> وانسخ المفتاح والصقه هنا.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section id="app" hidden>
+    <div class="card">
+      <h2 style="margin:0;font-size:18px">تسجيل طلب جديد</h2>
+      <p class="note">لما يوصلك طلب على انستجرام، اكتب رقمه اللي في الرسالة.</p>
+      <div class="row">
+        <label for="new-id">رقم الطلب<input id="new-id" dir="ltr" placeholder="TF-7K3P" autocomplete="off" autocapitalize="characters"></label>
+        <label for="new-status">الحالة<select id="new-status"></select></label>
+      </div>
+      <label for="new-note">ملحوظة للعميل (اختياري، العميل بيشوفها في التتبع)<input id="new-note" placeholder="مثلًا: هيوصلك يوم الخميس"></label>
+      <button class="btn" id="add-btn" type="button">ضيف الطلب</button>
+      <div id="add-msg"></div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+    <div class="filters" id="filters"></div>
+    <div class="list" id="list"></div>
+
+    <div class="savebar" id="savebar" hidden>
+      <span id="save-text">فيه تعديلات لسه ما اتحفظتش</span>
+      <button class="btn" id="save-btn" type="button">احفظ</button>
+    </div>
+    <div id="save-msg" style="margin-top:12px"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var OWNER='omaraboeldahab09',REPO='perfumebytaif',FILE='orders.json',KEY='taif-admin-token';
+  var API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+FILE;
+  var STEPS=[['received','استلمنا الطلب'],['confirmed','اتأكد والدفع وصل'],['shipped','اتشحن'],['delivered','اتسلّم']];
+  var token='',orders={},sha=null,dirty=false,filter='all';
+  var $=function(id){return document.getElementById(id)};
+  function msg(el,cls,text){$(el).innerHTML=text?'<div class="msg '+cls+'">'+text+'</div>':''}
+  function esc(s){var d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML}
+  function today(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+  function b64dec(s){return decodeURIComponent(escape(atob(s.replace(/\n/g,''))))}
+  function b64enc(s){return btoa(unescape(encodeURIComponent(s)))}
+  function gh(method,body){
+    return fetch(API+(method==='GET'?'?t='+Date.now():''),{method:method,cache:'no-store',headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'},body:body?JSON.stringify(body):undefined})
+  }
+  function normId(v){v=(v||'').trim().toUpperCase().replace(/\s+/g,'');if(/^[A-Z0-9]{4}$/.test(v))v='TF-'+v;return v}
+
+  function load(){
+    msg('login-msg','info','بنتأكد من المفتاح…');
+    return gh('GET').then(function(r){
+      if(r.status===401||r.status===403)throw new Error('auth');
+      if(r.status===404)throw new Error('nf');
+      if(!r.ok)throw new Error('net');
+      return r.json();
+    }).then(function(j){
+      sha=j.sha;try{orders=JSON.parse(b64dec(j.content))||{}}catch(e){orders={}}
+      try{localStorage.setItem(KEY,token)}catch(e){}
+      $('login').hidden=true;$('app').hidden=false;$('logout').hidden=false;msg('login-msg');
+      dirty=false;render();
+    }).catch(function(e){
+      $('login').hidden=false;$('app').hidden=true;$('logout').hidden=true;
+      msg('login-msg','err',e.message==='auth'?'المفتاح ده مش شغال أو ملوش صلاحية على perfumebytaif. اتأكد إنك اديته Contents: Read and write.':e.message==='nf'?'مش لاقيين ملف الطلبات أو المفتاح مش شايف الـ repo. اتأكد إنك اخترت perfumebytaif في Repository access.':'في مشكلة في الاتصال، جرّب تاني.');
+    });
+  }
+
+  function setDirty(v){dirty=v;$('savebar').hidden=!v}
+
+  function render(){
+    var ids=Object.keys(orders).sort(function(a,b){return (orders[b].date||'').localeCompare(orders[a].date||'')||a.localeCompare(b)});
+    var counts={all:ids.length};STEPS.forEach(function(s){counts[s[0]]=0});
+    ids.forEach(function(id){var st=orders[id].status;if(counts[st]!=null)counts[st]++});
+    $('stats').innerHTML=STEPS.map(function(s){return '<div class="stat"><b>'+counts[s[0]]+'</b><span>'+s[1]+'</span></div>'}).join('');
+    var f='<button class="chip'+(filter==='all'?' on':'')+'" data-f="all" type="button">الكل ('+counts.all+')</button>';
+    STEPS.forEach(function(s){f+='<button class="chip'+(filter===s[0]?' on':'')+'" data-f="'+s[0]+'" type="button">'+s[1]+'</button>'});
+    $('filters').innerHTML=f;
+    var list=$('list');list.innerHTML='';
+    var shown=ids.filter(function(id){return filter==='all'||orders[id].status===filter});
+    if(!shown.length){list.innerHTML='<div class="empty">مفيش طلبات هنا لسه.</div>';return}
+    shown.forEach(function(id){
+      var o=orders[id],el=document.createElement('div');el.className='order '+(o.status||'');
+      el.innerHTML='<div class="o-head"><span class="o-id">'+esc(id)+'</span><span class="o-date">آخر تحديث: '+esc(o.date||'—')+'</span></div>'+
+        '<div class="pills">'+STEPS.map(function(s){return '<button type="button" class="pill'+(o.status===s[0]?' on':'')+'" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div>'+
+        '<div class="o-foot"><input aria-label="ملحوظة للعميل" placeholder="ملحوظة للعميل" value="'+esc(o.note||'').replace(/"/g,'&quot;')+'"><button type="button" class="del">مسح</button></div>';
+      el.querySelectorAll('.pill').forEach(function(p){p.onclick=function(){o.status=p.dataset.s;o.date=today();setDirty(true);render()}});
+      var inp=el.querySelector('input');inp.oninput=function(){o.note=inp.value;setDirty(true)};
+      var del=el.querySelector('.del');del.onclick=function(){
+        if(del.dataset.sure){delete orders[id];setDirty(true);render()}else{del.dataset.sure='1';del.textContent='متأكد؟ دوس تاني';setTimeout(function(){del.textContent='مسح';delete del.dataset.sure},3000)}
+      };
+      list.append(el);
+    });
+  }
+
+  function save(){
+    var btn=$('save-btn');btn.disabled=true;$('save-text').textContent='بنحفظ…';
+    var clean={};Object.keys(orders).sort().forEach(function(k){var o=orders[k];clean[k]={status:o.status,date:o.date};if(o.note)clean[k].note=o.note});
+    return gh('PUT',{message:'Update orders',content:b64enc(JSON.stringify(clean,null,2)+'\n'),sha:sha}).then(function(r){
+      if(r.status===409||r.status===422)throw new Error('conflict');
+      if(!r.ok)throw new Error('net');return r.json();
+    }).then(function(j){
+      sha=j.content.sha;setDirty(false);$('save-text').textContent='فيه تعديلات لسه ما اتحفظتش';
+      msg('save-msg','ok','اتحفظ ✓ العملاء هيشوفوا الحالة الجديدة في التتبع خلال دقيقة أو اتنين.');
+      setTimeout(function(){msg('save-msg')},6000);
+    }).catch(function(e){
+      $('save-text').textContent='الحفظ ماتمّش';
+      msg('save-msg','err',e.message==='conflict'?'الملف اتغيّر من مكان تاني. اعمل refresh للصفحة وعيد التعديل.':'الحفظ ماتمّش، اتأكد من النت وجرّب تاني.');
+    }).finally(function(){btn.disabled=false});
+  }
+
+  $('new-status').innerHTML=STEPS.map(function(s,i){return '<option value="'+s[0]+'"'+(i===1?' selected':'')+'>'+s[1]+'</option>'}).join('');
+  $('add-btn').onclick=function(){
+    var id=normId($('new-id').value);
+    if(!/^TF-[A-Z0-9]{4}$/.test(id)){msg('add-msg','err','رقم الطلب لازم يكون بالشكل ده: TF-7K3P');return}
+    var existed=!!orders[id];
+    orders[id]={status:$('new-status').value,date:today(),note:$('new-note').value.trim()};
+    $('new-id').value='';$('new-note').value='';
+    msg('add-msg','ok',(existed?'اتحدّث الطلب ':'اتضاف الطلب ')+id+'. متنساش تدوس "احفظ" تحت.');
+    filter='all';setDirty(true);render();
+  };
+  $('filters').addEventListener('click',function(e){var b=e.target.closest('.chip');if(b){filter=b.dataset.f;render()}});
+  $('save-btn').onclick=save;
+  $('login-btn').onclick=function(){token=$('token').value.trim();if(!token){msg('login-msg','err','الصق المفتاح الأول.');return}load()};
+  $('logout').onclick=function(){try{localStorage.removeItem(KEY)}catch(e){}token='';orders={};$('token').value='';$('app').hidden=true;$('logout').hidden=true;$('login').hidden=false;msg('login-msg','info','خرجت. المفتاح اتمسح من الجهاز ده.')};
+  window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue=''}});
+
+  try{token=localStorage.getItem(KEY)||''}catch(e){}
+  if(token)load();else $('login').hidden=false;
+})();
+</script>
+</body>
+</html>
