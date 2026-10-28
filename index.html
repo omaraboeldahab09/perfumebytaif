@@ -44,9 +44,13 @@ h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;l
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--sand) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
 .brand img{height:46px;width:auto;display:block}
-nav{display:flex;gap:28px;font-size:15px}
-nav a{text-decoration:none;color:var(--ink-soft)}
-nav a:hover{color:var(--ink)}
+/* tab bar: text tabs with a black pill that slides to the current section */
+.tabs{position:relative;display:flex;align-items:center;gap:2px}
+.tabs a,.tabs button{position:relative;z-index:1;font:inherit;font-size:15px;line-height:1.4;color:var(--ink-soft);text-decoration:none;background:none;border:0;padding:9px 20px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:color .35s}
+.tabs a:hover,.tabs button:hover{color:var(--ink)}
+.tabs .on,.tabs .on:hover{color:var(--sand)}
+.tabs .ind{position:absolute;z-index:0;left:0;top:0;height:0;width:0;border-radius:999px;background:var(--ink);opacity:0;transition:transform .5s cubic-bezier(.6,0,.2,1),width .5s cubic-bezier(.6,0,.2,1),opacity .3s}
+.bottom-tabs{display:none}
 .ig-btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--sand);text-decoration:none;border-radius:999px;padding:10px 20px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s}
 .ig-btn:hover{transform:translateY(-2px)}
 .ig-btn svg{width:18px;height:18px;flex:none}
@@ -319,7 +323,11 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
 
 /* responsive */
 @media (max-width:900px){
-  nav{display:none}
+  .top-tabs{display:none}
+  .bottom-tabs{display:flex;justify-content:space-between;position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--sand) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:8px max(10px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))}
+  .bottom-tabs a,.bottom-tabs button{font-size:13.5px;padding:8px 11px}
+  body{padding-bottom:calc(62px + env(safe-area-inset-bottom,0px))}
+  .toast{bottom:calc(80px + env(safe-area-inset-bottom,0px))}
   .hero,.feat,.about-grid{grid-template-columns:1fr;gap:40px}
   .hero{padding-block:36px 56px}
   .arch,.feat-img{max-width:440px;width:100%;margin-inline:auto}
@@ -374,12 +382,13 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
 <header>
   <div class="wrap bar">
     <a class="brand" href="#top" aria-label="طيف TAIF"><img class="lg" src="data:image/png;base64,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" alt="طيف TAIF"></a>
-    <nav aria-label="أقسام الموقع">
-      <a href="#new">الجديد</a>
-      <a href="#collection">التشكيلة</a>
-      <a href="#order">إزاي تطلب</a>
-      <a href="#pay">الدفع</a>
-      <a href="#track">تتبع طلبك</a>
+    <nav class="tabs top-tabs" aria-label="أقسام الموقع">
+      <a href="#top" data-spy="top">الرئيسية</a>
+      <a href="#collection" data-spy="collection">العطور</a>
+      <button type="button" data-cart>السلة</button>
+      <a href="#track" data-spy="pay">تتبّع طلبك</a>
+      <a href="#contact" data-spy="contact">تواصل معنا</a>
+      <span class="ind" aria-hidden="true"></span>
     </nav>
     <div class="hdr-actions">
     <button type="button" class="cart-btn theme-btn" id="theme-toggle" aria-label="الوضع الداكن" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
@@ -657,6 +666,14 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
     </div>
   </section>
 </main>
+<nav class="tabs bottom-tabs" aria-label="التنقل السريع">
+      <a href="#top" data-spy="top">الرئيسية</a>
+      <a href="#collection" data-spy="collection">العطور</a>
+      <button type="button" data-cart>السلة</button>
+      <a href="#track" data-spy="pay">تتبّع طلبك</a>
+      <a href="#contact" data-spy="contact">تواصل معنا</a>
+      <span class="ind" aria-hidden="true"></span>
+</nav>
 
 <footer>
   <div class="wrap">
@@ -858,6 +875,21 @@ document.getElementById('copy-handle').addEventListener('click',function(){
   function done(){b.textContent='اتنسخ ✓';setTimeout(function(){b.textContent='انسخ اسم الحساب'},1800)}
   try{navigator.clipboard.writeText(t).then(done,function(){b.textContent=t})}catch(e){b.textContent=t}
 });
+</script>
+<script>
+(function(){
+  var bars=[].slice.call(document.querySelectorAll('.tabs'));
+  function place(bar){var on=bar.querySelector('.on'),ind=bar.querySelector('.ind');if(!on||!bar.offsetWidth){return}
+    ind.style.width=on.offsetWidth+'px';ind.style.height=on.offsetHeight+'px';ind.style.top=on.offsetTop+'px';ind.style.transform='translateX('+on.offsetLeft+'px)';ind.style.opacity=1}
+  function setActive(key){bars.forEach(function(bar){[].forEach.call(bar.querySelectorAll('[data-spy]'),function(a){var m=a.dataset.spy===key;a.classList.toggle('on',m);if(m)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')});place(bar)})}
+  var order=['collection','pay','contact'],cur='';
+  function spy(){var k='top',y=innerHeight*.4;order.forEach(function(id){var s=document.getElementById(id);if(s&&s.getBoundingClientRect().top<=y)k=id});
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)k='contact';if(k!==cur){cur=k;setActive(k)}}
+  addEventListener('scroll',spy,{passive:true});addEventListener('resize',function(){bars.forEach(place)});
+  bars.forEach(function(bar){bar.addEventListener('click',function(e){var a=e.target.closest('[data-spy]');if(a){cur=a.dataset.spy;setActive(cur)}
+    if(e.target.closest('[data-cart]')){var c=document.getElementById('cart-open');if(c)c.click()}})});
+  spy();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){bars.forEach(place)});
+})();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
