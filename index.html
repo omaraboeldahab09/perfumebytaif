@@ -322,6 +322,51 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
 .msg-preview{font:inherit;font-size:13px;width:100%;min-height:120px;background:var(--sand-deep);border:0;border-radius:12px;padding:10px;color:var(--ink)}
 .toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,20px);background:var(--ink);color:var(--sand);padding:10px 20px;border-radius:999px;font-size:14px;z-index:40;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+.card .ph{position:relative;cursor:pointer}
+.card h3{cursor:pointer}
+.ph .more{position:absolute;bottom:12px;left:0;right:0;margin:0 auto;width:max-content;background:var(--sand);color:var(--ink);font-family:var(--body);font-size:13px;line-height:1;padding:8px 14px;border-radius:999px;border:1px solid var(--line);opacity:.92;pointer-events:none}
+html[data-theme="dark"] .ph .more{background:#ECE9E2;color:#0B0A09;border-color:#BDB8AC}
+.dt-scrim{position:fixed;inset:0;background:rgba(14,14,13,.5);z-index:34;opacity:0;pointer-events:none;transition:opacity .3s}
+.dt-scrim.open{opacity:1;pointer-events:auto}
+.dt{position:fixed;z-index:35;left:0;right:0;top:0;bottom:0;margin:auto;width:min(880px,calc(100% - 48px));height:max-content;max-height:calc(100% - 64px);background:var(--sand);color:var(--ink);border-radius:28px;display:flex;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.25);opacity:0;visibility:hidden;transform:translateY(24px);transition:opacity .35s,transform .45s cubic-bezier(.2,.7,.2,1),visibility 0s .45s}
+.dt.open{opacity:1;visibility:visible;transform:none;transition:opacity .35s,transform .45s cubic-bezier(.2,.7,.2,1),visibility 0s}
+.dt-pic{flex:0 0 40%;background:#D2CDC2;position:relative;min-height:420px}
+.dt-pic .ar{position:absolute;left:12%;right:12%;top:36px;bottom:0;border-radius:999px 999px 0 0;background:#DCD8CE;overflow:hidden}
+.dt-pic img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;padding:12% 6% 6%;mix-blend-mode:multiply}
+.dt-pic .ar.cover img{object-fit:cover;padding:0;mix-blend-mode:normal}
+.dt-info{flex:1;min-width:0;overflow-y:auto;padding:30px 32px 26px;display:flex;flex-direction:column;gap:14px}
+.dt-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.dt-top .br{font-size:13px;color:var(--ink-soft);letter-spacing:.02em}
+.dt h2{font-family:var(--name);font-weight:400;font-size:40px;line-height:1.35;margin:0}
+.dt .latin{display:block;font-size:12px;letter-spacing:.18em;color:var(--ink-soft);direction:ltr;text-align:right}
+.dt .x{flex:none;margin:-6px -8px 0 0;border-radius:50%}
+html[data-theme="dark"] .dt-pic{background:var(--sand-deep)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.chips li{font-size:13px;line-height:1;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:var(--ink)}
+.dt .desc{margin:0;font-size:15px;line-height:1.85;color:var(--ink-soft)}
+.pyr{display:flex;flex-direction:column;margin:0;padding:0;border-top:1px solid var(--line)}
+.pyr div{display:flex;gap:16px;padding:11px 0;border-bottom:1px solid var(--line)}
+.pyr dt{flex:0 0 64px;font-weight:600;font-size:14px;line-height:1.9;color:var(--ink-soft)}
+.pyr dd{margin:0;font-size:15px;line-height:1.7}
+.dt .soon{margin:0;font-size:14px;color:var(--ink-soft);background:var(--sand-deep);border-radius:14px;padding:12px 14px}
+.dt-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:auto;padding-top:6px}
+.dt-foot .price{margin:0}
+.dt-add{font:inherit;font-size:15px;font-weight:600;background:var(--ink);color:var(--sand);border:0;border-radius:999px;padding:13px 24px;cursor:pointer;white-space:nowrap}
+.dt-add.in{background:transparent;color:var(--ink);border:1px solid var(--line)}
+@media (max-width:760px){
+  .dt{top:auto;bottom:0;width:100%;max-height:92%;border-radius:26px 26px 0 0;flex-direction:column;transform:translateY(100%);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .dt.open{transform:none}
+  .dt-pic{flex:none;min-height:0;height:min(38vh,300px)}
+  .dt-pic .ar{left:26%;right:26%;top:22px}
+  .dt-info{padding:20px 20px 18px;overflow:visible}
+  .dt{overflow-y:auto}
+  .dt h2{font-size:32px}
+  .dt-foot{position:sticky;bottom:0;background:var(--sand);margin:0 -20px -18px;padding:12px 20px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+  .dt{padding-bottom:0}
+  .dt .x{position:absolute;top:12px;left:12px;background:var(--sand);border-radius:50%}
+}
+body.dt-lock{overflow:hidden}
+
 
 /* responsive */
 @media (max-width:900px){
@@ -718,6 +763,18 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
     <textarea class="msg-preview" id="preview" readonly hidden aria-label="نص الطلب"></textarea>
   </div>
 </aside>
+<div class="dt-scrim" id="dt-scrim"></div>
+<div class="dt" id="dt" dir="rtl" lang="ar" role="dialog" aria-modal="true" aria-labelledby="dt-name" aria-hidden="true">
+  <div class="dt-pic"><div class="ar" id="dt-ar"><img id="dt-img" alt=""></div></div>
+  <div class="dt-info">
+    <div class="dt-top"><div><span class="br" id="dt-br"></span><h2 id="dt-name"></h2><span class="latin" id="dt-lat"></span></div><button type="button" class="x" id="dt-close" aria-label="اقفل التفاصيل">×</button></div>
+    <ul class="chips" id="dt-chips"></ul>
+    <p class="desc" id="dt-desc"></p>
+    <dl class="pyr" id="dt-pyr"></dl>
+    <p class="soon" id="dt-soon" hidden>التفاصيل الكاملة للعطر ده قريبًا. لو عندك سؤال عنه كلمنا على انستجرام.</p>
+    <div class="dt-foot"><span class="price" id="dt-price"></span><button type="button" class="dt-add" id="dt-add">+ أضف للسلة</button></div>
+  </div>
+</div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -894,6 +951,64 @@ document.getElementById('copy-handle').addEventListener('click',function(){
     if(e.target.closest('[data-cart]')){var c=document.getElementById('cart-open');if(c)c.click()}})});
   spy();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){bars.forEach(place)});
 })();
+</script>
+<script>
+(function(){
+  var M='للجنسين',W='حريمي',R='رجالي',E='أو دو بارفان';
+  var D={
+    'هوس آيس':{c:[R,'منعش مائي فاكهي','إصدار 2023'],d:'انتعاش بارد بلمسة تفاح مثلج وحمضيات، وقلب بحري هادي بيقعد على مسك وعنبر.',n:['تفاح مثلج، برغموت إيطالي، ليمون إيطالي، يانسون نجمي','نوتات بحرية، لمسة ثلج، برقوق، زهر البرتقال، هيل','مسك، عنبر، طحلب، خشب بحري']},
+    'ناين بي إم':{c:[R,E,'شرقي حلو'],d:'دافي وجذاب، بيبدأ بتفاح وقرفة ولافندر وبيخلص على فانيليا وتونكا. مناسب للسهرات.',n:['تفاح، قرفة، لافندر بري، برغموت','زهر البرتقال، زنبق الوادي','فانيليا، تونكا، عنبر، باتشولي']},
+    'بينك دايموند ساكورا':{c:[W,E,'150 مل','زهري'],d:'باقة ورد ناعمة بزهر الكرز، على قاعدة صندل ومسك أبيض.',n:['فاوانيا، زهر البرتقال، يوسفي','ورد، زنبق، زهر الكرز','صندل، مسك أبيض، عنبر']},
+    'بلاك دايموند إنسنس':{c:[M,E,'150 مل','شرقي خشبي'],d:'بخور وصندل بلمسة دخان وعود، حضور غامض وتقيل.',n:['نوتات مائية، خشب البتولا، كشمش أسود','بخور، صندل، فانيليا','عنبر، جلد، دخان، عود']},
+    'سافاير ليذر':{c:[E,'جلدي خشبي'],d:'جلد ناعم مع فلفل وردي وزنجبيل، أنيق ومناسب لكل يوم.',n:['حمضيات، توت العرعر، فلفل وردي','أعشاب، زنجبيل، سوسن','خشب البتولا، تونكا، عنبر، جلد']},
+    'نيود كورال دايموند':{c:[M,E,'150 مل'],d:'برغموت وزعفران مع نسمة بحر، وقاعدة بخور ومسك.',n:['برغموت، نوتات بحرية، زعفران','إكليل الجبل، يلانج يلانج، حمضيات','بخور، مسك، باتشولي']},
+    'بوكس بلو دايموند':{c:['مجموعة 3 عطور','3 × 75 مل'],d:'بوكس فيه تلات عطور من سلسلة دايموند: سافاير ليذر، وبلاك دايموند إنسنس، وبلو دايموند أكوا.'},
+    'مسك الفجر':{c:[M,E,'75 مل','زهري فاكهي حلو','إصدار 2024'],d:'مسك ناعم بتوت أحمر وياسمين، وقاعدة مرينج حلوة.',n:['نوتة بحرية (كاليبسون)، توت أحمر، برغموت','زنبق، يلانج يلانج، ياسمين','مرينج، مسك، باتشولي']},
+    'مسك عبق الرمان':{c:[E,'75 مل','مسك فاكهي'],d:'مسك دافي بالرمان والتفاح ولمسة كراميل.',n:['برغموت، كشمش أسود، تفاح','أرز، باتشولي، كراميل','مسك، عنبر، رمان']},
+    'مجموعة المسك':{c:['مجموعة 12 مسك'],d:'تشكيلة مسكات من إبراق في بوكس واحد.'},
+    'ثرى':{},'عمق':{},'توق':{},
+    'أروجيت كوميت':{c:[E,'200 مل'],d:'زعفران وبرتقال على ورد، بيقعد على عنبر وأرز.',n:['زعفران، برتقال','ورد، زهر البرتقال','عنبر، أرز']},
+    'جريس إريك لاكشري':{c:[E,'200 مل','خشبي شرقي'],d:'ورد وصندل وأرز، فخم وهادي.',n:['برغموت','ورد، أرز، صندل','عنبر، باتشولي، طحلب البلوط']},
+    'ميس أروجيت':{c:[W,E,'200 مل'],d:'خوخ وجريب فروت مع ورد تركي وياسمين، على قاعدة فانيليا وصندل.',n:['برغموت، جريب فروت، خوخ','ورد، ورد تركي، ياسمين، يلانج يلانج','باتشولي، مسك، أرز، فيتيفر، فانيليا، صندل']},
+    'أروجيت بينك':{c:[M,E,'200 مل','زهري فاكهي','إصدار 2025'],d:'زهر برتقال ونيرولي بلمسة لوز، وقلب ياسمين ومشمش.',n:['زهر البرتقال، نيرولي، لوز','ياسمين، بنفسج، مشمش','مسك، ياسمين، صندل']},
+    'مجموعة أروجيت بينك مع باودر':{c:['مجموعة','عطر + باودر'],d:'عطر أروجيت بينك ومعاه باودر في بوكس واحد.',n:['زهر البرتقال، نيرولي، لوز','ياسمين، بنفسج، مشمش','مسك، ياسمين، صندل']},
+    'ليب ستيك':{c:[W,'150 مل','زهري خشبي']},
+    'فرانكل أفنتوس سترايك':{},
+    'وايلد كولت إليكسير':{c:[M,E,'200 مل','شرقي خشبي','إصدار 2022'],d:'زعفران ونعناع وفلفل وردي، وقلب جلد وفيتيفر على عنبر رمادي.',n:['زعفران، بوملي، برغموت، فلفل وردي، نعناع','جلد، باتشولي، فيتيفر، لادن','عنبر رمادي، مسك، طحلب البلوط، خشب العنبر']}
+  };
+  var $=function(id){return document.getElementById(id)},dt=$('dt'),sc=$('dt-scrim'),cur=null,last=null;
+  function syncAdd(){if(!cur)return;var a=cur.querySelector('.add'),b=$('dt-add');b.textContent=a.textContent;b.classList.toggle('in',a.classList.contains('in'))}
+  function open(card){
+    cur=card;last=document.activeElement;
+    var a=card.querySelector('.add'),k=a.dataset.name,x=D[k]||{},img=card.querySelector('.ph img'),ph=card.querySelector('.ph');
+    $('dt-img').src=img.src;$('dt-img').alt=img.alt;$('dt-ar').classList.toggle('cover',ph.classList.contains('cover'));
+    $('dt-name').textContent=card.querySelector('h3').textContent;
+    var l=card.querySelector('.latin');$('dt-lat').textContent=l?l.textContent:'';
+    var br=card.querySelector('.meta span');$('dt-br').textContent=br?br.textContent:'';
+    var pr=card.querySelector('.price');$('dt-price').className=pr?pr.className:'price';$('dt-price').innerHTML=pr?pr.innerHTML:'';
+    var ch=$('dt-chips');ch.innerHTML='';(x.c||[]).forEach(function(s){var li=document.createElement('li');li.textContent=s;ch.append(li)});ch.hidden=!(x.c||[]).length;
+    $('dt-desc').textContent=x.d||'';$('dt-desc').hidden=!x.d;
+    var py=$('dt-pyr');py.innerHTML='';
+    if(x.n)['المقدمة','القلب','القاعدة'].forEach(function(h,i){var r=document.createElement('div'),t=document.createElement('dt'),d=document.createElement('dd');t.textContent=h;d.textContent=x.n[i];r.append(t,d);py.append(r)});
+    py.hidden=!x.n;$('dt-soon').hidden=!!x.n;
+    syncAdd();
+    dt.scrollTop=0;dt.querySelector('.dt-info').scrollTop=0;
+    dt.classList.add('open');sc.classList.add('open');dt.setAttribute('aria-hidden','false');document.body.classList.add('dt-lock');
+    setTimeout(function(){$('dt-close').focus({preventScroll:true})},50);
+  }
+  function close(){if(!dt.classList.contains('open'))return;dt.classList.remove('open');sc.classList.remove('open');dt.setAttribute('aria-hidden','true');document.body.classList.remove('dt-lock');if(last&&last.focus)last.focus({preventScroll:true})}
+  document.querySelectorAll('.card').forEach(function(card){
+    var ph=card.querySelector('.ph'),h=card.querySelector('h3');if(!ph||!card.querySelector('.add'))return;
+    var m=document.createElement('span');m.className='more';m.textContent='التفاصيل';ph.append(m);
+    ph.setAttribute('role','button');ph.setAttribute('tabindex','0');ph.setAttribute('aria-label','تفاصيل '+h.textContent);
+    ph.addEventListener('click',function(){open(card)});h.addEventListener('click',function(){open(card)});
+    ph.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(card)}});
+  });
+  $('dt-add').addEventListener('click',function(){if(cur){cur.querySelector('.add').click();syncAdd()}});
+  $('dt-close').onclick=close;sc.onclick=close;
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+})();
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
