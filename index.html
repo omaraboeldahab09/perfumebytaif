@@ -185,6 +185,15 @@ section{padding-block:88px}
 
 .ipa-link{align-self:flex-start}
 .ipa-go{justify-content:center;margin-top:6px}
+.promo{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)}
+.promo-row{display:flex;gap:8px}
+.promo-row input{flex:1;min-width:0;font:inherit;font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--sand-deep);border:1px solid transparent;border-radius:12px;padding:10px 12px;text-align:left}
+.promo-row input:focus{outline:none;border-color:var(--ink)}
+.promo-row button{font:inherit;font-size:14px;font-weight:600;background:var(--ink);color:var(--sand);border:0;border-radius:12px;padding:0 18px;cursor:pointer}
+.promo .note.ok{color:#2E7D4F}.promo .note.bad{color:#B3261E}
+html[data-theme="dark"] .promo .note.ok{color:#7FCB9A}html[data-theme="dark"] .promo .note.bad{color:#F2938C}
+.sum.disc{font-size:14px;color:#2E7D4F}.sum.disc b{font-size:16px}
+html[data-theme="dark"] .sum.disc{color:#7FCB9A}
 .paybox{display:flex;flex-direction:column;gap:8px;margin-top:6px}
 .paybox .lbl{font-size:13px;color:var(--ink-soft)}
 .ipa-opt{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);border:1.5px solid var(--ink);border-radius:16px;padding:12px 14px;background:var(--sand-deep);transition:transform .15s}
@@ -839,6 +848,11 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
       <label for="c-phone">رقم الموبايل<input id="c-phone" inputmode="tel" autocomplete="tel" dir="ltr" style="text-align:right"></label>
       <label for="c-gov">المحافظة<select id="c-gov" autocomplete="address-level1"><option value="" disabled selected>اختار المحافظة</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>القليوبية</option><option>الدقهلية</option><option>الشرقية</option><option>الغربية</option><option>المنوفية</option><option>البحيرة</option><option>كفر الشيخ</option><option>دمياط</option><option>بورسعيد</option><option>الإسماعيلية</option><option>السويس</option><option>الفيوم</option><option>بني سويف</option><option>المنيا</option><option>أسيوط</option><option>سوهاج</option><option>قنا</option><option>الأقصر</option><option>أسوان</option><option>البحر الأحمر</option><option>الوادي الجديد</option><option>مطروح</option><option>شمال سيناء</option><option>جنوب سيناء</option></select></label>
       <label for="c-addr">وصف العنوان<textarea id="c-addr" rows="3" autocomplete="street-address" placeholder="المنطقة، الشارع، رقم العمارة، الدور والشقة، وأقرب علامة مميزة"></textarea></label>
+      <div class="promo">
+        <label for="c-code">كود الخصم</label>
+        <div class="promo-row"><input id="c-code" autocomplete="off" autocapitalize="characters" spellcheck="false" dir="ltr" placeholder="TAIF…"><button type="button" id="code-apply">تطبيق</button></div>
+        <p class="note" id="code-msg" hidden></p>
+      </div>
       <p class="note">مصاريف الشحن بنأكدها معاك في الرسالة.</p>
       <div class="paybox">
         <span class="lbl">طريقة الدفع</span>
@@ -853,6 +867,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
   </div>
   <div class="dr-foot" id="foot">
     <div class="sent" id="sent" hidden><span class="note">رقم طلبك، احتفظ بيه عشان تتابعه:</span><span class="oid" id="sent-id"></span><div class="ipa-mini"><span>ادفع على انستاباي</span><b>01023274694</b><button type="button" class="copy" data-copy="01023274694">انسخ</button></div></div>
+    <div class="sum disc" id="disc-row" hidden><span>الخصم <small id="disc-code" dir="ltr"></small></span><b id="disc-val"></b></div>
     <div class="sum" id="sum"><span>الإجمالي <small id="sum-note"></small></span><b id="sum-val">0 ج.م</b></div>
     <a class="ig-btn" id="send" href="https://ig.me/m/perfumebytaif" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>انسخ الطلب وابعته على انستجرام</a>
     <p class="note" id="send-note">هننسخلك الطلب، وبعد ما انستجرام يفتح الصقه في الرسالة وابعته.</p>
@@ -900,6 +915,11 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
   var PRICE={};document.querySelectorAll('.add[data-price]').forEach(function(b){PRICE[b.dataset.name]=+b.dataset.price});
   function money(n){return n.toLocaleString('en-US')+' ج.م'}
   function sum(){var s=0,miss=[];for(var k in cart){if(PRICE[k])s+=PRICE[k]*cart[k];else miss.push(k)}return {s:s,miss:miss}}
+  /* discount codes: code -> {p: percent} or {a: fixed amount in EGP} */
+  var CODES={};
+  var CODE='';try{CODE=localStorage.getItem('taif-code')||''}catch(e){}
+  if(!CODES[CODE])CODE='';
+  function disc(s){var c=CODES[CODE];if(!c||!s)return 0;return c.p?Math.round(s*c.p/100):Math.min(c.a,s)}
   function toast(s){var t=$('toast');t.textContent=s;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove('show')},1600)}
   var ALPH='ABCDEFGHJKMNPQRSTUVWXYZ23456789',cur=null;
   try{cur=JSON.parse(localStorage.getItem('taif-cur'))}catch(e){}
@@ -911,7 +931,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
   function message(){
     var lines=['طلب جديد من موقع طيف','رقم الطلب: '+orderId(),''];
     Object.keys(cart).forEach(function(k){lines.push('• '+k+' × '+cart[k]+(PRICE[k]?' = '+money(PRICE[k]*cart[k]):' (السعر عند الطلب)'))});
-    var S=sum();lines.push('');lines.push('الإجمالي: '+money(S.s)+' (من غير الشحن)');if(S.miss.length)lines.push('سعر '+S.miss.join(' و ')+' بنأكده في الرسالة');
+    var S=sum(),D=disc(S.s);lines.push('');if(D){lines.push('قبل الخصم: '+money(S.s));lines.push('كود الخصم: '+CODE+' (− '+money(D)+')')}lines.push('الإجمالي: '+money(S.s-D)+' (من غير الشحن)');if(S.miss.length)lines.push('سعر '+S.miss.join(' و ')+' بنأكده في الرسالة');
     lines.push('طريقة الدفع: انستاباي');lines.push('');
     var n=$('c-name').value.trim(),p=$('c-phone').value.trim(),g=$('c-gov').value,a=$('c-addr').value.trim();
     if(n)lines.push('الاسم: '+n); if(p)lines.push('الموبايل: '+p); if(g)lines.push('المحافظة: '+g); if(a)lines.push('العنوان: '+a);
@@ -932,7 +952,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
       q.append(plus,num,minus);li.append(nm,q);ul.append(li);
     });
     $('empty').hidden=!!n;$('fields').hidden=!n;$('sum').hidden=!n;
-    var S=sum();$('sum-val').textContent=money(S.s);$('ipa-amt').textContent=S.s?money(S.s):'الإجمالي';$('sum-note').textContent=S.miss.length?'(+ '+S.miss.join(' و ')+')':'(من غير الشحن)';
+    var S=sum(),D=disc(S.s);$('disc-row').hidden=!D;if(D){$('disc-code').textContent=CODE;$('disc-val').textContent='− '+money(D)}$('sum-val').textContent=money(S.s-D);$('ipa-amt').textContent=S.s?money(S.s-D):'الإجمالي';$('sum-note').textContent=S.miss.length?'(+ '+S.miss.join(' و ')+')':'(من غير الشحن)';
     $('send').setAttribute('aria-disabled',n?'false':'true');
     document.querySelectorAll('.add[data-name]').forEach(function(b){
       var inn=!!cart[b.dataset.name];b.classList.toggle('in',inn&&!b.classList.contains('ig-btn'));
@@ -958,6 +978,18 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
     try{navigator.clipboard.writeText(m).then(function(){toast('الطلب اتنسخ، الصقه في رسالة انستجرام')},function(){pv.hidden=false;pv.select()})}catch(e){pv.hidden=false;pv.select()}
     $('send-note').textContent='لو الطلب ماتنسخش، انسخ النص اللي تحت وابعته لنا على انستجرام.';pv.hidden=false;
   });
+  function codeMsg(s,ok){var m=$('code-msg');m.textContent=s;m.hidden=!s;m.className='note '+(ok?'ok':'bad')}
+  function applyCode(){
+    var v=$('c-code').value.trim().toUpperCase().replace(/\s+/g,'');
+    if(!v){CODE='';codeMsg('',1)}
+    else if(CODES[v]){CODE=v;var c=CODES[v];codeMsg('تم تطبيق الكود: خصم '+(c.p?c.p+'%':money(c.a)),1)}
+    else{CODE='';codeMsg('الكود ده مش صحيح أو انتهى',0)}
+    try{localStorage.setItem('taif-code',CODE)}catch(e){}
+    render();
+  }
+  $('code-apply').onclick=applyCode;
+  $('c-code').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();applyCode()}});
+  if(CODE){$('c-code').value=CODE}
   render();
 })();
 document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){
@@ -1219,7 +1251,7 @@ document.getElementById('copy-handle').addEventListener('click',function(){
     'اكتب رقم الطلب الأول.':'Enter the order number first.','بندوّر على الطلب…':'Looking up your order…','لسه ما لقيناش الطلب':'We haven’t found order',
     'لو لسه باعته، الحالة بتظهر هنا بعد ما نأكده معاك على انستجرام. اتأكد كمان إن الرقم مكتوب صح.':'If you just sent it, the status shows here once we confirm with you on Instagram. Also check the number is correct.',
     'مقدرناش نجيب حالة الطلب دلوقتي. جرّب كمان شوية، أو اسألنا على انستجرام.':'We couldn’t load the order status right now. Try again shortly, or ask us on Instagram.',
-    'طلباتك:':'Your orders:','للواحدة':'each','زود':'More','قلل':'Less',
+    'طلباتك:':'Your orders:','كود الخصم':'Discount code','تطبيق':'Apply','الخصم':'Discount','الكود ده مش صحيح أو انتهى':'This code is invalid or expired','للواحدة':'each','زود':'More','قلل':'Less',
     'المقدمة':'Top','القلب':'Heart','القاعدة':'Base','المسكات':'Musks',
     'أو دو بارفان':'Eau de Parfum','منعش مائي فاكهي':'Fresh aquatic fruity','شرقي حلو':'Sweet oriental','زهري':'Floral','شرقي خشبي':'Oriental woody','جلدي خشبي':'Leather woody','زهري فاكهي حلو':'Floral fruity gourmand','مسك فاكهي':'Fruity musk','خشبي شرقي':'Woody oriental','زهري فاكهي':'Floral fruity','زهري خشبي':'Floral woody','مجموعة':'Set','عطر + باودر':'Perfume + powder','مجموعة 3 عطور':'Set of 3 perfumes','مجموعة 12 مسك':'Set of 12 musks',
     'زعفران':'Saffron','بوملي':'Pomelo','جلد':'Leather','فيتيفر':'Vetiver','عنبر رمادي':'Ambergris','نعناع':'Mint',
@@ -1273,6 +1305,8 @@ document.getElementById('copy-handle').addEventListener('click',function(){
       else if(m=t.match(/^✓ في السلة \((\d+)\)$/))out='✓ In bag ('+m[1]+')';
       else if(m=t.match(/^اتضاف للسلة: (.+)$/))out='Added to bag: '+(NAME[m[1]]||m[1]);
       else if(m=t.match(/^أضف (.+) للسلة$/))out='Add '+(NAME[m[1]]||m[1])+' to bag';
+      else if(m=t.match(/^تم تطبيق الكود: خصم (.+)$/))out='Code applied: '+m[1].replace(/([\d,]+) ج\.م/,'EGP $1')+' off';
+      else if(m=t.match(/^− ([\d,]+) ج\.م$/))out='− EGP '+m[1];
       else if(m=t.match(/^(\d+) مل$/))out=m[1]+' ml';
       else if(m=t.match(/^(\d+) × (\d+) مل$/))out=m[1]+' × '+m[2]+' ml';
       else if(m=t.match(/^إصدار (\d+)$/))out='Released '+m[1];
