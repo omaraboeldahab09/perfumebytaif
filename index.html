@@ -350,6 +350,15 @@ html[data-theme="dark"] .lg{filter:invert(1) sepia(.12) brightness(.95)}
 html[data-theme="dark"] .theme-btn .sun{display:block}
 html[data-theme="dark"] .theme-btn .moon{display:none}
 body,header,.drawer{transition:background-color .35s ease,color .35s ease}
+
+/* GSAP motion layer (only active when the library loaded: html.gs) */
+.gs .hero-text>*{animation:none}
+.gs .hero h1 .ln{display:inline-block}
+.gs .arch img{animation:none}
+.progress{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:right;z-index:40;pointer-events:none}
+.fly{position:fixed;z-index:60;pointer-events:none;border-radius:999px 999px 0 0;overflow:hidden;background:var(--sand-deep)}
+.fly img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+html[data-theme="dark"] .fly{background:#DCD8CE}
 </style>
 
 </head>
@@ -361,6 +370,7 @@ body,header,.drawer{transition:background-color .35s ease,color .35s ease}
 </div>
 <div dir="rtl" lang="ar">
 <a class="promo-bar" href="#offers"><span class="spark" aria-hidden="true">✦</span> عروض جمعة نوفمبر بدأت: خصومات على 19 عطر <u>شوف العروض</u></a>
+<div class="progress" id="progress" aria-hidden="true"></div>
 <header>
   <div class="wrap bar">
     <a class="brand" href="#top" aria-label="طيف TAIF"><img class="lg" src="data:image/png;base64,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" alt="طيف TAIF"></a>
@@ -849,6 +859,106 @@ document.getElementById('copy-handle').addEventListener('click',function(){
   try{navigator.clipboard.writeText(t).then(done,function(){b.textContent=t})}catch(e){b.textContent=t}
 });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  if(!window.gsap||!window.ScrollTrigger)return;
+  gsap.registerPlugin(ScrollTrigger);
+  document.documentElement.classList.add('gs');
+  var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return gsap.utils.toArray(s,r)};
+  var mm=gsap.matchMedia();
+
+  mm.add({motion:"(prefers-reduced-motion: no-preference)",hover:"(hover: hover) and (pointer: fine)"},function(ctx){
+    var c=ctx.conditions;
+    if(!c.motion)return;
+    gsap.defaults({ease:"power3.out",duration:.9});
+
+    /* hero: plays as the intro doors open */
+    var intro=$('#intro');
+    var hero=gsap.timeline({paused:true});
+    hero.from('.hero .eyebrow',{autoAlpha:0,letterSpacing:"1em",duration:1.2})
+        .from('.hero h1 .ln',{yPercent:70,autoAlpha:0,stagger:.16,duration:1.1},"<0.1")
+        .from('.hero .meaning',{autoAlpha:0,y:24},"-=0.6")
+        .from('.hero p',{autoAlpha:0,y:24},"<0.12")
+        .from('.hero .actions>*',{autoAlpha:0,y:20,stagger:.1},"<0.12")
+        .from('.arch.mark',{clipPath:"inset(100% 0% 0% 0%)",duration:1.4,ease:"power4.inOut"},0.15)
+        .from('.arch.mark img',{scale:1.25,autoAlpha:0,duration:1.6},"<0.3");
+    var started=false;function go(){if(!started){started=true;hero.play()}}
+    var startCall=gsap.delayedCall(intro&&getComputedStyle(intro).display!=='none'?1.9:0,go);
+    if(intro)intro.addEventListener('click',function(){startCall.kill();go()});
+
+    /* reading progress line */
+    gsap.to('#progress',{scaleX:1,ease:"none",scrollTrigger:{start:0,end:"max",scrub:.3}});
+
+    /* header hides on scroll down, returns on scroll up */
+    var hdr=$('header');
+    ScrollTrigger.create({start:200,end:"max",onUpdate:function(s){
+      gsap.to(hdr,{yPercent:s.direction===1?-110:0,duration:.45,ease:"power2.out",overwrite:"auto"});
+    },onLeaveBack:function(){gsap.to(hdr,{yPercent:0,duration:.3,overwrite:"auto"})}});
+
+    /* section titles and eyebrows */
+    $$('main section h2, main section .eyebrow').forEach(function(el){
+      gsap.from(el,{autoAlpha:0,y:40,scrollTrigger:{trigger:el,start:"top 88%",once:true}});
+    });
+
+    /* offers: pill pops, minis rise in a wave */
+    gsap.from('.off-text h2 em',{scale:.5,autoAlpha:0,ease:"back.out(2)",duration:.8,scrollTrigger:{trigger:'.offers',start:"top 70%",once:true}});
+    gsap.from('.minis .mini',{autoAlpha:0,y:60,stagger:.1,scrollTrigger:{trigger:'.minis',start:"top 85%",once:true}});
+
+    /* collection cards appear in batches as they scroll in */
+    var cards=$$('.card');
+    gsap.set(cards,{autoAlpha:0,y:50});
+    var batch=ScrollTrigger.batch(cards,{start:"top 92%",once:true,
+      onEnter:function(b){gsap.to(b,{autoAlpha:1,y:0,stagger:.08,overwrite:true})}});
+    function showAll(){batch.forEach(function(s){s.kill()});gsap.to(cards,{autoAlpha:1,y:0,duration:.4,overwrite:true});setTimeout(function(){ScrollTrigger.refresh()},50)}
+    document.addEventListener('click',function(e){if(e.target.closest('.chip,.gtab,[data-go-sale],.search button'))showAll()});
+    document.addEventListener('input',function(e){if(e.target.closest('.search'))showAll()});
+
+    /* order steps, payment and tracking cards */
+    gsap.from('.steps>*',{autoAlpha:0,y:40,stagger:.15,scrollTrigger:{trigger:'.steps',start:"top 85%",once:true}});
+    gsap.from('.pay-card,.track-card',{autoAlpha:0,y:40,stagger:.15,scrollTrigger:{trigger:'.paytrack',start:"top 75%",once:true}});
+    gsap.from('.about-grid>*',{autoAlpha:0,y:40,stagger:.15,scrollTrigger:{trigger:'.about-grid',start:"top 80%",once:true}});
+    gsap.from('.contact .inner>*',{autoAlpha:0,y:30,stagger:.1,scrollTrigger:{trigger:'.contact',start:"top 80%",once:true}});
+
+    /* gentle parallax inside the arch windows */
+    gsap.fromTo('.feat-img img',{yPercent:-6,scale:1.12},{yPercent:6,scale:1.12,ease:"none",scrollTrigger:{trigger:'.feat-img',start:"top bottom",end:"bottom top",scrub:true}});
+
+    /* magnetic buttons on desktop */
+    if(c.hover){
+      $$('.ig-btn,.ghost,.cart-btn').forEach(function(b){
+        var xTo=gsap.quickTo(b,"x",{duration:.4,ease:"power3"}),yTo=gsap.quickTo(b,"y",{duration:.4,ease:"power3"});
+        b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();xTo((e.clientX-r.left-r.width/2)*.25);yTo((e.clientY-r.top-r.height/2)*.35)});
+        b.addEventListener('mouseleave',function(){xTo(0);yTo(0)});
+      });
+    }
+
+    /* add to cart: the bottle flies into the bag */
+    document.addEventListener('click',function(e){
+      var btn=e.target.closest('.add[data-name]');if(!btn)return;
+      var holder=btn.closest('.card')||btn.closest('.featured');
+      var img=holder&&holder.querySelector('.ph img,.feat-img img');var bag=$('#cart-open');
+      if(!img||!bag)return;
+      var a=img.getBoundingClientRect(),z=bag.getBoundingClientRect();
+      if(a.bottom<0||a.top>innerHeight){a={left:innerWidth/2-60,top:innerHeight/2-80,width:120,height:160}}
+      var cs=getComputedStyle(img),w=a.width,h=a.height;
+      var f=document.createElement('div');f.className='fly';f.style.cssText='left:'+a.left+'px;top:'+a.top+'px;width:'+w+'px;height:'+h+'px';
+      var im=document.createElement('img');im.src=img.src;im.alt='';im.style.padding=cs.padding;im.style.objectFit=cs.objectFit;if(cs.mixBlendMode!=='multiply')im.style.mixBlendMode='normal';f.appendChild(im);document.body.appendChild(f);
+      var dx=z.left+z.width/2-(a.left+w/2),dy=z.top+z.height/2-(a.top+h/2);
+      gsap.timeline({onComplete:function(){f.remove()}})
+        .to(f,{scale:.9,y:-16,duration:.25,ease:"power2.out"})
+        .to(f,{x:dx,y:dy,scale:30/w,borderRadius:"50%",duration:.8,ease:"power3.inOut"})
+        .to(f,{autoAlpha:0,duration:.15},"-=0.12");
+      gsap.to(hdr,{yPercent:0,duration:.3,overwrite:"auto"});
+    });
+
+    return function(){gsap.set([hdr].concat(cards),{clearProps:"all"})};
+  });
+  addEventListener('load',function(){ScrollTrigger.refresh()});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){ScrollTrigger.refresh()});
+})();
+</script>
+
 
 </body>
 </html>
