@@ -123,6 +123,43 @@ section{padding-block:88px}
 .step h3{font-family:var(--accent);font-size:36px}
 .step p{margin:0;color:var(--ink-soft);max-width:22em}
 
+/* pay + track */
+.paytrack{background:var(--ink);color:var(--sand)}
+.paytrack .eyebrow{color:#A9A59B}
+.pt-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.pay-card,.track-card{display:flex;flex-direction:column;gap:16px;min-width:0}
+.paytrack h2{font-size:clamp(40px,6vw,64px)}
+.paytrack p{margin:0;color:#CFCBC1;max-width:30em}
+.paytrack .note{color:#A9A59B;font-size:14px}
+.ipa{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid #3a3935;border-radius:20px;padding:16px 20px}
+.ipa small{display:block;color:#A9A59B;font-size:13px}
+.ipa b{font-size:28px;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.copy.dark{color:var(--sand);border-color:#5a5852}
+.copy.dark:hover{border-color:var(--sand)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.track-form{display:flex;gap:10px}
+.track-form input{flex:1;min-width:0;font:inherit;font-size:18px;letter-spacing:.06em;text-transform:uppercase;background:transparent;color:var(--sand);border:1px solid #5a5852;border-radius:999px;padding:10px 18px}
+.track-form input:focus{outline:none;border-color:var(--sand)}
+.paytrack .ig-btn{background:var(--sand);color:var(--ink);border:0;cursor:pointer;font-family:var(--body)}
+.track-out{min-height:120px}
+.tl{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tl li{display:flex;flex-direction:column;gap:8px;font-size:14px;color:#77746c}
+.tl li::before{content:"";height:4px;border-radius:4px;background:#3a3935}
+.tl li.done{color:var(--sand)}
+.tl li.done::before{background:var(--sand)}
+.tl li.now{color:var(--sand);font-weight:600}
+.tl li.now::before{background:var(--ice)}
+.track-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.track-head b{font-family:var(--accent);font-weight:400;font-size:30px}
+.track-head span{direction:ltr;color:#A9A59B;font-size:14px}
+.my-orders{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:#A9A59B}
+.my-orders button{font:inherit;font-size:13px;background:none;border:1px solid #3a3935;color:var(--sand);border-radius:999px;padding:3px 12px;cursor:pointer;direction:ltr}
+/* order sent panel in cart */
+.sent{border:1px solid var(--ink);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.sent .oid{font-size:26px;font-weight:600;direction:ltr;text-align:right;letter-spacing:.06em}
+.sent .ipa-mini{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+.sent .ipa-mini b{direction:ltr;font-size:17px}
+
 /* about */
 .about{background:var(--sand-deep)}
 .about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:center}
@@ -233,6 +270,7 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
   .arch,.feat-img{max-width:440px;width:100%;margin-inline:auto}
   .grid{grid-template-columns:repeat(2,1fr);gap:32px 14px}
   .steps{grid-template-columns:1fr}
+  .pt-grid{grid-template-columns:1fr;gap:48px}
   .step+.step{border-inline-start:0;border-top:1px solid var(--line);padding-inline-start:0}
   section{padding-block:64px}
 }
@@ -262,7 +300,8 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
       <a href="#new">الجديد</a>
       <a href="#collection">التشكيلة</a>
       <a href="#order">إزاي تطلب</a>
-      <a href="#about">عن طيف</a>
+      <a href="#pay">الدفع</a>
+      <a href="#track">تتبع طلبك</a>
     </nav>
     <div class="hdr-actions">
     <button type="button" class="cart-btn" id="cart-open" aria-label="سلة التسوق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="count" id="cart-count">0</span></button>
@@ -408,8 +447,34 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
       </div>
       <div class="steps">
         <div class="step"><span class="n">01</span><h3>اختار عطرك</h3><p>شوف التشكيلة ودوس "أضف للسلة" على العطور اللي عاجباك.</p></div>
-        <div class="step"><span class="n">02</span><h3>ضيفه للسلة</h3><p>اكتب اسمك ورقمك وعنوانك، وابعت الطلب كله في رسالة واحدة على انستجرام.</p></div>
-        <div class="step"><span class="n">03</span><h3>استلم طلبك</h3><p>بنأكد معاك السعر والعنوان ونبعتلك الطلب.</p></div>
+        <div class="step"><span class="n">02</span><h3>ابعت الطلب</h3><p>اكتب اسمك ورقمك وعنوانك، وابعت الطلب برقمه في رسالة واحدة على انستجرام.</p></div>
+        <div class="step"><span class="n">03</span><h3>ادفع وتابع</h3><p>حوّل على انستاباي، وتابع حالة طلبك برقمه من هنا لحد ما يوصلك.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="paytrack" id="pay">
+    <div class="wrap pt-grid">
+      <div class="pay-card">
+        <span class="eyebrow">PAYMENT</span>
+        <h2>الدفع</h2>
+        <p>حوّل قيمة الطلب على انستاباي للرقم ده، وابعتلنا صورة التحويل على انستجرام مع رقم الطلب.</p>
+        <div class="ipa">
+          <div><small>انستاباي InstaPay</small><b dir="ltr" id="ipa-num">01023274694</b></div>
+          <button type="button" class="copy dark" data-copy="01023274694">انسخ الرقم</button>
+        </div>
+        <p class="note">افتح أبلكيشن انستاباي، واختار تحويل لرقم موبايل، والصق الرقم.</p>
+      </div>
+      <div class="track-card" id="track">
+        <span class="eyebrow">TRACK ORDER</span>
+        <h2>تتبع طلبك</h2>
+        <form id="track-form" class="track-form" novalidate>
+          <label for="track-id" class="sr">رقم الطلب</label>
+          <input id="track-id" placeholder="مثلًا TF-7K3P" dir="ltr" autocomplete="off" autocapitalize="characters">
+          <button type="submit" class="ig-btn">تتبع</button>
+        </form>
+        <div class="my-orders" id="my-orders" hidden></div>
+        <div id="track-out" class="track-out" aria-live="polite"><p class="note">اكتب رقم الطلب اللي ظهرلك لما بعت الطلب.</p></div>
       </div>
     </div>
   </section>
@@ -462,6 +527,7 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
     </div>
   </div>
   <div class="dr-foot" id="foot">
+    <div class="sent" id="sent" hidden><span class="note">رقم طلبك، احتفظ بيه عشان تتابعه:</span><span class="oid" id="sent-id"></span><div class="ipa-mini"><span>ادفع على انستاباي</span><b>01023274694</b><button type="button" class="copy" data-copy="01023274694">انسخ</button></div></div>
     <div class="sum" id="sum"><span>الإجمالي <small id="sum-note"></small></span><b id="sum-val">0 ج.م</b></div>
     <a class="ig-btn" id="send" href="https://ig.me/m/perfumebytaif" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>انسخ الطلب وابعته على انستجرام</a>
     <p class="note" id="send-note">هننسخلك الطلب، وبعد ما انستجرام يفتح الصقه في الرسالة وابعته.</p>
@@ -481,8 +547,15 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
   function money(n){return n.toLocaleString('en-US')+' ج.م'}
   function sum(){var s=0,miss=[];for(var k in cart){if(PRICE[k])s+=PRICE[k]*cart[k];else miss.push(k)}return {s:s,miss:miss}}
   function toast(s){var t=$('toast');t.textContent=s;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove('show')},1600)}
+  var ALPH='ABCDEFGHJKMNPQRSTUVWXYZ23456789',cur=null;
+  try{cur=JSON.parse(localStorage.getItem('taif-cur'))}catch(e){}
+  function sig(){return JSON.stringify(cart)}
+  function orderId(){
+    if(!cur||cur.sig!==sig()){var s='TF-';for(var i=0;i<4;i++)s+=ALPH[Math.floor(Math.random()*ALPH.length)];cur={id:s,sig:sig()};try{localStorage.setItem('taif-cur',JSON.stringify(cur))}catch(e){}}
+    return cur.id;
+  }
   function message(){
-    var lines=['طلب جديد من موقع طيف:',''];
+    var lines=['طلب جديد من موقع طيف','رقم الطلب: '+orderId(),''];
     Object.keys(cart).forEach(function(k){lines.push('• '+k+' × '+cart[k]+(PRICE[k]?' = '+money(PRICE[k]*cart[k]):' (السعر عند الطلب)'))});
     var S=sum();lines.push('');lines.push('الإجمالي: '+money(S.s)+' (من غير الشحن)');if(S.miss.length)lines.push('سعر '+S.miss.join(' و ')+' بنأكده في الرسالة');
     lines.push('');
@@ -525,10 +598,46 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
   ['c-name','c-phone','c-addr'].forEach(function(id){$(id).addEventListener('input',function(){$('preview').value=message()})});
   $('send').addEventListener('click',function(){
     var m=message(),pv=$('preview');pv.value=m;
+    var id=orderId();$('sent-id').textContent=id;$('sent').hidden=false;
+    try{var mine=JSON.parse(localStorage.getItem('taif-orders'))||[];if(mine.indexOf(id)<0){mine.unshift(id);localStorage.setItem('taif-orders',JSON.stringify(mine.slice(0,5)))}}catch(e){}
+    if(window.taifShowMine)window.taifShowMine();
     try{navigator.clipboard.writeText(m).then(function(){toast('الطلب اتنسخ، الصقه في رسالة انستجرام')},function(){pv.hidden=false;pv.select()})}catch(e){pv.hidden=false;pv.select()}
     $('send-note').textContent='لو الطلب ماتنسخش، انسخ النص اللي تحت وابعته لنا على انستجرام.';pv.hidden=false;
   });
   render();
+})();
+document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){
+  var v=b.dataset.copy,old=b.textContent;
+  function ok(){b.textContent='اتنسخ ✓';setTimeout(function(){b.textContent=old},1600)}
+  try{navigator.clipboard.writeText(v).then(ok,function(){b.textContent=v})}catch(e){b.textContent=v}
+})});
+(function(){
+  var STEPS=[['received','استلمنا طلبك'],['confirmed','اتأكد والدفع وصل'],['shipped','اتشحن'],['delivered','اتسلّم']];
+  var out=document.getElementById('track-out'),inp=document.getElementById('track-id');
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+  function show(id){
+    id=(id||'').trim().toUpperCase().replace(/\s+/g,'');if(id&&id.indexOf('TF-')!==0&&/^[A-Z0-9]{4}$/.test(id))id='TF-'+id;
+    if(!id){out.innerHTML='<p class="note">اكتب رقم الطلب الأول.</p>';return}
+    out.innerHTML='<p class="note">بندوّر على الطلب…</p>';
+    fetch('orders.json?t='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(db){
+      var o=db[id];
+      if(!o){out.innerHTML='<p>لسه ما لقيناش الطلب <b dir="ltr">'+esc(id)+'</b>.</p><p class="note">لو لسه باعته، الحالة بتظهر هنا بعد ما نأكده معاك على انستجرام. اتأكد كمان إن الرقم مكتوب صح.</p>';return}
+      var idx=STEPS.findIndex(function(s){return s[0]===o.status});if(idx<0)idx=0;
+      var h='<div class="track-head"><b>'+esc(STEPS[idx][1])+'</b><span>'+esc(id)+(o.date?' · '+esc(o.date):'')+'</span></div><ol class="tl">';
+      STEPS.forEach(function(s,i){h+='<li class="'+(i<idx?'done':i===idx?'now':'')+'">'+s[1]+'</li>'});
+      h+='</ol>'+(o.note?'<p class="note" style="margin-top:12px">'+esc(o.note)+'</p>':'');
+      out.innerHTML=h;
+    }).catch(function(){out.innerHTML='<p class="note">مقدرناش نجيب حالة الطلب دلوقتي. جرّب كمان شوية، أو اسألنا على انستجرام.</p>'});
+  }
+  document.getElementById('track-form').addEventListener('submit',function(e){e.preventDefault();show(inp.value)});
+  window.taifShowMine=function(){
+    var mine=[];try{mine=JSON.parse(localStorage.getItem('taif-orders'))||[]}catch(e){}
+    var box=document.getElementById('my-orders');
+    if(!mine.length){box.hidden=true;return}
+    box.hidden=false;box.innerHTML='<span>طلباتك:</span>';
+    mine.forEach(function(id){var b=document.createElement('button');b.type='button';b.textContent=id;b.onclick=function(){inp.value=id;show(id)};box.append(b)});
+  };
+  window.taifShowMine();
 })();
 (function(){var i=document.getElementById('intro');i.addEventListener('click',function(){i.classList.add('skip')});
 setTimeout(function(){i.classList.add('skip')},3300)})();
