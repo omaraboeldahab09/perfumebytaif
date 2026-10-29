@@ -999,7 +999,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
   function money(n){return n.toLocaleString('en-US')+' ج.م'}
   function sum(){var s=0,miss=[];for(var k in cart){if(PRICE[k])s+=PRICE[k]*cart[k];else miss.push(k)}return {s:s,miss:miss}}
   /* discount codes: code -> {p: percent} or {a: fixed amount in EGP} */
-  var CODES={};
+  var CODES={'OM22':{a:150}};
   var CODE='';try{CODE=localStorage.getItem('taif-code')||''}catch(e){}
   if(!CODES[CODE])CODE='';
   function disc(s){var c=CODES[CODE];if(!c||!s)return 0;return c.p?Math.round(s*c.p/100):Math.min(c.a,s)}
