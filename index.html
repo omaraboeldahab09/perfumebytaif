@@ -334,6 +334,46 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
 .msg-preview{font:inherit;font-size:13px;width:100%;min-height:120px;background:var(--sand-deep);border:0;border-radius:12px;padding:10px;color:var(--ink)}
 .toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,20px);background:var(--ink);color:var(--sand);padding:10px 20px;border-radius:999px;font-size:14px;z-index:40;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+/* scent finder quiz */
+.finder-sec{padding-block:72px 24px}
+.finder{background:color-mix(in srgb,var(--sand) 55%,#fff);border:1px solid var(--line);border-radius:32px;padding:44px 40px 28px;box-shadow:0 20px 60px rgba(40,30,10,.06)}
+html[data-theme="dark"] .finder{background:#1A1918;box-shadow:none}
+.fd-top{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
+.fd-top h2{font-size:clamp(34px,4.6vw,56px)}
+.fd-top p{margin:0;color:var(--ink-soft);font-size:15px}
+.fd-track{width:min(320px,70%);height:3px;border-radius:9px;background:var(--line);margin-top:14px;overflow:hidden}
+.fd-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,#C9A35C,#E2C88E);border-radius:9px;transition:width .5s cubic-bezier(.2,.7,.2,1);margin-inline-start:0}
+.fd-stage{margin-top:30px;transition:opacity .22s ease,transform .3s ease}
+.fd-stage.out{opacity:0;transform:translateY(8px)}
+.fd-q{text-align:center;font-family:var(--name);font-weight:400;font-size:30px;margin-bottom:22px}
+.fd-opts{display:grid;gap:12px;grid-template-columns:repeat(var(--n,4),1fr);max-width:860px;margin:0 auto}
+.fd-opts.n3{--n:3;max-width:640px}.fd-opts.n5{--n:5}
+.fd-opt{font:inherit;display:flex;flex-direction:column;align-items:center;gap:4px;padding:18px 10px 16px;border:1px solid var(--line);border-radius:18px;background:var(--sand);color:var(--ink);cursor:pointer;transition:border-color .25s,transform .25s,box-shadow .25s}
+.fd-opt:hover{transform:translateY(-2px);border-color:#C9A35C}
+.fd-opt.on{border-color:#C9A35C;box-shadow:0 0 0 1px #C9A35C,0 10px 24px rgba(201,163,92,.18)}
+.fd-opt i{font-style:normal;font-size:20px;line-height:1.2;color:#B08A45;height:26px}
+.fd-opt b{font-weight:600;font-size:15px}
+.fd-opt small{font-size:12px;color:var(--ink-soft)}
+.fd-nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;min-height:28px}
+.fd-back{font:inherit;font-size:13px;letter-spacing:.04em;background:none;border:0;color:var(--ink-soft);cursor:pointer;padding:4px 0}
+.fd-n{font-size:12px;color:var(--ink-soft);margin-inline-start:auto}
+.fd-res{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.fd-card{display:flex;flex-direction:column;gap:6px;background:var(--sand);border:1px solid var(--line);border-radius:20px;padding:10px 10px 14px}
+.fd-ph{position:relative;display:block;width:100%;aspect-ratio:1;border:0;padding:0;border-radius:14px;background:#DCD8CE;overflow:hidden;cursor:pointer}
+.fd-ph img{width:100%;height:100%;object-fit:contain;padding:8%;mix-blend-mode:multiply;display:block}
+.fd-ph.cover img{object-fit:cover;padding:0;mix-blend-mode:normal}
+.fd-pct{position:absolute;bottom:8px;inset-inline-start:8px;background:rgba(255,255,255,.92);color:#2A2925;font-size:12px;font-weight:600;border-radius:999px;padding:4px 10px}
+.fd-card h3{font-family:var(--name);font-weight:400;font-size:22px;line-height:1.4;margin:4px 2px 0}
+.fd-card .price{margin:0 2px;font-size:15px}
+.fd-card ul{list-style:none;margin:2px 2px 4px;padding:0;font-size:12.5px;color:var(--ink-soft);display:flex;flex-direction:column;gap:2px}
+.fd-card li::before{content:"✓ ";color:#B08A45}
+.fd-add{margin-top:auto;font:inherit;font-size:13px;font-weight:600;background:var(--ink);color:var(--sand);border:0;border-radius:999px;padding:9px 12px;cursor:pointer}
+.fd-add.in{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.fd-foot{display:flex;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+.fd-foot:empty{display:none}
+.fd-foot .ghost{font:inherit;cursor:pointer;background:transparent;color:var(--ink)}
+@media (max-width:900px){.finder{padding:32px 16px 20px;border-radius:24px}.fd-opts,.fd-opts.n3,.fd-opts.n5{grid-template-columns:repeat(2,1fr)}.fd-opts.n5 .fd-opt:last-child,.fd-opts.n3 .fd-opt:last-child{grid-column:1/-1}.fd-res{grid-template-columns:repeat(2,1fr);gap:10px}.fd-q{font-size:24px}.fd-card h3{font-size:18px}}
+
 /* Osma offer: its own pale-blue block with a live countdown */
 .osma{--sand:#E9EFF6;--sand-deep:#DCE5F0;--ink:#0F1A2A;--ink-soft:#4C5A6E;--line:#B9C6D8;background:var(--sand);color:var(--ink);border-block:1px solid var(--line)}
 .os-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:40px}
@@ -704,6 +744,25 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
     </div>
   </section>
 
+  <section class="finder-sec" id="finder-sec">
+    <div class="wrap">
+      <div class="finder" id="finder">
+        <div class="fd-top">
+          <span class="eyebrow">SCENT FINDER</span>
+          <h2>لاقي عطرك في 60 ثانية</h2>
+          <p>5 أسئلة سريعة، وإحنا نرشحلك العطور اللي تشبهك من التشكيلة.</p>
+          <div class="fd-track"><span id="fd-bar"></span></div>
+        </div>
+        <div class="fd-stage" id="fd-stage">
+          <h3 class="fd-q" id="fd-q"></h3>
+          <div class="fd-opts" id="fd-opts"></div>
+          <div class="fd-foot" id="fd-foot"></div>
+        </div>
+        <div class="fd-nav"><button type="button" class="fd-back" id="fd-back" hidden>→ رجوع</button><span class="fd-n" id="fd-n" dir="ltr"></span></div>
+      </div>
+    </div>
+  </section>
+
   <section id="collection">
     <div class="wrap">
       <div class="head">
@@ -927,7 +986,8 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
     <div class="fields" id="fields">
       <label for="c-name">الاسم<input id="c-name" autocomplete="name"></label>
       <label for="c-phone">رقم الموبايل<input id="c-phone" inputmode="tel" autocomplete="tel" dir="ltr" style="text-align:right"></label>
-      <label for="c-gov">المحافظة<select id="c-gov" autocomplete="address-level1"><option value="" disabled selected>اختار المحافظة</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>القليوبية</option><option>الدقهلية</option><option>الشرقية</option><option>الغربية</option><option>المنوفية</option><option>البحيرة</option><option>كفر الشيخ</option><option>دمياط</option><option>بورسعيد</option><option>الإسماعيلية</option><option>السويس</option><option>الفيوم</option><option>بني سويف</option><option>المنيا</option><option>أسيوط</option><option>سوهاج</option><option>قنا</option><option>الأقصر</option><option>أسوان</option><option>البحر الأحمر</option><option>الوادي الجديد</option><option>مطروح</option><option>شمال سيناء</option><option>جنوب سيناء</option></select></label>
+      <label for="c-gov">المحافظة<select id="c-gov" autocomplete="address-level1"><option value="" disabled selected>اختار المحافظة</option><option value="القاهرة">القاهرة</option><option value="الجيزة">الجيزة</option><option value="الإسكندرية">الإسكندرية</option><option value="القليوبية">القليوبية</option><option value="الدقهلية">الدقهلية</option><option value="الشرقية">الشرقية</option><option value="الغربية">الغربية</option><option value="المنوفية">المنوفية</option><option value="البحيرة">البحيرة</option><option value="كفر الشيخ">كفر الشيخ</option><option value="دمياط">دمياط</option><option value="بورسعيد">بورسعيد</option><option value="الإسماعيلية">الإسماعيلية</option><option value="السويس">السويس</option><option value="الفيوم">الفيوم</option><option value="بني سويف">بني سويف</option><option value="المنيا">المنيا</option><option value="أسيوط">أسيوط</option><option value="سوهاج">سوهاج</option><option value="قنا">قنا</option><option value="الأقصر">الأقصر</option><option value="أسوان">أسوان</option><option value="البحر الأحمر">البحر الأحمر</option><option value="الوادي الجديد">الوادي الجديد</option><option value="مطروح">مطروح</option><option value="شمال سيناء">شمال سيناء</option><option value="جنوب سيناء">جنوب سيناء</option></select></label>
+      <label for="c-city" id="city-wrap" hidden>المدينة / المركز<select id="c-city" autocomplete="address-level2"><option value="" disabled selected>اختار المدينة أو المركز</option></select></label>
       <label for="c-addr">وصف العنوان<textarea id="c-addr" rows="3" autocomplete="street-address" placeholder="المنطقة، الشارع، رقم العمارة، الدور والشقة، وأقرب علامة مميزة"></textarea></label>
       <div class="promo">
         <label for="c-code">كود الخصم</label>
@@ -1022,7 +1082,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
     var S=sum(),B=bundle(),D=disc(S.s-B);lines.push('');if(B||D)lines.push('قبل الخصم: '+money(S.s));if(B)lines.push('عرض أوسما 3 بـ 5,400 (− '+money(B)+')');if(D)lines.push('كود الخصم: '+CODE+' (− '+money(D)+')');lines.push('الإجمالي: '+money(S.s-B-D)+' (من غير الشحن)');if(S.miss.length)lines.push('سعر '+S.miss.join(' و ')+' بنأكده في الرسالة');
     lines.push('طريقة الدفع: انستاباي');lines.push('');
     var n=$('c-name').value.trim(),p=$('c-phone').value.trim(),g=$('c-gov').value,a=$('c-addr').value.trim();
-    if(n)lines.push('الاسم: '+n); if(p)lines.push('الموبايل: '+p); if(g)lines.push('المحافظة: '+g); if(a)lines.push('العنوان: '+a);
+    if(n)lines.push('الاسم: '+n); if(p)lines.push('الموبايل: '+p); if(g)lines.push('المحافظة: '+g); var ct=$('c-city').value;if(g&&ct)lines.push('المدينة / المركز: '+ct); if(a)lines.push('العنوان: '+a);
     return lines.join('\n');
   }
   function render(){
@@ -1057,7 +1117,14 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
   $('cart-close').onclick=function(){openCart(false)};
   $('scrim').onclick=function(){openCart(false)};
   document.addEventListener('keydown',function(e){if(e.key==='Escape')openCart(false)});
-  ['c-name','c-phone','c-gov','c-addr'].forEach(function(id){$(id).addEventListener('input',function(){$('preview').value=message()})});
+  var CITY={"القاهرة":["مدينة نصر","مصر الجديدة","النزهة","التجمع الخامس","القاهرة الجديدة","الرحاب","مدينتي","الشروق","مدينة بدر","العبور","العاصمة الإدارية","المعادي","المقطم","حلوان","15 مايو","المعصرة","طرة","البساتين","دار السلام","التبين","مصر القديمة","السيدة زينب","الخليفة","منشأة ناصر","الزمالك","وسط البلد","عابدين","الأزبكية","الموسكي","باب الشعرية","الجمالية","بولاق","شبرا","روض الفرج","الساحل","الشرابية","الزيتون","حدائق الزيتون","حدائق القبة","الوايلي","العباسية","الأميرية","عين شمس","المطرية","المرج","السلام"],"الجيزة":["الدقي","المهندسين","العجوزة","الجيزة","الهرم","فيصل","حدائق الأهرام","العمرانية","الطالبية","بولاق الدكرور","إمبابة","الوراق","الكيت كات","المنيب","6 أكتوبر","الشيخ زايد","كرداسة","أوسيم","منشأة القناطر","أبو النمرس","الحوامدية","البدرشين","العياط","الصف","أطفيح","الواحات البحرية"],"الإسكندرية":["المنتزه","المعمورة","أبو قير","العصافرة","المندرة","ميامي","سيدي بشر","فيكتوريا","سيدي جابر","سموحة","رشدي","ستانلي","كليوباترا","الإبراهيمية","الشاطبي","محطة الرمل","المنشية","الجمرك","العطارين","محرم بك","كرموز","الحضرة","باكوس","الورديان","المكس","الدخيلة","العجمي","البيطاش","الهانوفيل","العامرية","كينج مريوط","برج العرب","برج العرب الجديدة"],"القليوبية":["بنها","شبرا الخيمة","قليوب","القناطر الخيرية","الخانكة","الخصوص","العبور","شبين القناطر","طوخ","قها","كفر شكر"],"الدقهلية":["المنصورة","المنصورة الجديدة","طلخا","ميت غمر","دكرنس","أجا","منية النصر","السنبلاوين","بلقاس","شربين","المنزلة","الجمالية","تمي الأمديد","نبروه","ميت سلسيل","المطرية","بني عبيد","جمصة","الكردي","محلة دمنة"],"الشرقية":["الزقازيق","العاشر من رمضان","بلبيس","منيا القمح","أبو حماد","أبو كبير","فاقوس","الحسينية","ههيا","ديرب نجم","كفر صقر","أولاد صقر","الإبراهيمية","مشتول السوق","القنايات","القرين","الصالحية الجديدة","صان الحجر","منشأة أبو عمر"],"الغربية":["طنطا","المحلة الكبرى","كفر الزيات","زفتى","السنطة","قطور","بسيون","سمنود"],"المنوفية":["شبين الكوم","منوف","مدينة السادات","أشمون","الباجور","قويسنا","بركة السبع","تلا","الشهداء","سرس الليان"],"البحيرة":["دمنهور","كفر الدوار","رشيد","إدكو","أبو المطامير","أبو حمص","الدلنجات","المحمودية","الرحمانية","إيتاي البارود","حوش عيسى","شبراخيت","كوم حمادة","بدر","وادي النطرون","النوبارية الجديدة"],"كفر الشيخ":["كفر الشيخ","دسوق","فوه","مطوبس","بيلا","الحامول","سيدي سالم","الرياض","قلين","البرلس","بلطيم"],"دمياط":["دمياط","دمياط الجديدة","رأس البر","فارسكور","الزرقا","كفر سعد","كفر البطيخ","عزبة البرج","ميت أبو غالب","السرو","الروضة"],"بورسعيد":["حي الشرق","حي العرب","حي المناخ","حي الزهور","حي الضواحي","حي الجنوب","حي غرب","بورفؤاد"],"الإسماعيلية":["الإسماعيلية","فايد","القنطرة شرق","القنطرة غرب","التل الكبير","أبو صوير","القصاصين"],"السويس":["حي السويس","حي الأربعين","حي عتاقة","حي فيصل","حي الجناين","العين السخنة"],"الفيوم":["الفيوم","الفيوم الجديدة","سنورس","إطسا","طامية","أبشواي","يوسف الصديق"],"بني سويف":["بني سويف","بني سويف الجديدة","الواسطى","ناصر","إهناسيا","ببا","الفشن","سمسطا"],"المنيا":["المنيا","المنيا الجديدة","العدوة","مغاغة","بني مزار","مطاي","سمالوط","أبو قرقاص","ملوي","دير مواس"],"أسيوط":["أسيوط","أسيوط الجديدة","ديروط","القوصية","منفلوط","أبنوب","الفتح","أبو تيج","صدفا","الغنايم","ساحل سليم","البداري"],"سوهاج":["سوهاج","سوهاج الجديدة","أخميم","أخميم الجديدة","المراغة","طهطا","جهينة","طما","ساقلتة","المنشأة","جرجا","البلينا","دار السلام","العسيرات"],"قنا":["قنا","قنا الجديدة","نجع حمادي","دشنا","الوقف","قفط","قوص","نقادة","فرشوط","أبو تشت"],"الأقصر":["الأقصر","الأقصر الجديدة","الزينية","البياضية","القرنة","أرمنت","الطود","إسنا"],"أسوان":["أسوان","أسوان الجديدة","دراو","كوم أمبو","نصر النوبة","كلابشة","إدفو","الرديسية","البصيلية","أبو سمبل"],"البحر الأحمر":["الغردقة","الجونة","سهل حشيش","مكادي","سفاجا","القصير","مرسى علم","رأس غارب","الشلاتين","حلايب"],"الوادي الجديد":["الخارجة","الداخلة","الفرافرة","باريس","بلاط"],"مطروح":["مرسى مطروح","العلمين","العلمين الجديدة","الساحل الشمالي","الضبعة","الحمام","النجيلة","سيدي براني","السلوم","سيوة"],"شمال سيناء":["العريش","الشيخ زويد","رفح","بئر العبد","الحسنة","نخل"],"جنوب سيناء":["شرم الشيخ","دهب","نويبع","طابا","الطور","سانت كاترين","رأس سدر","أبو رديس","أبو زنيمة"]};
+  function fillCity(keep){var g=$('c-gov').value,s=$('c-city'),l=CITY[g]||[];s.length=1;s.selectedIndex=0;
+    l.concat(['مكان تاني']).forEach(function(c){var o=document.createElement('option');o.textContent=c;o.value=c;s.append(o)});
+    $('city-wrap').hidden=!g;if(keep)s.value=keep;if(s.selectedIndex<0)s.selectedIndex=0}
+  $('c-gov').addEventListener('change',function(){fillCity();try{localStorage.setItem('taif-city','')}catch(e){}});
+  $('c-city').addEventListener('change',function(){try{localStorage.setItem('taif-city',$('c-city').value)}catch(e){}});
+  if($('c-gov').value){var kc='';try{kc=localStorage.getItem('taif-city')||''}catch(e){}fillCity(kc)}
+  ['c-name','c-phone','c-gov','c-city','c-addr'].forEach(function(id){$(id).addEventListener('input',function(){$('preview').value=message()});$(id).addEventListener('change',function(){$('preview').value=message()})});
   $('send').addEventListener('click',function(){
     var m=message(),pv=$('preview');pv.value=m;
     var id=orderId();$('sent-id').textContent=id;$('sent').hidden=false;
@@ -1289,6 +1356,110 @@ document.getElementById('copy-handle').addEventListener('click',function(){
 </script>
 <script>
 (function(){
+  var box=document.getElementById('finder');if(!box)return;
+  var $=function(id){return document.getElementById(id)};
+  // v: vibe (fresh,sweet,floral,woody,oud)  o: occasions (day,night,date,special,every)  l: longevity 1 light 2 all day 3 beast
+  var T={
+    'هوس آيس':{v:['fresh'],o:['day','every'],l:2},
+    'ناين بي إم':{v:['sweet'],o:['night','date'],l:3},
+    'بينك دايموند ساكورا':{v:['floral'],o:['day','every','date'],l:2},
+    'بلاك دايموند إنسنس':{v:['oud','woody'],o:['night','special'],l:3},
+    'سافاير ليذر':{v:['woody'],o:['day','every'],l:2},
+    'نيود كورال دايموند':{v:['woody','fresh'],o:['day','every'],l:2},
+    'بوكس بلو دايموند':{v:['woody','fresh','oud'],o:['special'],l:2},
+    'مسك الفجر':{v:['sweet','floral'],o:['every','day'],l:1},
+    'مسك عبق الرمان':{v:['sweet'],o:['every','day'],l:1},
+    'مجموعة المسك':{v:['floral','sweet','fresh'],o:['every','special'],l:1},
+    'ثرى':{v:['sweet','floral'],o:['date','special'],l:3},
+    'عمق':{v:['woody','oud'],o:['night','special'],l:3},
+    'توق':{v:['sweet','oud'],o:['night','special'],l:3},
+    'أروجيت كوميت':{v:['oud','floral'],o:['special','night'],l:2},
+    'جريس إريك لاكشري':{v:['woody'],o:['day','special'],l:2},
+    'ميس أروجيت':{v:['floral','sweet'],o:['date','every'],l:2},
+    'أروجيت بينك':{v:['floral','sweet'],o:['date','day'],l:2},
+    'مجموعة أروجيت بينك مع باودر':{v:['floral'],o:['special','date'],l:2},
+    'ليب ستيك':{v:['floral','sweet'],o:['date','night'],l:2},
+    'فرانكل أفنتوس سترايك':{v:['woody','oud'],o:['night','special','day'],l:3},
+    'وايلد كولت إليكسير':{v:['woody','oud'],o:['night','special'],l:3},
+    'أوسما بودريه':{v:['floral'],o:['every','day'],l:2},
+    'أوسما أمبر':{v:['oud'],o:['night','special'],l:2},
+    'أوسما أمبري':{v:['oud','sweet'],o:['night','date'],l:2},
+    'أوسما كوتون':{v:['fresh'],o:['every','day'],l:2},
+    'أوسما سيتراس':{v:['fresh'],o:['day','every'],l:2}
+  };
+  var Q=[
+    {k:'g',q:'العطر لمين؟',a:[['men','ليه','رجالي'],['women','ليها','حريمي'],['unisex','للاتنين','يناسب الكل'],['any','فاجئني','أي حاجة حلوة']]},
+    {k:'v',q:'إيه الطابع اللي بتحبه؟',a:[['fresh','منعش ونضيف','حمضيات وبحر'],['sweet','حلو ودافي','فانيليا وكراميل'],['floral','زهري وناعم','ورد وياسمين'],['woody','خشبي وأنيق','أخشاب وجلد'],['oud','عود وعنبر','شرقي وتقيل']]},
+    {k:'o',q:'هتحطه إمتى أكتر؟',a:[['day','الشغل والنهار','هادي ومريح'],['night','السهرات','حضور قوي'],['date','الخروجات','جذاب وقريب'],['special','المناسبات','فخم ومميز'],['every','كل يوم','ينفع لأي وقت']]},
+    {k:'l',q:'عاوزه يثبت قد إيه؟',a:[[1,'خفيف وقريب','ساعات قليلة'],[2,'طول اليوم','من 6 لـ 8 ساعات'],[3,'ثبات وفوحان','حضوره مايتنسيش']]},
+    {k:'b',q:'ميزانيتك',a:[[1,'أقل من 1,500',''],[2,'من 1,500 لـ 2,500',''],[3,'2,500 وأكتر',''],[0,'مش فارقة','']]}
+  ];
+  var IC={men:'♂',women:'♀',unisex:'⚥',any:'✦',fresh:'❋',sweet:'◍',floral:'✿',woody:'⟁',oud:'♨',day:'☼',night:'☾',date:'♡',special:'✧',every:'◷',1:'·',2:'··',3:'···'};
+  var VN={fresh:'منعش',sweet:'حلو',floral:'زهري',woody:'خشبي',oud:'عود وعنبر'};
+  var ON={day:'الشغل والنهار',night:'السهرات',date:'الخروجات',special:'المناسبات',every:'كل يوم'};
+  var LN={1:'ثبات خفيف',2:'ثبات طول اليوم',3:'ثبات وفوحان قوي'};
+  var cards={};document.querySelectorAll('.card').forEach(function(c){var a=c.querySelector('.add');if(a&&!cards[a.dataset.name])cards[a.dataset.name]=c});
+  var step=0,ans={},shown=4,res=[];
+  function draw(){
+    var q=Q[step];$('fd-q').textContent=q.q;$('fd-n').textContent=(step+1)+' / '+Q.length;$('fd-bar').style.width=((step)/Q.length*100)+'%';
+    $('fd-back').hidden=step===0;
+    var o=$('fd-opts');o.innerHTML='';o.className='fd-opts n'+q.a.length;
+    q.a.forEach(function(a){var b=document.createElement('button');b.type='button';b.className='fd-opt'+(ans[q.k]===a[0]?' on':'');
+      var i=document.createElement('i');i.textContent=q.k==='b'?['∞','$','$$','$$$'][a[0]]:(IC[a[0]]||'');i.setAttribute('aria-hidden','true');
+      var s=document.createElement('b');s.textContent=a[1];b.append(i,s);if(a[2]){var m=document.createElement('small');m.textContent=a[2];b.append(m)}
+      b.onclick=function(){ans[q.k]=a[0];[].forEach.call(o.children,function(x){x.classList.remove('on')});b.classList.add('on');setTimeout(next,260)};
+      o.append(b)});
+    box.classList.remove('done');
+  }
+  function next(){if(step<Q.length-1){step++;swap(draw)}else{$('fd-bar').style.width='100%';swap(results)}}
+  function swap(fn){var w=$('fd-stage');w.classList.add('out');setTimeout(function(){fn();w.classList.remove('out')},220)}
+  function price(c){var a=c.querySelector('.add');return +a.dataset.price||0}
+  function score(k){
+    var t=T[k],c=cards[k];if(!t||!c)return null;var s=0,why=[];
+    var g=c.dataset.gender,G=ans.g;
+    if(G==='any'||g==='unisex'||g===G){s+=20;if(G!=='any')why.push(g==='unisex'?'يناسب الكل':(G==='men'?'مناسب ليه':'مناسب ليها'))}else s-=30;
+    if(t.v.indexOf(ans.v)===0){s+=40;why.push('طابعه '+VN[ans.v])}else if(t.v.indexOf(ans.v)>0){s+=28;why.push('فيه لمسة '+VN[ans.v])}
+    if(t.o.indexOf(ans.o)>=0){s+=20;why.push('مثالي لـ'+ON[ans.o])}
+    var d=Math.abs(t.l-ans.l);s+=d===0?12:d===1?5:0;if(d===0)why.push(LN[t.l]);
+    var p=price(c),B=ans.b;if(!B)s+=8;else if(!p)s+=4;else{var ok=B===1?p<1500:B===2?p>=1500&&p<=2500:p>2500;if(ok)s+=8;else if(B===3||B===2&&p<1500)s+=4}
+    return {k:k,s:s,why:why.slice(0,3),c:c};
+  }
+  function results(){
+    res=Object.keys(T).map(score).filter(Boolean).sort(function(a,b){return b.s-a.s});
+    var max=res[0]?res[0].s:1;res.forEach(function(r,i){r.pct=Math.max(52,Math.min(98,Math.round(98-(max-r.s)*0.9)-i))});
+    shown=4;box.classList.add('done');$('fd-q').textContent='ترشيحاتنا ليك';$('fd-n').textContent='';$('fd-back').hidden=true;
+    var o=$('fd-opts');o.innerHTML='';o.className='fd-res';
+    paint();
+  }
+  function paint(){
+    var o=$('fd-opts');o.innerHTML='';
+    res.slice(0,shown).forEach(function(r){
+      var c=r.c,el=document.createElement('article');el.className='fd-card';
+      var ph=document.createElement('button');ph.type='button';ph.className='fd-ph';ph.setAttribute('aria-label','تفاصيل '+c.querySelector('h3').textContent);
+      var im=document.createElement('img');im.src=c.querySelector('.ph img').src;im.alt='';if(c.querySelector('.ph.cover'))ph.classList.add('cover');ph.append(im);
+      var pc=document.createElement('span');pc.className='fd-pct';pc.textContent='توافق '+r.pct+'%';ph.append(pc);
+      ph.onclick=function(){c.querySelector('.ph').click()};
+      var h=document.createElement('h3');h.textContent=c.querySelector('h3').textContent;
+      var pr=document.createElement('span');var cp=c.querySelector('.price');pr.className=cp.className;pr.innerHTML=cp.innerHTML;
+      var ul=document.createElement('ul');r.why.forEach(function(w){var li=document.createElement('li');li.textContent=w;ul.append(li)});
+      var add=document.createElement('button');add.type='button';add.className='fd-add';
+      function sync(){var a=c.querySelector('.add');add.textContent=a.textContent;add.classList.toggle('in',a.classList.contains('in'))}
+      add.onclick=function(){c.querySelector('.add').click();sync()};sync();el._sync=sync;
+      el.append(ph,h,pr,ul,add);o.append(el);
+    });
+    var f=$('fd-foot');f.innerHTML='';
+    if(shown<res.length){var m=document.createElement('button');m.type='button';m.className='ghost';m.textContent='شوف ترشيحات أكتر';m.onclick=function(){shown+=4;paint()};f.append(m)}
+    var r=document.createElement('button');r.type='button';r.className='ghost';r.textContent='ابدأ من الأول';r.onclick=function(){step=0;ans={};swap(draw)};f.append(r);
+  }
+  document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.add,.qty button,#dt-add,#st-add'))setTimeout(function(){[].forEach.call(document.querySelectorAll('.fd-card'),function(x){x._sync&&x._sync()})},0)});
+  $('fd-back').onclick=function(){if(step>0){step--;swap(draw)}};
+  var _draw=draw;draw=function(){$('fd-foot').innerHTML='';_draw()};
+  draw();
+})();
+
+</script>
+<script>
+(function(){
   var E={
     'عروض جمعة نوفمبر بدأت: خصومات على 19 عطر':'November Friday offers are on: discounts on 19 perfumes',
     'شوف العروض':'See offers','الرئيسية':'Home','العطور':'Perfumes','السلة':'Bag','تتبّع طلبك':'Track order','تواصل معنا':'Contact','انستجرام':'Instagram',
@@ -1340,7 +1511,7 @@ document.getElementById('copy-handle').addEventListener('click',function(){
     'اكتب رقم الطلب الأول.':'Enter the order number first.','بندوّر على الطلب…':'Looking up your order…','لسه ما لقيناش الطلب':'We haven’t found order',
     'لو لسه باعته، الحالة بتظهر هنا بعد ما نأكده معاك على انستجرام. اتأكد كمان إن الرقم مكتوب صح.':'If you just sent it, the status shows here once we confirm with you on Instagram. Also check the number is correct.',
     'مقدرناش نجيب حالة الطلب دلوقتي. جرّب كمان شوية، أو اسألنا على انستجرام.':'We couldn’t load the order status right now. Try again shortly, or ask us on Instagram.',
-    'طلباتك:':'Your orders:','عرض أوسما':'Osma offer','أي 3 عطور بـ 5,400 ج.م':'Any 3 for EGP 5,400','اختار أي تلات عطور من أوسما، والخصم بيتحسب لوحده في السلة. كل عطر 75 مل.':'Pick any three Osma perfumes and the discount is applied automatically in your bag. Each is 75 ml.','العرض بيخلص بعد':'Offer ends in','يوم':'days','ساعة':'hours','دقيقة':'min','ثانية':'sec','العرض خلص':'Offer ended','3 بـ 5,400':'3 for 5,400','أوسما':'Osma','عرض أوسما: أي 3 عطور بـ 5,400 ج.م · باقي':'Osma offer: any 3 for EGP 5,400 · ends in','شوف العرض':'See offer','ضيف عطر كمان من أوسما وخد التلاتة بـ 5,400 ج.م':'Add one more Osma perfume and get all three for EGP 5,400','ضيف عطرين كمان من أوسما وخد التلاتة بـ 5,400 ج.م':'Add two more Osma perfumes and get three for EGP 5,400','كود الخصم':'Discount code','تطبيق':'Apply','الخصم':'Discount','الكود ده مش صحيح أو انتهى':'This code is invalid or expired','للواحدة':'each','زود':'More','قلل':'Less',
+    'طلباتك:':'Your orders:','المدينة / المركز':'City / district','اختار المدينة أو المركز':'Choose city or district','مكان تاني':'Other','لاقي عطرك في 60 ثانية':'Find your scent in 60 seconds','5 أسئلة سريعة، وإحنا نرشحلك العطور اللي تشبهك من التشكيلة.':'Five quick questions, and we’ll match you with perfumes from our collection.','→ رجوع':'← Back','العطر لمين؟':'Who is it for?','ليه':'For him','ليها':'For her','للاتنين':'Unisex','يناسب الكل':'Suits everyone','فاجئني':'Surprise me','أي حاجة حلوة':'Anything lovely','إيه الطابع اللي بتحبه؟':'Pick the vibe you love','منعش ونضيف':'Fresh & clean','حمضيات وبحر':'Citrus, sea','حلو ودافي':'Sweet & cozy','فانيليا وكراميل':'Vanilla, caramel','زهري وناعم':'Floral & soft','ورد وياسمين':'Rose, jasmine','خشبي وأنيق':'Woody & elegant','أخشاب وجلد':'Woods, leather','عود وعنبر':'Oud & amber','شرقي وتقيل':'Rich, oriental','هتحطه إمتى أكتر؟':'When will you wear it most?','الشغل والنهار':'Day & office','هادي ومريح':'Calm, easy','السهرات':'Nights out','حضور قوي':'Strong presence','الخروجات':'Date night','جذاب وقريب':'Close, magnetic','المناسبات':'Special occasions','فخم ومميز':'Luxurious','كل يوم':'Every day','ينفع لأي وقت':'Any time','عاوزه يثبت قد إيه؟':'How long should it last?','خفيف وقريب':'Light & close','ساعات قليلة':'A few hours','طول اليوم':'All day','من 6 لـ 8 ساعات':'6 to 8 hours','ثبات وفوحان':'Beast mode','حضوره مايتنسيش':'Unforgettable','ميزانيتك':'Your budget','أقل من 1,500':'Under 1,500','من 1,500 لـ 2,500':'1,500 to 2,500','2,500 وأكتر':'2,500 and up','مش فارقة':'No limit','ترشيحاتنا ليك':'Our picks for you','شوف ترشيحات أكتر':'View more','ابدأ من الأول':'Start over','مناسب ليه':'Made for him','مناسب ليها':'Made for her','ثبات خفيف':'Light longevity','ثبات طول اليوم':'Lasts all day','ثبات وفوحان قوي':'Strong projection','عرض أوسما':'Osma offer','أي 3 عطور بـ 5,400 ج.م':'Any 3 for EGP 5,400','اختار أي تلات عطور من أوسما، والخصم بيتحسب لوحده في السلة. كل عطر 75 مل.':'Pick any three Osma perfumes and the discount is applied automatically in your bag. Each is 75 ml.','العرض بيخلص بعد':'Offer ends in','يوم':'days','ساعة':'hours','دقيقة':'min','ثانية':'sec','العرض خلص':'Offer ended','3 بـ 5,400':'3 for 5,400','أوسما':'Osma','عرض أوسما: أي 3 عطور بـ 5,400 ج.م · باقي':'Osma offer: any 3 for EGP 5,400 · ends in','شوف العرض':'See offer','ضيف عطر كمان من أوسما وخد التلاتة بـ 5,400 ج.م':'Add one more Osma perfume and get all three for EGP 5,400','ضيف عطرين كمان من أوسما وخد التلاتة بـ 5,400 ج.م':'Add two more Osma perfumes and get three for EGP 5,400','كود الخصم':'Discount code','تطبيق':'Apply','الخصم':'Discount','الكود ده مش صحيح أو انتهى':'This code is invalid or expired','للواحدة':'each','زود':'More','قلل':'Less',
     'المقدمة':'Top','القلب':'Heart','القاعدة':'Base','المسكات':'Musks',
     'أو دو بارفان':'Eau de Parfum','منعش مائي فاكهي':'Fresh aquatic fruity','شرقي حلو':'Sweet oriental','زهري':'Floral','شرقي خشبي':'Oriental woody','جلدي خشبي':'Leather woody','زهري فاكهي حلو':'Floral fruity gourmand','مسك فاكهي':'Fruity musk','خشبي شرقي':'Woody oriental','زهري فاكهي':'Floral fruity','زهري خشبي':'Floral woody','مجموعة':'Set','عطر + باودر':'Perfume + powder','مجموعة 3 عطور':'Set of 3 perfumes','مجموعة 12 مسك':'Set of 12 musks',
     'زعفران':'Saffron','بوملي':'Pomelo','جلد':'Leather','فيتيفر':'Vetiver','عنبر رمادي':'Ambergris','نعناع':'Mint',
@@ -1397,6 +1568,10 @@ document.getElementById('copy-handle').addEventListener('click',function(){
       else if(m=t.match(/^تم تطبيق الكود: خصم (.+)$/))out='Code applied: '+m[1].replace(/([\d,]+) ج\.م/,'EGP $1')+' off';
       else if(m=t.match(/^− ([\d,]+) ج\.م$/))out='− EGP '+m[1];
       else if(m=t.match(/^(\d+) يوم ([\d:]+)$/))out=m[1]+'d '+m[2];
+      else if(m=t.match(/^توافق (\d+)%$/))out=m[1]+'% match';
+      else if(m=t.match(/^طابعه (.+)$/))out=({'منعش':'Fresh','حلو':'Sweet','زهري':'Floral','خشبي':'Woody','عود وعنبر':'Oud & amber'})[m[1]]+' character';
+      else if(m=t.match(/^فيه لمسة (.+)$/)){var tw=({'منعش':'fresh','حلو':'sweet','زهري':'floral','خشبي':'woody','عود وعنبر':'oud & amber'})[m[1]];out=(/^[aeiou]/.test(tw)?'An ':'A ')+tw+' touch';}
+      else if(m=t.match(/^مثالي لـ(.+)$/))out='Ideal for '+(E[m[1]]||m[1]).toLowerCase();
       else if(m=t.match(/^(\d+) مل$/))out=m[1]+' ml';
       else if(m=t.match(/^(\d+) × (\d+) مل$/))out=m[1]+' × '+m[2]+' ml';
       else if(m=t.match(/^إصدار (\d+)$/))out='Released '+m[1];
