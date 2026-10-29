@@ -334,6 +334,137 @@ button.ig-btn{border:0;font-family:var(--body);cursor:pointer}
 .msg-preview{font:inherit;font-size:13px;width:100%;min-height:120px;background:var(--sand-deep);border:0;border-radius:12px;padding:10px;color:var(--ink)}
 .toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,20px);background:var(--ink);color:var(--sand);padding:10px 20px;border-radius:999px;font-size:14px;z-index:40;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* product page: a full-screen page for each perfume */
+body.dt-lock{overflow:hidden}
+.pp{position:fixed;inset:0;z-index:33;background:var(--sand);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;opacity:0;transform:translateY(24px);transition:opacity .35s ease,transform .45s cubic-bezier(.2,.7,.2,1);padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.pp.open{opacity:1;transform:none}
+.pp-bar{position:sticky;top:0;z-index:2;background:color-mix(in srgb,var(--sand) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.pp-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px}
+.pp-back{font:inherit;font-size:15px;font-weight:500;background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:8px 18px;cursor:pointer}
+.pp-crumbs{display:flex;gap:8px;font-size:13px;color:var(--ink-soft);min-width:0;overflow:hidden;white-space:nowrap}
+.pp-crumbs>*+*::before{content:"/";margin-inline-end:8px;opacity:.5}
+.pp-crumbs b{font-weight:500;color:var(--ink);overflow:hidden;text-overflow:ellipsis}
+.pp-crumbs span:empty{display:none}
+.pp-main{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;padding-block:36px 56px;align-items:start}
+.pp-fig{margin:0;position:relative;aspect-ratio:1;border-radius:28px;background:#DCD8CE;overflow:hidden}
+.pp-fig img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;padding:8%;mix-blend-mode:multiply}
+.pp-fig.cover img{object-fit:cover;padding:0;mix-blend-mode:normal}
+.pp-info{display:flex;flex-direction:column;gap:12px;position:sticky;top:90px}
+.pp-br{font-size:13px;color:var(--ink-soft)}
+.pp-info h2{font-family:var(--name);font-weight:400;font-size:clamp(36px,4.4vw,54px);line-height:1.3}
+.pp-lat{font-size:11px;letter-spacing:.2em;color:var(--ink-soft);direction:ltr;text-align:right}
+html[dir="ltr"] .pp-lat{text-align:left}
+.pp-price{font-size:22px;margin:4px 0 2px}
+.pp-buyrow{display:flex;gap:10px;margin-top:8px}
+.pp-qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;flex:none}
+.pp[dir=ltr] .pp-qty{flex-direction:row-reverse}
+.pp-qty button{font:inherit;width:42px;height:46px;background:none;border:0;font-size:18px;color:var(--ink);cursor:pointer}
+.pp-qty span{min-width:22px;text-align:center;font-variant-numeric:tabular-nums}
+.pp-add{flex:1;font:inherit;font-size:15px;font-weight:600;background:var(--ink);color:var(--sand);border:0;border-radius:999px;padding:0 22px;min-height:48px;cursor:pointer}
+.pp-add.in{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.pp-buy{font:inherit;font-size:15px;font-weight:600;min-height:48px;border-radius:999px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.pp-mini{display:flex;justify-content:center;gap:22px;font-size:13px}
+.pp-mini button,.pp-mini a{font:inherit;background:none;border:0;color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.pp-accs{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.pp-acc{border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.pp-acc-h{font:inherit;width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;color:var(--ink);font-size:16px;font-weight:500;padding:14px 18px;cursor:pointer;text-align:start}
+.pp-acc-h::after{content:"⌄";font-size:18px;line-height:1;transition:transform .3s}
+.pp-acc-h[aria-expanded="true"]::after{transform:rotate(180deg)}
+.pp-acc-b{padding:0 18px 16px;font-size:15px;line-height:1.85;color:var(--ink-soft)}
+.pp-acc-b p{margin:0}
+.pp-disc,.pp-tips,.pp-more{padding-block:56px;border-top:1px solid var(--line)}
+.pp-dhead{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin-bottom:32px}
+.pp-dhead h2{font-family:var(--name);font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.3}
+.pp-dhead p{margin:0;max-width:40em;color:var(--ink-soft)}
+.pp-dhead p:empty{display:none}
+.pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.pp-card{background:color-mix(in srgb,var(--sand) 55%,#fff);border:1px solid var(--line);border-radius:24px;padding:26px 24px}
+html[data-theme="dark"] .pp-card{background:#1A1918}
+.pp-card h3{font-family:var(--name);font-weight:400;font-size:28px;line-height:1.3}
+.pp-sub{margin:2px 0 18px;font-size:13px;color:var(--ink-soft)}
+.pp-tier{display:flex;gap:16px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line)}
+.pp-tier:first-child{border-top:0;padding-top:0}
+.pp-th{flex:0 0 118px;display:flex;flex-direction:column;gap:2px}
+.pp-th i{width:22px;height:16px;border-radius:4px 4px 2px 2px}
+.pp-th b{font-family:var(--name);font-weight:400;font-size:22px;line-height:1.3}
+.pp-th small{font-size:11.5px;color:var(--ink-soft);line-height:1.4}
+.pp-notes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.pp-notes li{display:flex;align-items:center;gap:7px;font-size:13.5px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--sand)}
+.pp-notes li i{width:10px;height:10px;border-radius:50%;flex:none}
+.pp-accw{display:flex;align-items:center;gap:22px}
+.pp-bars{list-style:none;margin:0;padding:0;flex:1;display:flex;flex-direction:column;gap:12px}
+.pp-bars li{display:grid;grid-template-columns:58px 1fr;align-items:center;gap:10px;font-size:13.5px}
+.pp-bars i{display:block;height:7px;border-radius:9px;background:var(--line);overflow:hidden}
+.pp-bars b{display:block;height:100%;border-radius:9px}
+.pp-dn{position:relative;flex:0 0 150px;width:150px}
+.pp-donut{display:block;width:100%}
+.pp-dn b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--name);font-weight:400;font-size:22px}
+.pp-perf{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:center}
+.pp-g{display:flex;flex-direction:column;align-items:center;gap:2px}
+.pp-gauge{width:150px;max-width:100%}
+.pp-g small{font-size:12px;color:#B08A45}
+.pp-g b{font-size:20px;font-weight:600}
+.pp-g span{font-size:12.5px;color:var(--ink-soft)}
+.pp-fine{margin:14px 0 0;font-size:12px;color:var(--ink-soft);text-align:center}
+.pp-seas{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pp-sea{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 6px;border:1px solid var(--line);border-radius:16px;font-size:13.5px;color:var(--ink-soft)}
+.pp-sea i{font-style:normal;font-size:22px;line-height:1}
+.pp-sea.on{border-color:#C9A35C;color:var(--ink);background:color-mix(in srgb,#E2C88E 22%,transparent);box-shadow:0 0 0 1px #C9A35C}
+.pp-dn-sl{position:relative;height:6px;border-radius:9px;margin:22px 0 6px;background:linear-gradient(90deg,#F2D48A,#C9A35C 45%,#4B3F7A)}
+html[dir="rtl"] .pp-dn-sl{background:linear-gradient(-90deg,#F2D48A,#C9A35C 45%,#4B3F7A)}
+.pp-dn-sl i{position:absolute;top:-6px;width:18px;height:18px;border-radius:50%;background:var(--sand);border:2px solid var(--ink)}
+.pp-dn-lab{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft)}
+.pp-occ{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:16px}
+.pp-occ small{font-size:12px;color:var(--ink-soft)}
+.pp-occ span{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.pp-cta{--sand:#ECE9E2;--ink:#0B0A09;background:radial-gradient(120% 120% at 0% 100%,#4A3B26 0%,#1C1813 55%,#0E0D0B 100%)!important;color:#ECE9E2;border:0;display:flex;flex-direction:column;justify-content:center;gap:10px;grid-column:1/-1}
+.pp-cta .eyebrow{color:#C9A35C}
+.pp-cta h3{font-size:36px;color:#ECE9E2}
+.pp-cta p{margin:0;color:#BDB8AC;max-width:34em}
+.pp-cta .ig-btn{align-self:flex-start;background:linear-gradient(90deg,#C9A35C,#E2C88E);color:#1C1813;margin-top:6px}
+.pp-tl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pp-tl li{border:1px solid var(--line);border-radius:20px;padding:20px 18px;display:flex;flex-direction:column;gap:6px}
+.pp-tl b{font-family:var(--name);font-weight:400;font-size:28px;color:#B08A45;line-height:1}
+.pp-tl h4{margin:4px 0 0;font-size:16px;font-weight:600}
+.pp-tl p{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.75}
+.pp-sims{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pp-sc{font:inherit;display:flex;flex-direction:column;gap:6px;text-align:start;background:none;border:0;padding:0;color:var(--ink);cursor:pointer}
+.pp-sc-ph{display:block;position:relative;aspect-ratio:3/4;border-radius:999px 999px 0 0;background:#DCD8CE;overflow:hidden}
+.pp-sc-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10% 6% 6%;mix-blend-mode:multiply}
+.pp-sc-ph.cover img{object-fit:cover;padding:0;mix-blend-mode:normal}
+.pp-sc b{font-family:var(--name);font-weight:400;font-size:22px;line-height:1.4}
+.pp-sc .price{margin:0;font-size:15px}
+.pp-sticky{position:fixed;left:0;right:0;bottom:0;z-index:3;background:color-mix(in srgb,var(--sand) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));transform:translateY(110%);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.pp.open .pp-sticky{transform:none}
+.pp-sticky .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pp-st-l{display:flex;align-items:center;gap:10px;min-width:0}
+.pp-st-l img{width:46px;height:46px;border-radius:12px;object-fit:contain;background:#DCD8CE;mix-blend-mode:normal;flex:none}
+.pp-st-l div{display:flex;flex-direction:column;min-width:0}
+.pp-st-l b{font-family:var(--name);font-weight:400;font-size:19px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-st-l .price{margin:0;font-size:14px;white-space:nowrap}
+.pp-st-l .price .off,.pp-st-l .price .was{display:none}
+.pp-st-r{display:flex;gap:8px;align-items:center;flex:none}
+.pp-st-r .pp-qty button{height:42px;width:36px}
+.pp-st-r .pp-add{min-height:44px;padding:0 20px}
+.osma ~ * .pp{}
+@media (max-width:900px){
+  .pp-main{grid-template-columns:1fr;gap:24px;padding-block:20px 40px}
+  .pp-info{position:static}
+  .pp-crumbs{display:none}
+  .pp-grid,.pp-sims{grid-template-columns:1fr 1fr}
+  .pp-grid{grid-template-columns:1fr}
+  .pp-tl{grid-template-columns:1fr 1fr}
+  .pp-accw{flex-direction:column-reverse;align-items:stretch}
+  .pp-dn{margin:0 auto}
+  .pp-disc,.pp-tips,.pp-more{padding-block:40px}
+}
+@media (max-width:520px){
+  .pp-st-l b{font-size:16px}.pp-st-r .pp-qty{display:none}
+  .pp-tl{grid-template-columns:1fr}
+  .pp-th{flex-basis:96px}
+  .pp-sc b{font-size:18px}
+}
 /* scent finder quiz */
 .finder-sec{padding-block:72px 24px}
 .finder{background:color-mix(in srgb,var(--sand) 55%,#fff);border:1px solid var(--line);border-radius:32px;padding:44px 40px 28px;box-shadow:0 20px 60px rgba(40,30,10,.06)}
@@ -1000,17 +1131,59 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
     <textarea class="msg-preview" id="preview" readonly hidden aria-label="نص الطلب"></textarea>
   </div>
 </aside>
-<div class="dt-scrim" id="dt-scrim"></div>
-<div class="dt" id="dt" dir="rtl" lang="ar" role="dialog" aria-modal="true" aria-labelledby="dt-name" aria-hidden="true">
-  <div class="dt-pic"><div class="ar" id="dt-ar"><img id="dt-img" alt=""></div></div>
-  <div class="dt-info">
-    <div class="dt-top"><div><span class="br" id="dt-br"></span><h2 id="dt-name"></h2><span class="latin" id="dt-lat"></span></div><button type="button" class="x" id="dt-close" aria-label="اقفل التفاصيل">×</button></div>
-    <ul class="chips" id="dt-chips"></ul>
-    <p class="desc" id="dt-desc"></p>
-    <dl class="pyr" id="dt-pyr"></dl>
-    <p class="soon" id="dt-soon" hidden>التفاصيل الكاملة للعطر ده قريبًا. لو عندك سؤال عنه كلمنا على انستجرام.</p>
-    <div class="dt-foot"><span class="price" id="dt-price"></span><button type="button" class="dt-add" id="dt-add">+ أضف للسلة</button></div>
+<div class="pp" id="pp" dir="rtl" lang="ar" role="dialog" aria-modal="true" aria-labelledby="pp-name" aria-hidden="true" hidden>
+  <div class="pp-bar"><div class="wrap"><button type="button" class="pp-back" id="pp-back">→ رجوع للعطور</button><nav class="pp-crumbs" aria-label="مسار الصفحة"><span>الرئيسية</span><span id="pp-crumb-br"></span><b id="pp-crumb"></b></nav></div></div>
+  <div class="wrap pp-main">
+    <div class="pp-gal"><figure class="pp-fig" id="pp-fig"><img id="pp-img" alt=""></figure></div>
+    <div class="pp-info">
+      <span class="pp-br" id="pp-br"></span>
+      <h2 id="pp-name"></h2>
+      <span class="pp-lat" id="pp-lat"></span>
+      <span class="price pp-price" id="pp-price"></span>
+      <ul class="chips" id="pp-chips"></ul>
+      <div class="pp-buyrow">
+        <div class="pp-qty"><button type="button" id="pp-plus" aria-label="زود">+</button><span id="pp-q">1</span><button type="button" id="pp-minus" aria-label="قلل">−</button></div>
+        <button type="button" class="pp-add" id="pp-add">أضف للسلة</button>
+      </div>
+      <button type="button" class="pp-buy" id="pp-buy">اطلب دلوقتي</button>
+      <div class="pp-mini"><button type="button" id="pp-share">شارك العطر</button><a href="https://ig.me/m/perfumebytaif" target="_blank" rel="noopener">اسأل عن العطر</a></div>
+      <div class="pp-accs">
+        <div class="pp-acc"><button type="button" class="pp-acc-h" aria-expanded="true">الوصف</button><div class="pp-acc-b"><p id="pp-desc"></p></div></div>
+        <div class="pp-acc"><button type="button" class="pp-acc-h" aria-expanded="false">الشحن</button><div class="pp-acc-b" hidden><p>بنشحن لكل محافظات مصر. مصاريف الشحن ومعاد التوصيل بنأكدهم معاك في رسالة الطلب على انستجرام.</p></div></div>
+        <div class="pp-acc"><button type="button" class="pp-acc-h" aria-expanded="false">الاستبدال والاسترجاع</button><div class="pp-acc-b" hidden><p>لو عندك أي مشكلة في طلبك كلمنا على انستجرام، وهنحلها معاك.</p></div></div>
+      </div>
+    </div>
   </div>
+  <section class="pp-disc" id="pp-disc">
+    <div class="wrap">
+      <div class="pp-dhead"><span class="eyebrow">DISCOVER THE SCENT</span><h2 id="pp-dname"></h2><p id="pp-tag"></p></div>
+      <div class="pp-grid">
+        <div class="pp-card" id="pp-pyr-card"><h3>الهرم العطري</h3><p class="pp-sub">مكونات العطر من أول رشة لآخر أثر.</p><div id="pp-pyr"></div></div>
+        <div class="pp-card" id="pp-acc-card"><h3>بصمة العطر</h3><p class="pp-sub">مبنية على مكوناته.</p><div class="pp-accw" id="pp-acc"></div></div>
+        <div class="pp-card" id="pp-perf-card"><h3>الأداء</h3><p class="pp-sub">تقدير تقريبي من مكوناته وتركيزه.</p><div class="pp-perf" id="pp-perf"></div><p class="pp-fine">الثبات والفوحان بيختلفوا حسب طبيعة البشرة والجو وطريقة الاستخدام.</p></div>
+        <div class="pp-card" id="pp-when-card"><h3>إمتى تحطه</h3><p class="pp-sub">المواسم والأوقات اللي بيتألق فيها.</p><div id="pp-when"></div></div>
+        <div class="pp-card pp-cta"><span class="eyebrow">STILL DECIDING?</span><h3>محتار تختار؟</h3><p>ابعتلنا على انستجرام وقولنا بتحب إيه، وإحنا نرشحلك العطر اللي يناسبك.</p><a class="ig-btn" href="https://ig.me/m/perfumebytaif" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>اسألنا على انستجرام</a></div>
+      </div>
+    </div>
+  </section>
+  <section class="pp-tips">
+    <div class="wrap">
+      <div class="pp-dhead"><span class="eyebrow">HOW TO WEAR IT</span><h2>عشان يثبت أكتر</h2></div>
+      <ol class="pp-tl">
+        <li><b>01</b><h4>رشّه على نقاط النبض</h4><p>الرسغ والرقبة وورا الودن، عشان دفا الجسم بيطلّع الريحة.</p></li>
+        <li><b>02</b><h4>متفركش بعد الرش</h4><p>الفرك بيكسر المكونات الخفيفة ويقصّر عمر الريحة.</p></li>
+        <li><b>03</b><h4>رش على هدومك كمان</h4><p>القماش بيمسك الريحة وقت أطول من الجلد.</p></li>
+        <li><b>04</b><h4>احفظه صح</h4><p>بعيد عن الشمس والحرارة والرطوبة، عشان يفضل زي ما هو.</p></li>
+      </ol>
+    </div>
+  </section>
+  <section class="pp-more">
+    <div class="wrap"><div class="pp-dhead"><span class="eyebrow">YOU MAY ALSO LIKE</span><h2>لو عجبك ده، جرّب دول</h2></div><div class="pp-sims" id="pp-sim"></div></div>
+  </section>
+  <div class="pp-sticky"><div class="wrap">
+    <div class="pp-st-l"><img id="pp-thumb" alt=""><div><b id="pp-name2"></b><span class="price" id="pp-price2"></span></div></div>
+    <div class="pp-st-r"><div class="pp-qty"><button type="button" id="pp-plus2" aria-label="زود">+</button><span id="pp-q2">1</span><button type="button" id="pp-minus2" aria-label="قلل">−</button></div><button type="button" class="pp-add" id="pp-add2">أضف للسلة</button></div>
+  </div></div>
 </div>
 <div class="toast" id="toast" role="status"></div>
 
@@ -1245,38 +1418,119 @@ document.getElementById('copy-handle').addEventListener('click',function(){
     'أوسما بودريه':{c:[E,'75 مل']},'أوسما أمبر':{c:[E,'75 مل']},'أوسما أمبري':{c:[E,'75 مل']},'أوسما كوتون':{c:[E,'75 مل']},'أوسما سيتراس':{c:[E,'75 مل']},
     'وايلد كولت إليكسير':{c:[M,E,'200 مل','شرقي خشبي','إصدار 2022'],d:'زعفران ونعناع وفلفل وردي، وقلب جلد وفيتيفر على عنبر رمادي.',n:['زعفران، بوملي، برغموت، فلفل وردي، نعناع','جلد، باتشولي، فيتيفر، لادن','عنبر رمادي، مسك، طحلب البلوط، خشب العنبر']}
   };
-  var $=function(id){return document.getElementById(id)},dt=$('dt'),sc=$('dt-scrim'),cur=null,last=null;
-  function syncAdd(){if(!cur)return;var a=cur.querySelector('.add'),b=$('dt-add');b.textContent=a.textContent;b.classList.toggle('in',a.classList.contains('in'))}
-  function open(card){
-    cur=card;last=document.activeElement;
-    var a=card.querySelector('.add'),k=a.dataset.name,x=D[k]||{},img=card.querySelector('.ph img'),ph=card.querySelector('.ph');
-    $('dt-img').src=img.src;$('dt-img').alt=img.alt;$('dt-ar').classList.toggle('cover',ph.classList.contains('cover'));
-    $('dt-name').textContent=card.querySelector('h3').textContent;
-    var l=card.querySelector('.latin');$('dt-lat').textContent=l?l.textContent:'';
-    var br=card.querySelector('.meta span');$('dt-br').textContent=br?br.textContent:'';
-    var pr=card.querySelector('.price');$('dt-price').className=pr?pr.className:'price';$('dt-price').innerHTML=pr?pr.innerHTML:'';
-    var ch=$('dt-chips');ch.innerHTML='';(x.c||[]).forEach(function(s){var li=document.createElement('li');li.textContent=s;ch.append(li)});ch.hidden=!(x.c||[]).length;
-    $('dt-desc').textContent=x.d||'';$('dt-desc').hidden=!x.d;
-    var py=$('dt-pyr');py.innerHTML='';
-    if(x.n)['المقدمة','القلب','القاعدة'].forEach(function(h,i){var r=document.createElement('div'),t=document.createElement('dt'),d=document.createElement('dd');t.textContent=h;d.textContent=x.n[i];r.append(t,d);py.append(r)});
-    if(x.l){var r=document.createElement('div'),tt=document.createElement('dt'),dd=document.createElement('dd');tt.textContent='المسكات';dd.textContent=x.l.join('، ');r.append(tt,dd);py.append(r)}
-    py.hidden=!(x.n||x.l);$('dt-soon').hidden=!!(x.n||x.l);
-    syncAdd();
-    dt.scrollTop=0;dt.querySelector('.dt-info').scrollTop=0;
-    dt.classList.add('open');sc.classList.add('open');dt.setAttribute('aria-hidden','false');document.body.classList.add('dt-lock');
-    setTimeout(function(){$('dt-close').focus({preventScroll:true})},50);
+  var $=function(id){return document.getElementById(id)},pg=$('pp'),cur=null,last=null,qty=1;
+  var ACC=[
+    ['floral','زهري','#E39AB9',['زهر','ورد','ياسمين','زنبق','فاوانيا','سوسن','بنفسج','يلانج','نيرولي','أزهار']],
+    ['fruity','فاكهي','#E8607A',['تفاح','كمثرى','أناناس','خوخ','مشمش','توت','كشمش','برقوق','رمان']],
+    ['citrus','حمضي','#E9B949',['برغموت','ليمون','يوسفي','جريب','بوملي','برتقال','حمضيات']],
+    ['fresh','منعش','#4FB3C8',['بحري','بحرية','مائي','مائية','ثلج','نعناع','لافندر','أعشاب','إكليل','كاليبسون','العرعر']],
+    ['sweet','حلو','#C98B4F',['فانيل','كراميل','تونكا','مرينج','لوز','عجوة','سكر','لاكتون','بنزوين']],
+    ['spicy','حار','#D2763C',['قرفة','هيل','زعفران','فلفل','زنجبيل','جوزة','يانسون']],
+    ['woody','خشبي','#8A6A4C',['أرز','صندل','خشب','فيتيفر','نجيل','بتولا','البتولا','غاياك','باتشولي','طحلب']],
+    ['leather','جلدي','#6B4A3A',['جلد']],
+    ['amber','عنبري','#B98A3E',['عنبر','عود','بخور','لبان','راتنج','لادن','دخان']],
+    ['musky','مسكي','#A99CC9',['مسك']]
+  ];
+  function accOf(note){for(var i=0;i<ACC.length;i++)for(var j=0;j<ACC[i][3].length;j++)if(note.indexOf(ACC[i][3][j])>=0)return ACC[i];return null}
+  function notes(x){return x.n?x.n.map(function(s){return s.split('، ')}):null}
+  function accords(x){
+    var n=notes(x);if(!n)return [];var w={},tot=0;
+    n.forEach(function(tier,ti){tier.forEach(function(s){var a=accOf(s);if(!a)return;var v=[1,1.2,1.4][ti];w[a[0]]=(w[a[0]]||0)+v;tot+=v})});
+    return ACC.filter(function(a){return w[a[0]]}).map(function(a){return {k:a[0],n:a[1],c:a[2],p:w[a[0]]/tot}}).sort(function(a,b){return b.p-a.p}).slice(0,5);
   }
-  function close(){if(!dt.classList.contains('open'))return;dt.classList.remove('open');sc.classList.remove('open');dt.setAttribute('aria-hidden','true');document.body.classList.remove('dt-lock');if(last&&last.focus)last.focus({preventScroll:true})}
-  document.querySelectorAll('.card').forEach(function(card){
-    var ph=card.querySelector('.ph'),h=card.querySelector('h3');if(!ph||!card.querySelector('.add'))return;
+  function svgEl(t,a){var e=document.createElementNS('http://www.w3.org/2000/svg',t);for(var k in a)e.setAttribute(k,a[k]);return e}
+  function donut(list,label){
+    var s=svgEl('svg',{viewBox:'0 0 120 120','class':'pp-donut','aria-hidden':'true'}),r=46,C=2*Math.PI*r,off=0,sum=list.reduce(function(a,b){return a+b.p},0);
+    s.append(svgEl('circle',{cx:60,cy:60,r:r,fill:'none',stroke:'var(--line)','stroke-width':14}));
+    list.forEach(function(a){var len=a.p/sum*C;s.append(svgEl('circle',{cx:60,cy:60,r:r,fill:'none',stroke:a.c,'stroke-width':14,'stroke-dasharray':(Math.max(len-2,0))+' '+C,'stroke-dashoffset':-off,transform:'rotate(-90 60 60)'}));off+=len});
+    var w=document.createElement('div');w.className='pp-dn';w.append(s);var b=document.createElement('b');b.textContent=label;w.append(b);return w;
+  }
+  function gauge(v,col){
+    var s=svgEl('svg',{viewBox:'0 0 120 70','class':'pp-gauge','aria-hidden':'true'}),r=48,L=Math.PI*r;
+    s.append(svgEl('path',{d:'M12 62 A48 48 0 0 1 108 62',fill:'none',stroke:'var(--line)','stroke-width':12,'stroke-linecap':'round'}));
+    s.append(svgEl('path',{d:'M12 62 A48 48 0 0 1 108 62',fill:'none',stroke:col,'stroke-width':12,'stroke-linecap':'round','stroke-dasharray':(L*v)+' '+L}));
+    return s;
+  }
+  function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e}
+  var LONG={1:['3-4 ساعات','خفيف',.35],2:['6-8 ساعات','طول اليوم',.68],3:['+8 ساعات','ثبات قوي',.92]};
+  var PROJ={1:['قريب من الجلد','هادي',.3],2:['متوسط','ملحوظ',.6],3:['قوي','بيملا المكان',.88]};
+  var OCC={day:'الشغل والنهار',night:'السهرات',date:'الخروجات',special:'المناسبات',every:'كل يوم'};
+  var SEAS=[['winter','الشتاء','❄'],['autumn','الخريف','❦'],['summer','الصيف','☼'],['spring','الربيع','✿']];
+  function slug(c){return c._slug}
+  function mkslug(c){var l=c.querySelector('.latin');return (l?l.textContent:c.querySelector('.add').dataset.name).toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9؀-ۿ]+/g,'-').replace(/^-|-$/g,'')}
+  var cards=[].slice.call(document.querySelectorAll('.card')).filter(function(c){return c.querySelector('.add')});
+  var seen={};cards.forEach(function(c){var s=mkslug(c);seen[s]=(seen[s]||0)+1;c._slug=seen[s]>1?s+'-'+seen[s]:s});
+  function syncAdd(){if(!cur)return;var a=cur.querySelector('.add');['pp-add','pp-add2'].forEach(function(id){var b=$(id);b.textContent=a.classList.contains('in')?a.textContent:'أضف للسلة';b.classList.toggle('in',a.classList.contains('in'))})}
+  function fill(card){
+    cur=card;qty=1;$('pp-q').textContent='1';$('pp-q2').textContent='1';
+    var a=card.querySelector('.add'),k=a.dataset.name,x=D[k]||{},img=card.querySelector('.ph img'),ph=card.querySelector('.ph'),T=(window.taifTags||{})[k];
+    var name=card.querySelector('h3').textContent,l=card.querySelector('.latin'),br=card.querySelector('.meta span'),pr=card.querySelector('.price');
+    ['pp-img','pp-thumb'].forEach(function(id){$(id).src=img.src;$(id).alt=img.alt});$('pp-fig').classList.toggle('cover',ph.classList.contains('cover'));
+    $('pp-name').textContent=name;$('pp-name2').textContent=name;$('pp-dname').textContent=name;$('pp-crumb').textContent=name;
+    $('pp-lat').textContent=l?l.textContent:'';$('pp-br').textContent=br?br.textContent:'';$('pp-crumb-br').textContent=br?br.textContent.split(' · ')[0]:'';
+    ['pp-price','pp-price2'].forEach(function(id){$(id).className=pr?pr.className:'price';$(id).innerHTML=pr?pr.innerHTML:''});
+    var ch=$('pp-chips');ch.innerHTML='';(x.c||[]).forEach(function(s){ch.append(el('li','',s))});ch.hidden=!(x.c||[]).length;
+    $('pp-desc').textContent=x.d||'التفاصيل الكاملة للعطر ده قريبًا. لو عندك سؤال عنه كلمنا على انستجرام.';
+    $('pp-tag').textContent=x.d||'';$('pp-tag').hidden=!x.d;
+    // accords
+    var A=accords(x),ac=$('pp-acc');ac.innerHTML='';$('pp-acc-card').hidden=!A.length;
+    if(A.length){var bars=el('ul','pp-bars');A.forEach(function(a){var li=el('li');li.append(el('span','',a.n));var tr=el('i');var f=el('b');f.style.background=a.c;f.style.width=Math.round(a.p/A[0].p*100)+'%';tr.append(f);li.append(tr);bars.append(li)});ac.append(bars,donut(A,A[0].n))}
+    // pyramid
+    var py=$('pp-pyr'),N=notes(x);py.innerHTML='';
+    var tiers=N?N:(x.l?[x.l]:null),H=N?[['العليا','أول 15 دقيقة','#E9B949'],['القلب','من 15 دقيقة لـ 3 ساعات','#E39AB9'],['القاعدة','3 ساعات وأكتر','#8A6A4C']]:[['المسكات','12 × 20 مل','#A99CC9']];
+    $('pp-pyr-card').hidden=!tiers;
+    if(tiers)tiers.forEach(function(tier,i){var r=el('div','pp-tier'),hd=el('div','pp-th');var sw=el('i');sw.style.background=H[i][2];hd.append(sw,el('b','',H[i][0]),el('small','',H[i][1]));
+      var ul=el('ul','pp-notes');tier.forEach(function(s){var li=el('li');var d=el('i');var ac2=accOf(s);d.style.background=ac2?ac2[2]:'#BDB8AC';li.append(d,el('span','',s));ul.append(li)});r.append(hd,ul);py.append(r)});
+    // performance
+    var pf=$('pp-perf');pf.innerHTML='';$('pp-perf-card').hidden=!T;
+    if(T){[['الثبات',LONG[T.l],'#B08A45'],['الفوحان',PROJ[T.l],'#7A6BB0']].forEach(function(g){var b=el('div','pp-g');b.append(gauge(g[1][2],g[2]),el('small','',g[0]),el('b','',g[1][0]),el('span','',g[1][1]));pf.append(b)})}
+    // when
+    var wn=$('pp-when');wn.innerHTML='';$('pp-when-card').hidden=!(T||A.length);
+    if(T||A.length){
+      var w={};A.forEach(function(a){w[a.k]=a.p});var g=function(k){return w[k]||0};
+      var sc={winter:g('amber')+g('sweet')+g('spicy')+g('leather')+g('woody')*.5,autumn:g('woody')+g('spicy')+g('leather')+g('amber')*.5,summer:g('citrus')+g('fresh')+g('fruity')*.7,spring:g('floral')+g('fruity')+g('citrus')*.5};
+      if(!A.length&&T){T.v.forEach(function(v){if(v==='fresh'){sc.summer+=1;sc.spring+=.6}if(v==='floral'){sc.spring+=1;sc.summer+=.4}if(v==='sweet'){sc.winter+=.8;sc.autumn+=.6}if(v==='woody'){sc.autumn+=1;sc.winter+=.5}if(v==='oud'){sc.winter+=1;sc.autumn+=.7}})}
+      var mx=Math.max(sc.winter,sc.autumn,sc.summer,sc.spring)||1,sg=el('div','pp-seas');
+      SEAS.forEach(function(s){var b=el('div','pp-sea'+(sc[s[0]]>=mx*.6?' on':''));b.append(el('i','',s[2]),el('span','',s[1]));sg.append(b)});
+      var nightish=T?T.o.filter(function(o){return o==='night'||o==='date'||o==='special'}).length/T.o.length:.5;
+      var sl=el('div','pp-dn-sl');var tk=el('i');tk.style.insetInlineStart='calc('+Math.round(nightish*100)+'% - 9px)';sl.append(tk);
+      var lab=el('div','pp-dn-lab');lab.append(el('span','','نهار'),el('span','','ليل'));
+      wn.append(sg,sl,lab);
+      if(T){var oc=el('div','pp-occ');oc.append(el('small','','الأنسب لـ'));T.o.forEach(function(o){oc.append(el('span','',OCC[o]))});wn.append(oc)}
+    }
+    $('pp-disc').hidden=!(A.length||tiers||T);
+    // similar
+    var sim=$('pp-sim');sim.innerHTML='';var TT=window.taifTags||{};
+    var list=cards.filter(function(c){return c!==card}).map(function(c){var t2=TT[c.querySelector('.add').dataset.name],s=0;if(T&&t2){T.v.forEach(function(v){if(t2.v.indexOf(v)>=0)s+=2});T.o.forEach(function(o){if(t2.o.indexOf(o)>=0)s+=1});if(t2.l===T.l)s+=1}if(c.dataset.brand===card.dataset.brand)s+=.5;return {c:c,s:s}}).sort(function(a,b){return b.s-a.s}).slice(0,4);
+    list.forEach(function(o){var c=o.c,b=el('button','pp-sc');b.type='button';var f=el('span','pp-sc-ph'+(c.querySelector('.ph.cover')?' cover':''));var im=document.createElement('img');im.src=c.querySelector('.ph img').src;im.alt='';f.append(im);
+      var p2=c.querySelector('.price');var pp=el('span',p2.className);pp.innerHTML=p2.innerHTML;b.append(f,el('b','',c.querySelector('h3').textContent),pp);b.onclick=function(){go(c,true)};sim.append(b)});
+    syncAdd();
+  }
+  function show(){pg.hidden=false;requestAnimationFrame(function(){pg.classList.add('open')});pg.setAttribute('aria-hidden','false');document.body.classList.add('dt-lock');pg.scrollTop=0;setTimeout(function(){$('pp-back').focus({preventScroll:true})},60)}
+  function hide(){pg.classList.remove('open');pg.setAttribute('aria-hidden','true');document.body.classList.remove('dt-lock');setTimeout(function(){if(!pg.classList.contains('open'))pg.hidden=true},400);if(last&&last.focus)last.focus({preventScroll:true})}
+  function go(card,push){if(!pg.classList.contains('open'))last=document.activeElement;fill(card);show();var h='#p/'+slug(card);if(push!==false&&location.hash!==h){try{history.pushState({pp:1},'',h)}catch(e){}}pg.scrollTop=0}
+  function close(){if(!pg.classList.contains('open'))return;if(history.state&&history.state.pp){history.back()}else{hide();try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}}
+  window.addEventListener('popstate',function(){route()});
+  function route(){var m=location.hash.match(/^#p\/(.+)$/);if(m){var s=decodeURIComponent(m[1]);for(var i=0;i<cards.length;i++)if(slug(cards[i])===s){go(cards[i],false);return}}if(pg.classList.contains('open'))hide()}
+  cards.forEach(function(card){
+    var ph=card.querySelector('.ph'),h=card.querySelector('h3');if(!ph)return;
     var m=document.createElement('span');m.className='more';m.textContent='التفاصيل';ph.append(m);
     ph.setAttribute('role','button');ph.setAttribute('tabindex','0');ph.setAttribute('aria-label','تفاصيل '+h.textContent);
-    ph.addEventListener('click',function(){open(card)});h.addEventListener('click',function(){open(card)});
-    ph.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(card)}});
+    ph.addEventListener('click',function(){go(card)});h.addEventListener('click',function(){go(card)});
+    ph.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go(card)}});
   });
-  $('dt-add').addEventListener('click',function(){if(cur){cur.querySelector('.add').click();syncAdd()}});
-  $('dt-close').onclick=close;sc.onclick=close;
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+  function addN(){if(!cur)return;for(var i=0;i<qty;i++)cur.querySelector('.add').click();syncAdd()}
+  $('pp-add').onclick=addN;$('pp-add2').onclick=addN;
+  $('pp-buy').onclick=function(){if(!cur)return;if(!cur.querySelector('.add').classList.contains('in'))addN();close();setTimeout(function(){$('cart-open').click()},420)};
+  function setQ(d){qty=Math.max(1,Math.min(9,qty+d));$('pp-q').textContent=qty;$('pp-q2').textContent=qty}
+  [['pp-plus',1],['pp-minus',-1],['pp-plus2',1],['pp-minus2',-1]].forEach(function(b){$(b[0]).onclick=function(){setQ(b[1])}});
+  $('pp-back').onclick=close;
+  pg.querySelectorAll('.pp-acc-h').forEach(function(b){b.onclick=function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',o?'false':'true');b.nextElementSibling.hidden=o}});
+  $('pp-share').onclick=function(){var u=location.href;try{if(navigator.share){navigator.share({title:$('pp-name').textContent,url:u});return}}catch(e){}try{navigator.clipboard.writeText(u);var b=$('pp-share'),o=b.textContent;b.textContent='اتنسخ اللينك ✓';setTimeout(function(){b.textContent=o},1600)}catch(e){}};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&pg.classList.contains('open')&&!document.getElementById('drawer').classList.contains('open'))close()});
+  document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.add,.qty button'))setTimeout(syncAdd,0)});
+  window.taifOpenProduct=function(name){for(var i=0;i<cards.length;i++)if(cards[i].querySelector('.add').dataset.name===name){go(cards[i]);return}};
+  setTimeout(route,0);
 })();
 
 </script>
@@ -1331,7 +1585,7 @@ document.getElementById('copy-handle').addEventListener('click',function(){
   $('st-add').onclick=function(){cards[S[i].k].querySelector('.add').click();info()};
   var x0=null;st.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
   st.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>40){go(dx<0?i+1:i-1);auto()}});
-  document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.add,.qty button,#dt-add'))setTimeout(info,0)});
+  document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.add,.qty button'))setTimeout(info,0)});
   window.taifStage={relang:function(){notes();info()}};
   go(0);auto();
 })();
@@ -1370,6 +1624,7 @@ document.getElementById('copy-handle').addEventListener('click',function(){
     'أوسما كوتون':{v:['fresh'],o:['every','day'],l:2},
     'أوسما سيتراس':{v:['fresh'],o:['day','every'],l:2}
   };
+  window.taifTags=T;
   var Q=[
     {k:'g',q:'العطر لمين؟',a:[['men','ليه','رجالي'],['women','ليها','حريمي'],['unisex','للاتنين','يناسب الكل'],['any','فاجئني','أي حاجة حلوة']]},
     {k:'v',q:'إيه الطابع اللي بتحبه؟',a:[['fresh','منعش ونضيف','حمضيات وبحر'],['sweet','حلو ودافي','فانيليا وكراميل'],['floral','زهري وناعم','ورد وياسمين'],['woody','خشبي وأنيق','أخشاب وجلد'],['oud','عود وعنبر','شرقي وتقيل']]},
@@ -1434,7 +1689,7 @@ document.getElementById('copy-handle').addEventListener('click',function(){
     if(shown<res.length){var m=document.createElement('button');m.type='button';m.className='ghost';m.textContent='شوف ترشيحات أكتر';m.onclick=function(){shown+=4;paint()};f.append(m)}
     var r=document.createElement('button');r.type='button';r.className='ghost';r.textContent='ابدأ من الأول';r.onclick=function(){step=0;ans={};swap(draw)};f.append(r);
   }
-  document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.add,.qty button,#dt-add,#st-add'))setTimeout(function(){[].forEach.call(document.querySelectorAll('.fd-card'),function(x){x._sync&&x._sync()})},0)});
+  document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.add,.qty button,#st-add'))setTimeout(function(){[].forEach.call(document.querySelectorAll('.fd-card'),function(x){x._sync&&x._sync()})},0)});
   $('fd-back').onclick=function(){if(step>0){step--;swap(draw)}};
   var _draw=draw;draw=function(){$('fd-foot').innerHTML='';_draw()};
   draw();
@@ -1444,6 +1699,85 @@ document.getElementById('copy-handle').addEventListener('click',function(){
 <script>
 (function(){
   var E={
+    "→ رجوع للعطور":"← Back to perfumes",
+    "@مسار الصفحة":"Breadcrumb",
+    "@زود":"Increase",
+    "@قلل":"Decrease",
+    "أضف للسلة":"Add to bag",
+    "اطلب دلوقتي":"Order now",
+    "شارك العطر":"Share",
+    "اسأل عن العطر":"Ask about it",
+    "اتنسخ اللينك ✓":"Link copied ✓",
+    "الوصف":"Description",
+    "الشحن":"Shipping",
+    "الاستبدال والاسترجاع":"Exchanges & returns",
+    "بنشحن لكل محافظات مصر. مصاريف الشحن ومعاد التوصيل بنأكدهم معاك في رسالة الطلب على انستجرام.":"We ship to every governorate in Egypt. Shipping fees and delivery time are confirmed with you in your order message on Instagram.",
+    "لو عندك أي مشكلة في طلبك كلمنا على انستجرام، وهنحلها معاك.":"If anything is wrong with your order, message us on Instagram and we will sort it out with you.",
+    "الهرم العطري":"Fragrance pyramid",
+    "مكونات العطر من أول رشة لآخر أثر.":"The notes from the first spray to the last trace.",
+    "بصمة العطر":"Scent profile",
+    "مبنية على مكوناته.":"Based on its notes.",
+    "الأداء":"Performance",
+    "تقدير تقريبي من مكوناته وتركيزه.":"A rough estimate from its notes and concentration.",
+    "الثبات والفوحان بيختلفوا حسب طبيعة البشرة والجو وطريقة الاستخدام.":"Longevity and projection vary with skin type, weather and how you apply it.",
+    "إمتى تحطه":"When to wear it",
+    "المواسم والأوقات اللي بيتألق فيها.":"The seasons and moments it shines in.",
+    "محتار تختار؟":"Still deciding?",
+    "ابعتلنا على انستجرام وقولنا بتحب إيه، وإحنا نرشحلك العطر اللي يناسبك.":"Message us on Instagram, tell us what you like, and we will suggest the perfume that suits you.",
+    "اسألنا على انستجرام":"Ask us on Instagram",
+    "عشان يثبت أكتر":"Make it last longer",
+    "رشّه على نقاط النبض":"Spray on pulse points",
+    "الرسغ والرقبة وورا الودن، عشان دفا الجسم بيطلّع الريحة.":"Wrists, neck and behind the ears, where body warmth lifts the scent.",
+    "متفركش بعد الرش":"Don’t rub after spraying",
+    "الفرك بيكسر المكونات الخفيفة ويقصّر عمر الريحة.":"Rubbing breaks the lighter notes and shortens the scent’s life.",
+    "رش على هدومك كمان":"Spray your clothes too",
+    "القماش بيمسك الريحة وقت أطول من الجلد.":"Fabric holds scent longer than skin.",
+    "احفظه صح":"Store it right",
+    "بعيد عن الشمس والحرارة والرطوبة، عشان يفضل زي ما هو.":"Away from sun, heat and humidity, so it stays as it should.",
+    "لو عجبك ده، جرّب دول":"If you like this, try these",
+    "العليا":"Top",
+    "القلب":"Heart",
+    "القاعدة":"Base",
+    "المسكات":"The musks",
+    "أول 15 دقيقة":"First 15 minutes",
+    "من 15 دقيقة لـ 3 ساعات":"15 minutes to 3 hours",
+    "3 ساعات وأكتر":"3 hours and beyond",
+    "زهري":"Floral",
+    "فاكهي":"Fruity",
+    "حمضي":"Citrus",
+    "منعش":"Fresh",
+    "حلو":"Sweet",
+    "حار":"Spicy",
+    "خشبي":"Woody",
+    "جلدي":"Leather",
+    "عنبري":"Amber",
+    "مسكي":"Musky",
+    "الثبات":"Longevity",
+    "الفوحان":"Projection",
+    "3-4 ساعات":"3–4 hours",
+    "6-8 ساعات":"6–8 hours",
+    "+8 ساعات":"8+ hours",
+    "خفيف":"Light",
+    "طول اليوم":"All day",
+    "ثبات قوي":"Long-lasting",
+    "قريب من الجلد":"Close to skin",
+    "هادي":"Soft",
+    "متوسط":"Moderate",
+    "ملحوظ":"Noticeable",
+    "قوي":"Strong",
+    "بيملا المكان":"Fills the room",
+    "الشتاء":"Winter",
+    "الخريف":"Autumn",
+    "الصيف":"Summer",
+    "الربيع":"Spring",
+    "نهار":"Day",
+    "ليل":"Night",
+    "الأنسب لـ":"Best for",
+    "الشغل والنهار":"Work & daytime",
+    "السهرات":"Evenings out",
+    "الخروجات":"Outings",
+    "المناسبات":"Occasions",
+    "كل يوم":"Every day",
     'عروض جمعة نوفمبر بدأت: خصومات على 19 عطر':'November Friday offers are on: discounts on 19 perfumes',
     'شوف العروض':'See offers','الرئيسية':'Home','العطور':'Perfumes','السلة':'Bag','تتبّع طلبك':'Track order','تواصل معنا':'Contact','انستجرام':'Instagram',
     'حضورك يسبقك':'Your presence arrives first,','وأثرك يبقى':'your trace stays',
