@@ -8,6 +8,8 @@
 <meta property="og:title" content="perfume.by.taif">
 <meta property="og:description" content="عطور أصلية مختارة بعناية. اطلب على انستجرام perfumebytaif.">
 <meta name="theme-color" content="#E7E4DD">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>try{if(localStorage.getItem("taif-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
@@ -1216,10 +1218,23 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
   function money(n){return n.toLocaleString('en-US')+' ج.م'}
   function sum(){var s=0,miss=[];for(var k in cart){if(PRICE[k])s+=PRICE[k]*cart[k];else miss.push(k)}return {s:s,miss:miss}}
   /* discount codes: code -> {p: percent} or {a: fixed amount in EGP} */
-  var CODES={'OM22':{a:150},'BS2':{a:100,min:2000},'FT26':{a:100,min:2000}};
+  var CODES={'f153b16aeda06ba4a72156a3':{a:150},'84eaa4c694b30e8f017cf94f':{a:100,min:2000},'9309733e647271bb366e7e93':{a:100,min:2000}};
+  /* codes are stored as salted SHA-256 so they can't be read from the page source */
+  function sha(s){var K=[],H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19],i,j,n=2;
+    for(i=0;K.length<64;n++){for(j=2;j*j<=n;j++)if(n%j===0)break;if(j*j>n)K.push((Math.pow(n,1/3)*4294967296)|0)}
+    var b=unescape(encodeURIComponent(s)),l=b.length,w=[];b+='\x80';while(b.length%64!==56)b+='\x00';
+    for(i=0;i<b.length;i++)w[i>>2]|=b.charCodeAt(i)<<((3-i%4)*8);w.push(0,(l*8)|0);
+    for(j=0;j<w.length;j+=16){var W=w.slice(j,j+16),a=H.slice(0);
+      for(i=0;i<64;i++){if(i>15){var x=W[i-15],y=W[i-2];W[i]=(W[i-16]+((x>>>7|x<<25)^(x>>>18|x<<14)^(x>>>3))+W[i-7]+((y>>>17|y<<15)^(y>>>19|y<<13)^(y>>>10)))|0}
+        var e=a[4],t1=a[7]+((e>>>6|e<<26)^(e>>>11|e<<21)^(e>>>25|e<<7))+((e&a[5])^(~e&a[6]))+K[i]+W[i],c=a[0],t2=((c>>>2|c<<30)^(c>>>13|c<<19)^(c>>>22|c<<10))+((c&a[1])^(c&a[2])^(a[1]&a[2]));
+        a=[(t1+t2)|0].concat(a.slice(0,7));a[4]=(a[4]+t1)|0}
+      for(i=0;i<8;i++)H[i]=(H[i]+a[i])|0}
+    return H.map(function(v){return ('0000000'+(v>>>0).toString(16)).slice(-8)}).join('')}
+  function codeOf(c){return c?CODES[sha('taif:'+c).slice(0,24)]:null}
+
   var CODE='';try{CODE=localStorage.getItem('taif-code')||''}catch(e){}
-  if(!CODES[CODE])CODE='';
-  function disc(s){var c=CODES[CODE];if(!c||!s||(c.min&&s<c.min))return 0;return c.p?Math.round(s*c.p/100):Math.min(c.a,s)}
+  if(!codeOf(CODE))CODE='';
+  function disc(s){var c=codeOf(CODE);if(!c||!s||(c.min&&s<c.min))return 0;return c.p?Math.round(s*c.p/100):Math.min(c.a,s)}
   /* Osma offer: any 3 Osma perfumes for 5,400 until the countdown ends */
   var OS_END=Date.UTC(2026,9,31,9,30),OS_SET=5400;
   function osmaN(){var n=0;for(var k in cart)if(k.indexOf('أوسما')===0)n+=cart[k];return n}
@@ -1257,7 +1272,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
       q.append(plus,num,minus);li.append(nm,q);ul.append(li);
     });
     $('empty').hidden=!!n;$('fields').hidden=!n;$('sum').hidden=!n;
-    var S=sum(),B=bundle(),D=disc(S.s-B);if(CODE&&CODES[CODE].min){var lo=S.s-B<CODES[CODE].min;codeMsg(lo?'الكود ده بيشتغل على الطلبات من '+money(CODES[CODE].min)+' وأكتر':'تم تطبيق الكود: خصم '+money(CODES[CODE].a),!lo)}$('bundle-row').hidden=!B;if(B)$('bundle-val').textContent='− '+money(B);var on=Date.now()<OS_END,r=osmaN()%3;$('os-hint').hidden=!(on&&r);if(on&&r)$('os-hint').textContent=r===2?'ضيف عطر كمان من أوسما وخد التلاتة بـ 5,400 ج.م':'ضيف عطرين كمان من أوسما وخد التلاتة بـ 5,400 ج.م';$('disc-row').hidden=!D;if(D){$('disc-code').textContent=CODE;$('disc-val').textContent='− '+money(D)}$('sum-val').textContent=money(S.s-B-D);$('ipa-amt').textContent=S.s?money(S.s-B-D):'الإجمالي';$('sum-note').textContent=S.miss.length?'(+ '+S.miss.join(' و ')+')':'(من غير الشحن)';
+    var S=sum(),B=bundle(),D=disc(S.s-B);var cc=codeOf(CODE);if(cc&&cc.min){var lo=S.s-B<cc.min;codeMsg(lo?'الكود ده بيشتغل على الطلبات من '+money(cc.min)+' وأكتر':'تم تطبيق الكود: خصم '+money(cc.a),!lo)}$('bundle-row').hidden=!B;if(B)$('bundle-val').textContent='− '+money(B);var on=Date.now()<OS_END,r=osmaN()%3;$('os-hint').hidden=!(on&&r);if(on&&r)$('os-hint').textContent=r===2?'ضيف عطر كمان من أوسما وخد التلاتة بـ 5,400 ج.م':'ضيف عطرين كمان من أوسما وخد التلاتة بـ 5,400 ج.م';$('disc-row').hidden=!D;if(D){$('disc-code').textContent=CODE;$('disc-val').textContent='− '+money(D)}$('sum-val').textContent=money(S.s-B-D);$('ipa-amt').textContent=S.s?money(S.s-B-D):'الإجمالي';$('sum-note').textContent=S.miss.length?'(+ '+S.miss.join(' و ')+')':'(من غير الشحن)';
     $('send').setAttribute('aria-disabled',n?'false':'true');
     document.querySelectorAll('.add[data-name]').forEach(function(b){
       var inn=!!cart[b.dataset.name];b.classList.toggle('in',inn&&!b.classList.contains('ig-btn'));
@@ -1294,7 +1309,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
   function applyCode(){
     var v=$('c-code').value.trim().toUpperCase().replace(/\s+/g,'');
     if(!v){CODE='';codeMsg('',1)}
-    else if(CODES[v]){CODE=v;var c=CODES[v];codeMsg('تم تطبيق الكود: خصم '+(c.p?c.p+'%':money(c.a)),1)}
+    else if(codeOf(v)){CODE=v;var c=codeOf(v);codeMsg('تم تطبيق الكود: خصم '+(c.p?c.p+'%':money(c.a)),1)}
     else{CODE='';codeMsg('الكود ده مش صحيح أو انتهى',0)}
     try{localStorage.setItem('taif-code',CODE)}catch(e){}
     render();
@@ -1988,8 +2003,8 @@ document.getElementById('copy-handle').addEventListener('click',function(){
   if(tick()){var iv=setInterval(function(){if(!tick())clearInterval(iv)},1000)}
 })();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 <script>
 (function(){
   if(!window.gsap||!window.ScrollTrigger){document.documentElement.classList.remove('gs-wait');return}
