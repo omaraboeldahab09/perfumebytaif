@@ -102,7 +102,7 @@ textarea.paste{min-height:120px;font-size:14px;line-height:1.5;direction:rtl}
 <body>
 <div class="wrap">
   <header>
-    <div><h1>لوحة إدارة طيف</h1><small>تأكيد الطلبات وطباعة الفواتير وتحديث حالتها</small></div>
+    <div><h1>لوحة إدارة طيف</h1><small>تأكيد الطلبات وطباعة الفواتير وتحديث حالتها · نسخة 3</small></div>
     <button class="btn ghost sm" id="logout" type="button" hidden>تسجيل خروج</button>
   </header>
 
@@ -265,19 +265,37 @@ textarea.paste{min-height:120px;font-size:14px;line-height:1.5;direction:rtl}
   function num(s){return +(String(s||'').replace(/[٠-٩]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.indexOf(d)}).replace(/[^\d]/g,''))||0}
   function money2(n){return n.toLocaleString('en-US')+' ج.م'}
   function parseMsg(txt){
-    var clean=String(txt||'').replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF\u061C]/g,'').replace(/[\u00A0\u2007\u202F]/g,' ').replace(/[٠-٩]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.indexOf(d)}).replace(/：/g,':');
-    var L=clean.split(/\r?\n/).map(function(s){return s.trim()}),r={items:[],adj:[],raw:txt||''},key=null,seenTot=false;
-    var K={'الاسم':'name','الموبايل':'phone','المحافظة':'gov','المدينة / المركز':'city','العنوان':'addr','طريقة الدفع':'pay','الإجمالي':'total','قبل الخصم':'sub'};
-    L.forEach(function(l){
-      if(!l){key=null;return}
-      var m=l.match(/رقم الطلب\s*:\s*([A-Za-z]{2}-?[A-Za-z0-9]{4})/);if(m){r.id=normId(m[1].replace(/^([A-Za-z]{2})-?/,'$1-'));key=null;return}
-      m=l.match(/^(?:[•·●▪\-\*]\s*)?(.+?)\s*[×xX✕✖*]\s*(\d+)\s*(?:=\s*(.*))?$/);
-      if(m&&!/:/.test(m[1])&&!seenTot){r.items.push({n:m[1].trim(),q:+m[2],p:m[3]&&/\d/.test(m[3])?num(m[3]):null});key=null;return}
-      m=l.match(/^(.+?)\s*\(\s*[^\d()]{0,4}\s*([\d,]+)[^)]*\)\s*$/);if(m&&!/^الإجمالي/.test(l)&&!/^\s*[•·]/.test(l)){r.adj.push({n:m[1].replace(/:\s*$/,'').trim(),a:num(m[2])});key=null;return}
-      m=l.match(/^([^:]{2,20}?)\s*:\s*(.*)$/);
-      if(m&&K[m[1].trim()]){key=K[m[1].trim()];if(key==='total')seenTot=true;r[key]=key==='total'||key==='sub'?num(m[2].split('(')[0]):m[2];if(key!=='addr')key=null;return}
-      if(key==='addr'){r.addr+=' '+l}
+    // Works on both normal text and the scrambled order Instagram/iOS sometimes produces when copying RTL text.
+    var clean=String(txt||'').replace(/[​-‏‪-‮⁦-⁩﻿؜]/g,'').replace(/[   ]/g,' ').replace(/[٠-٩]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.indexOf(d)}).replace(/：/g,':').replace(/٬/g,',');
+    var L=clean.split(/\r?\n/).map(function(s){return s.trim()}).filter(Boolean),r={items:[],adj:[],raw:txt||''};
+    function nums(s){return (s.match(/(^|[^A-Za-z0-9])(\d[\d,]*)(?![A-Za-z0-9])/g)||[]).map(function(x){return num(x)})}
+    function strip(s,k){return s.replace(k,'').replace(/^\s*:\s*|\s*:\s*$/g,'').replace(/\s*:\s*/,' ').trim()}
+    var K=[['الموبايل','phone'],['المحافظة','gov'],['المدينة / المركز','city'],['المدينة','city'],['العنوان','addr'],['طريقة الدفع','pay'],['الاسم','name']];
+    var idm=clean.match(/\b(TF)\s*-?\s*([A-Za-z0-9]{4})\b/i);if(idm)r.id=normId(idm[1]+'-'+idm[2]);
+    var after=null,unk=[];
+    L.forEach(function(l,i){
+      if(/طلب جديد/.test(l)||/رقم الطلب/.test(l))return;
+      if(/الإجمالي/.test(l)){r.total=Math.max.apply(null,[0].concat(nums(l)));return}
+      if(/قبل الخصم/.test(l)){r.sub=Math.max.apply(null,[0].concat(nums(l)));return}
+      if(/^[•·●▪]|[•·●▪]$/.test(l)){
+        var ns=nums(l),pr=null,q=1;
+        if(ns.length){pr=Math.max.apply(null,ns);var rest=ns.slice();rest.splice(rest.indexOf(pr),1);if(rest.length)q=rest[0];if(ns.length===1&&!/[\d,]{3,}/.test(l)){q=pr;pr=null}}
+        var n=l.replace(/[•·●▪]/g,'').replace(/ج\.?\s?م/g,'').replace(/\(?السعر عند الطلب\)?/,'').replace(/(^|\s)[xX×✕✖*=]+(?=\s|\d|$)/g,' ').replace(/[\d,]+/g,' ').replace(/[=×✕✖]/g,' ').replace(/(^|\s)[xX](\s|$)/g,' ').replace(/\s+/g,' ').trim();
+        r.items.push({n:n||l,q:q,p:pr});return;
+      }
+      if(/كود الخصم|عرض|خصم/.test(l)&&/\d/.test(l)){
+        var ns2=nums(l),code=(l.match(/\b[A-Z][A-Z0-9]{2,}\b/)||[])[0];
+        var pm=l.match(/\(\s*[^\d()]{0,4}\s*([\d,]+)/)||l.match(/([\d,]+)\s*\^?\s*[−\-]/)||l.match(/[−\-]\s*([\d,]+)/),amt=pm?num(pm[1]):Math.max.apply(null,ns2);
+        var lab=/كود الخصم/.test(l)?'كود الخصم'+(code?': '+code:''):(l.indexOf('(')>0?l.slice(0,l.indexOf('(')):l.replace(/[\d,]+\s*\^?\s*[−\-]|[−\-]\s*[\d,]+|ج\.?\s?م|[()^]/g,' ')).replace(/\s+/g,' ').trim();
+        if(ns2.length)r.adj.push({n:lab,a:amt});return;
+      }
+      for(var k=0;k<K.length;k++){if(l.indexOf(K[k][0])>=0){if(!r[K[k][1]])r[K[k][1]]=strip(l,K[k][0]);after=K[k][1];return}}
+      if(after==='addr'){r.addr+=' '+l;return}
+      unk.push({l:l,after:after});
     });
+    if(!r.name){var c=unk.filter(function(u){return /:/.test(u.l)})[0]||unk.filter(function(u){return u.after==='pay'})[0];
+      if(c){var parts=c.l.split(':').map(function(s){return s.trim()}).filter(Boolean).sort(function(a,b){return b.length-a.length});r.name=parts[0]||''}}
+    if(r.phone){var g=r.phone.split(/\s+/).filter(Boolean);if(g.length>1&&!/^0/.test(g[0])){var z=g.findIndex(function(x){return /^0/.test(x)});if(z>0)r.phone=g.slice(z).concat(g.slice(0,z)).join(' ')}}
     return r;
   }
   function invHTML(id,d,ship,cod){
