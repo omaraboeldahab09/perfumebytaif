@@ -1702,7 +1702,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
   function money(n){return n.toLocaleString('en-US')+' ج.م'}
   function sum(){var s=0,miss=[];for(var k in cart){if(PRICE[k])s+=PRICE[k]*cart[k];else miss.push(k)}return {s:s,miss:miss}}
   /* discount codes: code -> {p: percent} or {a: fixed amount in EGP} */
-  var CODES={'f153b16aeda06ba4a72156a3':{a:150},'84eaa4c694b30e8f017cf94f':{a:100,min:2000},'9309733e647271bb366e7e93':{a:100,min:2000}};
+  var CODES={'f153b16aeda06ba4a72156a3':{a:150},'84eaa4c694b30e8f017cf94f':{a:100,min:2000},'9309733e647271bb366e7e93':{a:100,min:2000},'ed4035d87355aba8eca7c358':{a:150,min:2000},'f59ff6923e07113921af91f5':{a:150,min:2000},'95444f365c1689ed070c4dc4':{a:150,min:2000},'1e087210b26e69302b4c77aa':{a:150,min:2000},'6a5d55ce75e54c73ba4985e1':{a:150,min:2000}};
   /* codes are stored as salted SHA-256 so they can't be read from the page source */
   function sha(s){var K=[],H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19],i,j,n=2;
     for(i=0;K.length<64;n++){for(j=2;j*j<=n;j++)if(n%j===0)break;if(j*j>n)K.push((Math.pow(n,1/3)*4294967296)|0)}
