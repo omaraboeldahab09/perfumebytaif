@@ -62,13 +62,47 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .savebar{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--ink);color:var(--sand);border-radius:999px;padding:8px 8px 8px 18px;margin-top:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
 .savebar .btn{background:var(--sand);color:var(--ink)}
 .savebar span{font-size:14px;padding-inline-start:10px}
+.o-tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn.blue{background:var(--ice);color:#fff}
+textarea.paste{min-height:120px;font-size:14px;line-height:1.5;direction:rtl}
+.modal{position:fixed;inset:0;background:rgba(14,14,13,.55);display:flex;align-items:flex-start;justify-content:center;padding:20px 12px;overflow:auto;z-index:50}
+.modal .box{background:var(--sand);border-radius:20px;max-width:560px;width:100%;padding:18px;display:flex;flex-direction:column;gap:12px}
+.modal .box h3{margin:0;font-size:18px}
+.m-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.inv{background:#fff;color:#111;border:1px solid #ddd;border-radius:10px;padding:18px 18px 14px;font-size:13px;line-height:1.5;max-width:420px;margin-inline:auto;width:100%}
+.inv-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-bottom:2px solid #111;padding-bottom:10px;margin-bottom:10px}
+.inv-brand b{display:block;font-size:22px;letter-spacing:.02em}
+.inv-brand span{font-size:11px;color:#555;direction:ltr;display:block}
+.inv-no{text-align:left}
+.inv-no small{display:block;font-size:10px;color:#555}
+.inv-no strong{display:block;font-size:24px;direction:ltr;letter-spacing:.06em;line-height:1.1;border:2px solid #111;border-radius:8px;padding:4px 8px;margin-top:2px}
+.inv-sec{margin-bottom:10px}
+.inv-sec h4{margin:0 0 4px;font-size:11px;color:#555;font-weight:500}
+.inv-sec p{margin:0}
+.inv table{width:100%;border-collapse:collapse;margin-bottom:8px}
+.inv th{font-size:11px;color:#555;font-weight:500;text-align:start;border-bottom:1px solid #111;padding:4px 0}
+.inv td{padding:5px 0;border-bottom:1px dashed #ccc;vertical-align:top}
+.inv td.n,.inv th.n{text-align:end;white-space:nowrap;padding-inline-start:8px;font-variant-numeric:tabular-nums}
+.inv-tot{display:flex;flex-direction:column;gap:2px}
+.inv-tot div{display:flex;justify-content:space-between;gap:10px}
+.inv-tot .big{font-size:16px;font-weight:600;border-top:2px solid #111;padding-top:6px;margin-top:4px}
+.inv-tot .cod{font-size:15px;font-weight:600;background:#111;color:#fff;border-radius:6px;padding:4px 8px;margin-top:6px}
+.inv-foot{margin-top:12px;padding-top:8px;border-top:1px solid #ddd;font-size:11px;color:#555;display:flex;justify-content:space-between;gap:8px}
+#print-area{display:none}
+@media print{
+  @page{size:A5;margin:8mm}
+  body{background:#fff}
+  body>*:not(#print-area){display:none!important}
+  #print-area{display:block!important}
+  #print-area .inv{border:0;max-width:none;padding:0;font-size:13px}
+}
 @media (max-width:560px){.row{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.pills{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div><h1>لوحة إدارة طيف</h1><small>تأكيد الطلبات وتحديث حالتها</small></div>
+    <div><h1>لوحة إدارة طيف</h1><small>تأكيد الطلبات وطباعة الفواتير وتحديث حالتها</small></div>
     <button class="btn ghost sm" id="logout" type="button" hidden>تسجيل خروج</button>
   </header>
 
@@ -100,7 +134,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink)}
         <label for="new-status">الحالة<select id="new-status"></select></label>
       </div>
       <label for="new-note">ملحوظة للعميل (اختياري، العميل بيشوفها في التتبع)<input id="new-note" placeholder="مثلًا: هيوصلك يوم الخميس"></label>
-      <button class="btn" id="add-btn" type="button">ضيف الطلب</button>
+      <label for="new-msg">أو الصق رسالة الطلب كاملة من انستجرام (اختياري، بيملأ رقم الطلب لوحده وبيعمل الفاتورة)<textarea id="new-msg" class="paste" placeholder="طلب جديد من موقع طيف&#10;رقم الطلب: TF-7K3P&#10;…"></textarea></label>
+      <div class="o-tools"><button class="btn" id="add-btn" type="button">ضيف الطلب</button><button class="btn blue" id="add-inv-btn" type="button">أكّد الطلب واطبع الفاتورة</button></div>
       <div id="add-msg"></div>
     </div>
 
@@ -115,6 +150,25 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink)}
     <div id="save-msg" style="margin-top:12px"></div>
   </section>
 </div>
+
+<div class="modal" id="inv-modal" hidden role="dialog" aria-modal="true" aria-labelledby="inv-title">
+  <div class="box">
+    <h3 id="inv-title">فاتورة الطلب</h3>
+    <label for="inv-text">رسالة الطلب (الصقها من انستجرام)<textarea id="inv-text" class="paste"></textarea></label>
+    <div class="row">
+      <label for="inv-ship">مصاريف الشحن (اختياري)<input id="inv-ship" inputmode="numeric" dir="ltr" placeholder="0"></label>
+      <label for="inv-cod">المطلوب تحصيله عند الاستلام<input id="inv-cod" inputmode="numeric" dir="ltr" placeholder="0 لو مدفوع"></label>
+    </div>
+    <div id="inv-msg"></div>
+    <div id="inv-preview"></div>
+    <div class="m-actions">
+      <button class="btn ghost" id="inv-close" type="button">قفل</button>
+      <button class="btn blue" id="inv-print" type="button">أكّد واطبع</button>
+    </div>
+    <p class="note">بيانات العميل في الفاتورة بتتحفظ على الجهاز ده بس، ومش بتترفع على الموقع.</p>
+  </div>
+</div>
+<div id="print-area"></div>
 
 <script>
 (function(){
@@ -168,11 +222,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink)}
       var o=orders[id],el=document.createElement('div');el.className='order '+(o.status||'');
       el.innerHTML='<div class="o-head"><span class="o-id">'+esc(id)+'</span><span class="o-date">آخر تحديث: '+esc(o.date||'—')+'</span></div>'+
         '<div class="pills">'+STEPS.map(function(s){return '<button type="button" class="pill'+(o.status===s[0]?' on':'')+'" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div>'+
-        '<div class="o-foot"><input aria-label="ملحوظة للعميل" placeholder="ملحوظة للعميل" value="'+esc(o.note||'').replace(/"/g,'&quot;')+'"><button type="button" class="del">مسح</button></div>';
+        '<div class="o-foot"><input aria-label="ملحوظة للعميل" placeholder="ملحوظة للعميل" value="'+esc(o.note||'').replace(/"/g,'&quot;')+'"><button type="button" class="del">مسح</button></div>'+
+        '<div class="o-tools"><button type="button" class="btn sm blue mk-inv">'+(o.status==='received'?'أكّد واطبع الفاتورة':'الفاتورة')+'</button></div>';
       el.querySelectorAll('.pill').forEach(function(p){p.onclick=function(){o.status=p.dataset.s;o.date=today();setDirty(true);render()}});
+      el.querySelector('.mk-inv').onclick=function(){openInv(id)};
       var inp=el.querySelector('input');inp.oninput=function(){o.note=inp.value;setDirty(true)};
       var del=el.querySelector('.del');del.onclick=function(){
-        if(del.dataset.sure){delete orders[id];setDirty(true);render()}else{del.dataset.sure='1';del.textContent='متأكد؟ دوس تاني';setTimeout(function(){del.textContent='مسح';delete del.dataset.sure},3000)}
+        if(del.dataset.sure){delete orders[id];try{localStorage.removeItem(INVK+id)}catch(e){}setDirty(true);render()}else{del.dataset.sure='1';del.textContent='متأكد؟ دوس تاني';setTimeout(function(){del.textContent='مسح';delete del.dataset.sure},3000)}
       };
       list.append(el);
     });
@@ -204,10 +260,81 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink)}
     msg('add-msg','ok',(existed?'اتحدّث الطلب ':'اتضاف الطلب ')+id+'. متنساش تدوس "احفظ" تحت.');
     filter='all';setDirty(true);render();
   };
+
+  var INVK='taif-inv-';
+  function num(s){return +(String(s||'').replace(/[٠-٩]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.indexOf(d)}).replace(/[^\d]/g,''))||0}
+  function money2(n){return n.toLocaleString('en-US')+' ج.م'}
+  function parseMsg(txt){
+    var L=(txt||'').split(/\r?\n/).map(function(s){return s.trim()}),r={items:[],adj:[],raw:txt||''},key=null;
+    var K={'الاسم':'name','الموبايل':'phone','المحافظة':'gov','المدينة / المركز':'city','العنوان':'addr','طريقة الدفع':'pay','الإجمالي':'total','قبل الخصم':'sub'};
+    L.forEach(function(l){
+      if(!l){key=null;return}
+      var m=l.match(/رقم الطلب\s*:\s*([A-Za-z]{2}-?[A-Za-z0-9]{4})/);if(m){r.id=normId(m[1].replace(/^([A-Za-z]{2})-?/,'$1-'));key=null;return}
+      m=l.match(/^[•\-\*]\s*(.+?)\s*[×x]\s*(\d+)(?:\s*=\s*(.+))?$/);if(m){r.items.push({n:m[1],q:+m[2],p:m[3]?num(m[3]):null});key=null;return}
+      m=l.match(/^(.+?)\s*\(\s*[−-]\s*([\d,٠-٩]+)/);if(m&&!/^الإجمالي/.test(l)){r.adj.push({n:m[1].replace(/:\s*$/,''),a:num(m[2])});key=null;return}
+      m=l.match(/^([^:]{2,20}?)\s*:\s*(.*)$/);
+      if(m&&K[m[1].trim()]){key=K[m[1].trim()];r[key]=key==='total'||key==='sub'?num(m[2].split('(')[0]):m[2];if(key!=='addr')key=null;return}
+      if(key==='addr'){r.addr+=' '+l}
+    });
+    return r;
+  }
+  function invHTML(id,d,ship,cod){
+    var o=orders[id]||{},tot=(d.total||0)+(ship||0);
+    var rows=d.items.map(function(it){return '<tr><td>'+esc(it.n)+'</td><td class="n">'+it.q+'</td><td class="n">'+(it.p!=null?money2(it.p):'—')+'</td></tr>'}).join('');
+    var adj=d.adj.map(function(a){return '<div><span>'+esc(a.n)+'</span><span>− '+money2(a.a)+'</span></div>'}).join('');
+    var place=[d.gov,d.city].filter(Boolean).map(esc).join(' · ');
+    return '<div class="inv">'+
+      '<div class="inv-top"><div class="inv-brand"><b>طيف TAIF</b><span>perfume.by.taif</span></div><div class="inv-no"><small>رقم الطلب</small><strong>'+esc(id)+'</strong></div></div>'+
+      '<div class="inv-sec"><h4>العميل</h4><p><b>'+esc(d.name||'—')+'</b></p>'+(d.phone?'<p dir="ltr" style="text-align:right">'+esc(d.phone)+'</p>':'')+(place?'<p>'+place+'</p>':'')+(d.addr?'<p>'+esc(d.addr)+'</p>':'')+'</div>'+
+      '<table><thead><tr><th>المنتج</th><th class="n">العدد</th><th class="n">السعر</th></tr></thead><tbody>'+(rows||'<tr><td colspan="3">—</td></tr>')+'</tbody></table>'+
+      '<div class="inv-tot">'+(d.sub&&(adj)?'<div><span>قبل الخصم</span><span>'+money2(d.sub)+'</span></div>':'')+adj+
+      (ship?'<div><span>الشحن</span><span>'+money2(ship)+'</span></div>':'')+
+      '<div class="big"><span>الإجمالي</span><span>'+money2(tot)+'</span></div>'+
+      (cod?'<div class="cod"><span>المطلوب عند الاستلام</span><span>'+money2(cod)+'</span></div>':'<div><span>الدفع</span><span>'+esc(d.pay||'مدفوع')+' ✓</span></div>')+'</div>'+
+      '<div class="inv-foot"><span>تاريخ التأكيد: '+esc(o.date||today())+'</span><span>شكرًا إنك اخترت طيف</span></div>'+
+    '</div>';
+  }
+  var curInv=null;
+  function readInv(id){try{return JSON.parse(localStorage.getItem(INVK+id)||'null')}catch(e){return null}}
+  function preview(){
+    var d=parseMsg($('inv-text').value),id=curInv;
+    if(d.id&&d.id!==id){msg('inv-msg','err','رقم الطلب في الرسالة ('+esc(d.id)+') مختلف عن الطلب ده ('+esc(id)+'). اتأكد إنك لزقت الرسالة الصح.')}
+    else if(!d.items.length){msg('inv-msg','info','الصق رسالة الطلب عشان تظهر المنتجات والإجمالي في الفاتورة.')}
+    else msg('inv-msg');
+    $('inv-preview').innerHTML=invHTML(id,d,num($('inv-ship').value),num($('inv-cod').value));
+  }
+  function openInv(id,text){
+    curInv=id;var s=readInv(id)||{};
+    $('inv-text').value=text!=null?text:(s.text||'');$('inv-ship').value=s.ship||'';$('inv-cod').value=s.cod||'';
+    $('inv-title').textContent='فاتورة الطلب '+id;
+    $('inv-print').textContent=orders[id]&&orders[id].status==='received'?'أكّد الطلب واطبع':'اطبع الفاتورة';
+    $('inv-modal').hidden=false;preview();
+  }
+  ['inv-text','inv-ship','inv-cod'].forEach(function(k){$(k).addEventListener('input',preview)});
+  $('inv-close').onclick=function(){$('inv-modal').hidden=true};
+  $('inv-modal').addEventListener('click',function(e){if(e.target===$('inv-modal'))$('inv-modal').hidden=true});
+  $('inv-print').onclick=function(){
+    var id=curInv,d=parseMsg($('inv-text').value);
+    if(d.id&&d.id!==id){preview();return}
+    var o=orders[id];if(o&&(o.status==='received'||!o.status)){o.status='confirmed';o.date=today();setDirty(true);render()}
+    try{localStorage.setItem(INVK+id,JSON.stringify({text:$('inv-text').value,ship:$('inv-ship').value,cod:$('inv-cod').value}))}catch(e){}
+    $('print-area').innerHTML=invHTML(id,d,num($('inv-ship').value),num($('inv-cod').value));
+    $('inv-modal').hidden=true;
+    setTimeout(function(){window.print()},50);
+    if(dirty)msg('save-msg','info','الطلب اتأكد. دوس "احفظ" تحت عشان العميل يشوف الحالة الجديدة في التتبع.');
+  };
+  $('new-msg').addEventListener('input',function(){var d=parseMsg(this.value);if(d.id)$('new-id').value=d.id});
+  $('add-inv-btn').onclick=function(){
+    var txt=$('new-msg').value,d=parseMsg(txt),id=normId($('new-id').value)||d.id;
+    if(!/^TF-[A-Z0-9]{4}$/.test(id||'')){msg('add-msg','err','اكتب رقم الطلب أو الصق رسالة الطلب الأول.');return}
+    if(!orders[id])orders[id]={status:'received',date:today(),note:$('new-note').value.trim()};
+    $('new-id').value='';$('new-note').value='';$('new-msg').value='';msg('add-msg');
+    filter='all';setDirty(true);render();openInv(id,txt||null);
+  };
   $('filters').addEventListener('click',function(e){var b=e.target.closest('.chip');if(b){filter=b.dataset.f;render()}});
   $('save-btn').onclick=save;
   $('login-btn').onclick=function(){token=$('token').value.trim();if(!token){msg('login-msg','err','الصق المفتاح الأول.');return}load()};
-  $('logout').onclick=function(){try{localStorage.removeItem(KEY)}catch(e){}token='';orders={};$('token').value='';$('app').hidden=true;$('logout').hidden=true;$('login').hidden=false;msg('login-msg','info','خرجت. المفتاح اتمسح من الجهاز ده.')};
+  $('logout').onclick=function(){try{localStorage.removeItem(KEY);Object.keys(localStorage).forEach(function(k){if(k.indexOf(INVK)===0)localStorage.removeItem(k)})}catch(e){}token='';orders={};$('token').value='';$('app').hidden=true;$('logout').hidden=true;$('login').hidden=false;msg('login-msg','info','خرجت. المفتاح اتمسح من الجهاز ده.')};
   window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue=''}});
 
   try{token=localStorage.getItem(KEY)||''}catch(e){}
