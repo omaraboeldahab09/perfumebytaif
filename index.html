@@ -1702,7 +1702,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
   function money(n){return n.toLocaleString('en-US')+' ج.م'}
   function sum(){var s=0,miss=[];for(var k in cart){if(PRICE[k])s+=PRICE[k]*cart[k];else miss.push(k)}return {s:s,miss:miss}}
   /* discount codes: code -> {p: percent} or {a: fixed amount in EGP} */
-  var CODES={'f153b16aeda06ba4a72156a3':{a:150},'84eaa4c694b30e8f017cf94f':{a:100,min:2000},'9309733e647271bb366e7e93':{a:100,min:2000},'ed4035d87355aba8eca7c358':{a:150,min:2000},'f59ff6923e07113921af91f5':{a:150,min:2000},'95444f365c1689ed070c4dc4':{a:150,min:2000},'1e087210b26e69302b4c77aa':{a:150,min:2000},'6a5d55ce75e54c73ba4985e1':{a:150,min:2000}};
+  var CODES={'f153b16aeda06ba4a72156a3':{a:150,q:2},'84eaa4c694b30e8f017cf94f':{a:100,q:2},'9309733e647271bb366e7e93':{a:100,q:2},'ed4035d87355aba8eca7c358':{a:150,q:2},'f59ff6923e07113921af91f5':{a:150,q:2},'95444f365c1689ed070c4dc4':{a:150,q:2},'1e087210b26e69302b4c77aa':{a:150,q:2},'6a5d55ce75e54c73ba4985e1':{a:150,q:2}};
   /* codes are stored as salted SHA-256 so they can't be read from the page source */
   function sha(s){var K=[],H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19],i,j,n=2;
     for(i=0;K.length<64;n++){for(j=2;j*j<=n;j++)if(n%j===0)break;if(j*j>n)K.push((Math.pow(n,1/3)*4294967296)|0)}
@@ -1718,7 +1718,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
 
   var CODE='';try{CODE=localStorage.getItem('taif-code')||''}catch(e){}
   if(!codeOf(CODE))CODE='';
-  function disc(s){var c=codeOf(CODE);if(!c||!s||(c.min&&s<c.min))return 0;return c.p?Math.round(s*c.p/100):Math.min(c.a,s)}
+  function disc(s){var c=codeOf(CODE);if(!c||!s||(c.q&&total()<c.q))return 0;return c.p?Math.round(s*c.p/100):Math.min(c.a,s)}
   /* Osma offer: any 3 Osma perfumes for 5,400 until the countdown ends */
   var OS_END=Date.UTC(2026,9,31,9,30),OS_SET=5400;
   function osmaN(){var n=0;for(var k in cart)if(k.indexOf('أوسما')===0)n+=cart[k];return n}
@@ -1760,7 +1760,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
       q.append(plus,num,minus);li.append(nm,q);ul.append(li);
     });
     $('empty').hidden=!!n;$('fields').hidden=!n;$('sum').hidden=!n;
-    var S=sum(),B0=bundle(),M3=mb(),B=B0+M3,D=disc(S.s-B);var cc=codeOf(CODE);if(cc&&cc.min){var lo=S.s-B<cc.min;codeMsg(lo?'الكود ده بيشتغل على الطلبات من '+money(cc.min)+' وأكتر':'تم تطبيق الكود: خصم '+money(cc.a),!lo)}$('bundle-row').hidden=!B0;if(B0)$('bundle-val').textContent='− '+money(B0);$('match-row').hidden=!M3;if(M3)$('match-val').textContent='− '+money(M3);var mr=matchN()%3;$('mt-hint').hidden=!mr;if(mr)$('mt-hint').textContent=mr===2?'ضيف عطر كمان من ماتش وخده ببلاش':'ضيف عطرين كمان من ماتش وخد التالت ببلاش';var on=Date.now()<OS_END,r=osmaN()%3;$('os-hint').hidden=!(on&&r);if(on&&r)$('os-hint').textContent=r===2?'ضيف عطر كمان من أوسما وخد التلاتة بـ 5,400 ج.م':'ضيف عطرين كمان من أوسما وخد التلاتة بـ 5,400 ج.م';$('disc-row').hidden=!D;if(D){$('disc-code').textContent=CODE;$('disc-val').textContent='− '+money(D)}$('sum-val').textContent=money(S.s-B-D);$('ipa-amt').textContent=S.s?money(S.s-B-D):'الإجمالي';$('sum-note').textContent=S.miss.length?'(+ '+S.miss.join(' و ')+')':'(من غير الشحن)';
+    var S=sum(),B0=bundle(),M3=mb(),B=B0+M3,D=disc(S.s-B);var cc=codeOf(CODE);if(cc&&cc.q){var lo=total()<cc.q;codeMsg(lo?'الكود ده بيشتغل لما يكون في السلة 2 منتجات أو أكتر':'تم تطبيق الكود: خصم '+money(cc.a),!lo)}$('bundle-row').hidden=!B0;if(B0)$('bundle-val').textContent='− '+money(B0);$('match-row').hidden=!M3;if(M3)$('match-val').textContent='− '+money(M3);var mr=matchN()%3;$('mt-hint').hidden=!mr;if(mr)$('mt-hint').textContent=mr===2?'ضيف عطر كمان من ماتش وخده ببلاش':'ضيف عطرين كمان من ماتش وخد التالت ببلاش';var on=Date.now()<OS_END,r=osmaN()%3;$('os-hint').hidden=!(on&&r);if(on&&r)$('os-hint').textContent=r===2?'ضيف عطر كمان من أوسما وخد التلاتة بـ 5,400 ج.م':'ضيف عطرين كمان من أوسما وخد التلاتة بـ 5,400 ج.م';$('disc-row').hidden=!D;if(D){$('disc-code').textContent=CODE;$('disc-val').textContent='− '+money(D)}$('sum-val').textContent=money(S.s-B-D);$('ipa-amt').textContent=S.s?money(S.s-B-D):'الإجمالي';$('sum-note').textContent=S.miss.length?'(+ '+S.miss.join(' و ')+')':'(من غير الشحن)';
     $('send').setAttribute('aria-disabled',n?'false':'true');
     document.querySelectorAll('.add[data-name]').forEach(function(b){
       var inn=!!cart[b.dataset.name];b.classList.toggle('in',inn&&!b.classList.contains('ig-btn'));
@@ -2304,7 +2304,7 @@ document.getElementById('copy-handle').addEventListener('click',function(){
     "@مجموعة الليل":"The night collection",
     "@العطر اللي قبله":"Previous perfume",
     "@العطر اللي بعده":"Next perfume",
-    "الكود ده بيشتغل على الطلبات من 2,000 ج.م وأكتر":"This code works on orders of EGP 2,000 or more",
+    "الكود ده بيشتغل لما يكون في السلة 2 منتجات أو أكتر":"This code works when you have 2 or more items in your bag",
     "→ رجوع للعطور":"← Back to perfumes",
     "@مسار الصفحة":"Breadcrumb",
     "@زود":"Increase",

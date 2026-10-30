@@ -265,15 +265,17 @@ textarea.paste{min-height:120px;font-size:14px;line-height:1.5;direction:rtl}
   function num(s){return +(String(s||'').replace(/[٠-٩]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.indexOf(d)}).replace(/[^\d]/g,''))||0}
   function money2(n){return n.toLocaleString('en-US')+' ج.م'}
   function parseMsg(txt){
-    var L=(txt||'').split(/\r?\n/).map(function(s){return s.trim()}),r={items:[],adj:[],raw:txt||''},key=null;
+    var clean=String(txt||'').replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF\u061C]/g,'').replace(/[\u00A0\u2007\u202F]/g,' ').replace(/[٠-٩]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.indexOf(d)}).replace(/：/g,':');
+    var L=clean.split(/\r?\n/).map(function(s){return s.trim()}),r={items:[],adj:[],raw:txt||''},key=null,seenTot=false;
     var K={'الاسم':'name','الموبايل':'phone','المحافظة':'gov','المدينة / المركز':'city','العنوان':'addr','طريقة الدفع':'pay','الإجمالي':'total','قبل الخصم':'sub'};
     L.forEach(function(l){
       if(!l){key=null;return}
       var m=l.match(/رقم الطلب\s*:\s*([A-Za-z]{2}-?[A-Za-z0-9]{4})/);if(m){r.id=normId(m[1].replace(/^([A-Za-z]{2})-?/,'$1-'));key=null;return}
-      m=l.match(/^[•\-\*]\s*(.+?)\s*[×x]\s*(\d+)(?:\s*=\s*(.+))?$/);if(m){r.items.push({n:m[1],q:+m[2],p:m[3]?num(m[3]):null});key=null;return}
-      m=l.match(/^(.+?)\s*\(\s*[−-]\s*([\d,٠-٩]+)/);if(m&&!/^الإجمالي/.test(l)){r.adj.push({n:m[1].replace(/:\s*$/,''),a:num(m[2])});key=null;return}
+      m=l.match(/^(?:[•·●▪\-\*]\s*)?(.+?)\s*[×xX✕✖*]\s*(\d+)\s*(?:=\s*(.*))?$/);
+      if(m&&!/:/.test(m[1])&&!seenTot){r.items.push({n:m[1].trim(),q:+m[2],p:m[3]&&/\d/.test(m[3])?num(m[3]):null});key=null;return}
+      m=l.match(/^(.+?)\s*\(\s*[^\d()]{0,4}\s*([\d,]+)[^)]*\)\s*$/);if(m&&!/^الإجمالي/.test(l)&&!/^\s*[•·]/.test(l)){r.adj.push({n:m[1].replace(/:\s*$/,'').trim(),a:num(m[2])});key=null;return}
       m=l.match(/^([^:]{2,20}?)\s*:\s*(.*)$/);
-      if(m&&K[m[1].trim()]){key=K[m[1].trim()];r[key]=key==='total'||key==='sub'?num(m[2].split('(')[0]):m[2];if(key!=='addr')key=null;return}
+      if(m&&K[m[1].trim()]){key=K[m[1].trim()];if(key==='total')seenTot=true;r[key]=key==='total'||key==='sub'?num(m[2].split('(')[0]):m[2];if(key!=='addr')key=null;return}
       if(key==='addr'){r.addr+=' '+l}
     });
     return r;
