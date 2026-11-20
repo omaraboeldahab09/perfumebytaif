@@ -860,6 +860,25 @@ body,header,.drawer{transition:background-color .35s ease,color .35s ease}
 .fly{position:fixed;z-index:60;pointer-events:none;border-radius:999px 999px 0 0;overflow:hidden;background:var(--sand-deep)}
 .fly img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
 html[data-theme="dark"] .fly{background:#DCD8CE}
+#mt-hint{display:none!important}
+.goal{display:flex;flex-direction:column;gap:7px;background:color-mix(in srgb,var(--sand) 60%,#fff);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.goal[hidden]{display:none}
+.goal-t{margin:0;font-size:13px;font-weight:600;color:var(--ink)}
+.goal-bar{height:7px;border-radius:9px;background:var(--line);overflow:hidden}
+.goal-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#C9A66B,#E8B04A);transition:width .7s cubic-bezier(.2,.9,.3,1.25)}
+.goal.done .goal-bar i{background:linear-gradient(90deg,#2E7D4F,#5BBF7F)}
+.saved{margin:-4px 0 0;font-size:13.5px;font-weight:700;color:#2E7D4F;text-align:end}
+.saved[hidden]{display:none}
+html[data-theme="dark"] .saved{color:#7FCB9A}
+html[data-theme="dark"] .goal{background:rgba(255,255,255,.06)}
+#sum-val{display:inline-block}
+#sum-val.tick{animation:tick .55s ease}
+@keyframes tick{35%{transform:scale(1.1)}}
+.confetti{position:fixed;inset:0;width:100%;height:100%;z-index:80;pointer-events:none}
+.plus1{position:fixed;z-index:61;pointer-events:none;font-weight:700;font-size:14px;color:var(--ink);animation:plus1 .9s ease-out forwards}
+@keyframes plus1{from{opacity:0;transform:translate(-50%,0)}20%{opacity:1}to{opacity:0;transform:translate(-50%,-30px)}}
+.cart-btn.bump .count{animation:bump .45s ease}
+@media (prefers-reduced-motion:reduce){.goal-bar i{transition:none}#sum-val.tick,.plus1{animation:none}.plus1{display:none}}
 </style>
 
 </head>
@@ -1746,6 +1765,7 @@ html[data-theme="dark"] .fly{background:#DCD8CE}
       if(!b.classList.contains('ig-btn'))b.textContent=inn?'✓ في السلة ('+cart[b.dataset.name]+')':'+ أضف للسلة';
     });
     $('preview').value=message();
+    if(window.taifFx)window.taifFx({n:n,m:matchN(),save:B+D,tot:S.s-B-D,q:(codeOf(CODE)||{}).q||0});
   }
   function openCart(o){$('drawer').classList.toggle('open',o);$('scrim').classList.toggle('open',o);$('drawer').setAttribute('aria-hidden',o?'false':'true');if(o)$('cart-close').focus()}
   document.querySelectorAll('.add[data-name]').forEach(function(b){b.addEventListener('click',function(){
@@ -2711,6 +2731,58 @@ function go(i){var b=th[i];if(!b)return;th.forEach(function(x){x.classList.toggl
 th.forEach(function(b,i){b.addEventListener('click',function(){go(i)})});
 var x0=null;im.parentNode.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
 im.parentNode.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<40)return;var c=th.findIndex(function(b){return b.classList.contains('on')});var rtl=document.documentElement.dir==='rtl';go((c+((dx<0)!==rtl?1:-1)+th.length)%th.length)});
+})();
+</script>
+<script>
+/* dopamine: offer progress, savings, animated total, confetti */
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var RM=window.matchMedia?matchMedia('(prefers-reduced-motion: reduce)'):{matches:false};
+  function en(){return document.documentElement.lang==='en'}
+  function L(a,e){return en()?e:a}
+  function fmt(n){n=Math.round(n).toLocaleString('en-US');return en()?'EGP '+n:n+' ج.م'}
+  var foot=$('foot'),sumEl=$('sum'),val=$('sum-val');if(!foot||!sumEl)return;
+  var g=document.createElement('div');g.className='goal';g.hidden=true;g.setAttribute('aria-live','polite');
+  var gt=document.createElement('p');gt.className='goal-t';var gb=document.createElement('div');gb.className='goal-bar';var gi=document.createElement('i');gb.append(gi);g.append(gt,gb);
+  foot.insertBefore(g,$('os-hint'));
+  var sv=document.createElement('p');sv.className='saved';sv.hidden=true;sumEl.after(sv);
+  var last=null,shown=0;
+  function count(to){var from=shown;shown=to;cancelAnimationFrame(count.r);
+    if(RM.matches||from===to||!last){val.textContent=fmt(to);return}
+    var t0=performance.now();
+    (function step(t){var p=Math.min(1,(t-t0)/550),e=1-Math.pow(1-p,3);val.textContent=fmt(from+(to-from)*e);if(p<1)count.r=requestAnimationFrame(step)})(t0);
+    val.classList.remove('tick');void val.offsetWidth;val.classList.add('tick')}
+  /* confetti */
+  function confetti(x,y,n){if(RM.matches)return;
+    var c=document.createElement('canvas'),d=Math.min(2,window.devicePixelRatio||1),W=innerWidth,H=innerHeight;c.className='confetti';c.width=W*d;c.height=H*d;document.body.append(c);
+    var k=c.getContext('2d');k.scale(d,d);
+    var C=['#C9A66B','#E8B04A','#E8607A','#5FD3E6','#2E7D4F','#F4EDE1'],P=[];
+    for(var i=0;i<(n||90);i++){var a=-Math.PI/2+(Math.random()-.5)*Math.PI*.9,s=5+Math.random()*7;
+      P.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,w:5+Math.random()*5,h:8+Math.random()*6,c:C[i%C.length]})}
+    var t0=performance.now();
+    (function f(t){var age=t-t0;k.clearRect(0,0,W,H);
+      P.forEach(function(p){p.vy+=.22;p.vx*=.985;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;k.save();k.globalAlpha=Math.max(0,1-age/1600);k.translate(p.x,p.y);k.rotate(p.r);k.fillStyle=p.c;k.fillRect(-p.w/2,-p.h/2,p.w,p.h*Math.abs(Math.cos(p.r*2)));k.restore()});
+      if(age<1600)requestAnimationFrame(f);else c.remove()})(t0)}
+  function burst(){var o=$('drawer').classList.contains('open')?sumEl:$('cart-open'),r=o.getBoundingClientRect();confetti(r.left+r.width/2,r.top+r.height/2)}
+  window.taifConfetti=confetti;
+  function toast(s){var t=$('toast');if(!t)return;t.textContent=s;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove('show')},2200)}
+  window.taifFx=function(s){
+    var t='',p=0,done=false,mr=s.m%3;
+    if(s.q&&s.n<s.q){t=L('ضيف قطعة كمان وكود الخصم يشتغل','Add 1 more item to unlock your code');p=s.n/s.q}
+    else if(mr){t=mr===2?L('ضيف عطر كمان من ماتش وخده ببلاش','Add 1 more Match perfume and get it free'):L('ضيف عطرين كمان من ماتش وخد التالت ببلاش','Add 2 more Match perfumes and get the third free');p=mr/3}
+    else if(s.save>0){t=L('عاش! العرض اتفعّل','Nice! Offer unlocked');p=1;done=true}
+    g.hidden=!t||!s.n;gt.textContent=t;g.classList.toggle('done',done);gi.style.width=Math.round(p*100)+'%';
+    sv.hidden=!(s.save>0);if(s.save>0)sv.textContent=L('وفّرت ','You saved ')+fmt(s.save)+' 🎉';
+    if(s.n)count(s.tot);
+    if(last&&s.save>last.save&&s.n>=last.n){burst();setTimeout(function(){toast(L('🎉 العرض اتفعّل: وفّرت ','🎉 Offer unlocked: you saved ')+fmt(s.save))},650)}
+    last=s;
+  };
+  /* +1 over the bag after the bottle lands */
+  document.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('.add[data-name]'))return;
+    setTimeout(function(){if($('drawer').classList.contains('open'))return;var b=$('cart-open').getBoundingClientRect();if(!b.width||b.bottom<0)return;var s=document.createElement('span');s.className='plus1';s.textContent='+1';s.style.left=(b.left+b.width/2)+'px';s.style.top=(b.top-6)+'px';document.body.append(s);setTimeout(function(){s.remove()},950)},RM.matches?0:850)});
+  $('send').addEventListener('click',function(){if($('send').getAttribute('aria-disabled')==='true')return;var r=$('send').getBoundingClientRect();confetti(r.left+r.width/2,r.top,140)});
+  $('lang-toggle').addEventListener('click',function(){setTimeout(function(){last=null;if(window.taifCartRender)window.taifCartRender()},0)});
+  last=null;if(window.taifCartRender)window.taifCartRender();
 })();
 </script>
 
